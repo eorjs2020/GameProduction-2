@@ -1,6 +1,9 @@
 #include <iostream>
+#include "Game.h"
 
-int main()
+Game myGame;
+int main(int argc, char* args[])
 {
+	myGame.Run();
 	return 0;
 }
