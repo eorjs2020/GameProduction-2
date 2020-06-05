@@ -38,7 +38,10 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	else return false; // SDL init fail.
 	m_fps = (Uint32)round((1 / (double)FPS) * 1000); // Sets FPS in milliseconds and rounds.
 	TEMA::RegisterTexture("Img/play.png", "play");
+	TEMA::RegisterTexture("Img/exit.png", "end");
+	TEMA::RegisterTexture("Img/Concept2.png", "player");
 	STMA::ChangeState(new TitleState);
+	
 	SOMA::AllocateChannels(16);
 	m_running = true; // Everything is okay, start the engine.
 	cout << "Engine Init success!" << endl;
@@ -66,6 +69,7 @@ void Engine::HandleEvents()
 void Engine::Update()
 {
 	STMA::Update();
+	
 }
 
 void Engine::Render() 
@@ -75,6 +79,10 @@ void Engine::Render()
 	// Draw anew.
 	STMA::Render();
 	SDL_RenderPresent(m_pRenderer);
+	if (m_exit == true)
+	{
+		STMA::ChangeState(new EndState);
+	}
 }
 
 void Engine::Clean()
@@ -119,3 +127,4 @@ Engine& Engine::Instance()
 
 SDL_Renderer* Engine::GetRenderer() { return m_pRenderer; }
 bool& Engine::Running() { return m_running; }
+bool& Engine::End() { return m_exit; }
