@@ -14,5 +14,5 @@
   States.cpp
   TextureManager.cpp
   코드를 생성하고 있습니다...
-D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.cpp(27,19): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  GameProduction 2.vcxproj -> D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\PlatformPlayer.cpp(27,19): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  GameProduction 2.vcxproj -> D:\조지브라운 2학기\Game production\GameProduction 2\Debug\GameProduction 2.exe

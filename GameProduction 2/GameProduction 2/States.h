@@ -45,5 +45,16 @@ public:
 private:
 	Button* m_playBtn;
 };
+class EndState : public State
+{
+public:
+	EndState();
+	void Update();
+	void Render();
+	void Enter();
+	void Exit();
+private:
+	Button* m_playBtn;
+};
 
 #endif

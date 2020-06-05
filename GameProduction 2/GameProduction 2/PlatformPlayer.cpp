@@ -30,8 +30,11 @@ void PlatformPlayer::Update()
 
 void PlatformPlayer::Render()
 {
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 255, 255, 255);
-	SDL_RenderFillRectF(Engine::Instance().GetRenderer(), GetDstP());
+	//m_src.x = m_src.w * (int)m_state;
+	SDL_RenderCopyF(m_pRend, m_pText, &m_src, &m_dst);
+
+	/*SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 255, 255, 255);
+	SDL_RenderFillRectF(Engine::Instance().GetRenderer(), GetDstP());*/
 }
 
 void PlatformPlayer::Stop() // If you want a dead stop both axes.

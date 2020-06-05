@@ -13,6 +13,7 @@
 class Engine
 {
 private: // Private properties.
+	bool m_exit = false;
 	bool m_running; // Loop control flag.
 	Uint32 m_start, m_end, m_delta, m_fps; // Fixed timestep variables.
 	SDL_Window* m_pWindow; // This represents the SDL window.
@@ -33,6 +34,7 @@ public: // Public methods.
 	static Engine& Instance(); // This static method creates the static instance that can be accessed 'globally'
 	SDL_Renderer* GetRenderer();
 	bool& Running();
+	bool& End();
 };
 
 #endif
