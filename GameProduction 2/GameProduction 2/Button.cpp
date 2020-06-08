@@ -63,6 +63,7 @@ PlayButton::PlayButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture
 
 void PlayButton::Execute()
 {
+	//SOMA::SetSoundVolume(60);
 	SOMA::PlaySound("beep");
 	STMA::ChangeState(new GameState);
 }

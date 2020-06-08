@@ -34,13 +34,20 @@ void GameState::Enter()
 	m_pPlatforms[2] = new SDL_FRect({ 724.0f,468.0f,100.0f,20.0f });
 	m_pPlatforms[3] = new SDL_FRect({ 462.0f,368.0f,100.0f,20.0f });
 	m_pPlatforms[4] = new SDL_FRect({ 462.0f,648.0f,100.0f,20.0f });
-	
-	
+	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
+	SOMA::Load("Aud/Space_Loop1.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
+	SOMA::PlayMusic("BGM");
+	
 }
 
 void GameState::Update()
 {
+	m_pMusicVolume = m_pMusicSetVol;
+	m_pSFXVolume = m_pSFXSetVol;
+	SOMA::SetSoundVolume(m_pSFXVolume);
+	SOMA::SetMusicVolume(m_pMusicVolume);
+	//SOMA::PlayMusic("BGM");
 	//Grappling Hook input
 	if (EVMA::MouseHeld(1))
 	{
@@ -85,6 +92,16 @@ void GameState::Update()
 	{
 		State::Resume();
 		STMA::PushState(new EndState);
+	}
+	else if (EVMA::KeyHeld(SDL_SCANCODE_PAGEUP))
+	{
+		++m_pMusicSetVol;
+		++m_pSFXVolume;
+	}
+	else if (EVMA::KeyHeld(SDL_SCANCODE_PAGEDOWN))
+	{
+		--m_pMusicSetVol;
+		--m_pSFXVolume;
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_pPlayer->IsGrounded())
 	{
@@ -277,10 +294,15 @@ void TitleState::Enter()
 	m_quitBtn = new QuitButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
+	SOMA::Load("Aud/Space_Loop1.wav", "BGM", SOUND_MUSIC);
+	SOMA::SetMusicVolume(16);
+	SOMA::SetSoundVolume(20);
+	SOMA::PlayMusic("BGM");
 }
 
 void TitleState::Update()
 {
+	
 	if (m_playBtn->Update() == 1)
 		return;
 	if (m_quitBtn->Update() == 1)

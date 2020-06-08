@@ -50,6 +50,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	
 	
 	SOMA::AllocateChannels(16);
+	
 	m_running = true; // Everything is okay, start the engine.
 	cout << "Engine Init success!" << endl;
 	return true;
