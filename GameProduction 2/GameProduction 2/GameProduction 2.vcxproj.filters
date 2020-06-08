@@ -57,6 +57,9 @@
     <ClCompile Include="MathManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformEnemy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathManager.h">
@@ -99,6 +102,9 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformEnemy.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

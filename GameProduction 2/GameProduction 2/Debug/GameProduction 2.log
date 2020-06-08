@@ -1,2 +1,3 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GAME1017_Template_W01.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  GameProduction 2.vcxproj -> D:\조지브라운 2학기\Game production\GameProduction 2\Debug\GameProduction 2.exe
+  States.cpp
+  GameProduction 2.vcxproj -> D:\조지브라운 2학기\Game production\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe

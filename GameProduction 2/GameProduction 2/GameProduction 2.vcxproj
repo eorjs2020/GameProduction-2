@@ -136,6 +136,7 @@
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathManager.cpp" />
+    <ClCompile Include="PlatformEnemy.cpp" />
     <ClCompile Include="PlatformPlayer.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="MathManager.h" />
+    <ClInclude Include="PlatformEnemy.h" />
     <ClInclude Include="PlatformPlayer.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />

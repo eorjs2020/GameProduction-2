@@ -25,6 +25,8 @@ void GameState::Enter()
 	std::cout << "Entering GameState..." << std::endl;
 	m_pPlayer = new PlatformPlayer({ 10,-2,120,120 }, { 512.0f,468.0f,80,80 }, 
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("player"));
+	m_pEnemy = new PlatformEnemy({ 0,0,128,128 }, { 19.0f,19.0f,80,80 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("Enemy"));
 	m_quitBtn = new QuitButton({ 0,0,480,140 }, { 0.0f,0.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	m_pPlatforms[0] = new SDL_FRect({ -100.0f,668.0f,1224.0f,100.0f });
@@ -46,7 +48,10 @@ void GameState::Update()
 	else if (EVMA::KeyHeld(SDL_SCANCODE_D))
 		m_pPlayer->SetAccelX(1.0);
 	else if (EVMA::KeyHeld(SDL_SCANCODE_X))
-		Engine::Instance().End() = true;
+	{
+		State::Resume();
+		STMA::PushState(new EndState);
+	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_pPlayer->IsGrounded())
 	{
 		SOMA::PlaySound("jump");
@@ -58,8 +63,12 @@ void GameState::Update()
 	// Wrap the player on screen.
 	if (m_pPlayer->GetDstP()->x < -51.0) m_pPlayer->SetX(1024.0);
 	else if (m_pPlayer->GetDstP()->x > 1024.0) m_pPlayer->SetX(-50.0);
+	// Wrap the Enemy on screen.
+	if (m_pEnemy->GetDstP()->x < -51.0) m_pEnemy->SetX(1024.0);
+	else if (m_pEnemy->GetDstP()->x > 1024.0) m_pEnemy->SetX(-50.0);
 	// Do the rest.
 	m_pPlayer->Update();
+	m_pEnemy->Update();
 	CheckCollision();
 	
 }
@@ -93,14 +102,69 @@ void GameState::CheckCollision()
 			}
 		}
 	}
+	if (COMA::AABBCheck(*m_pEnemy->GetDstP(), *m_pPlayer->GetDstP()))
+	{
+		if (m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h - (float)m_pPlayer->GetVelY() <= (float)m_pEnemy->GetDstP()->y)
+		{ // Colliding top side of platform.
+			m_pPlayer->SetGrounded(true);
+			m_pPlayer->StopY();
+			m_pPlayer->SetY(m_pEnemy->GetDstP()->y - m_pPlayer->GetDstP()->h);
+		}
+		else if (m_pPlayer->GetDstP()->y - (float)m_pPlayer->GetVelY() >= m_pEnemy->GetDstP()->y + m_pEnemy->GetDstP()->h)
+		{ // Colliding bottom side of platform.
+			m_pPlayer->StopY();
+			m_pPlayer->SetY(m_pEnemy->GetDstP()->y + m_pEnemy->GetDstP()->h);
+		}
+		else if (m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w - m_pPlayer->GetVelX() <= m_pEnemy->GetDstP()->x)
+		{ // Collision from left.
+			m_pPlayer->StopX(); // Stop the player from moving horizontally.
+			m_pPlayer->SetX(m_pEnemy->GetDstP()->x - m_pPlayer->GetDstP()->w);
+		}
+		else if (m_pPlayer->GetDstP()->x - (float)m_pPlayer->GetVelX() >= m_pEnemy->GetDstP()->x + m_pEnemy->GetDstP()->w)
+		{ // Colliding right side of platform.
+			m_pPlayer->StopX();
+			m_pPlayer->SetX(m_pEnemy->GetDstP()->x + m_pEnemy->GetDstP()->w);
+		}
+	}
+
+
+	for (int i = 0; i < NUMPLATFORMS; i++) // For each platform.
+	{
+		if (COMA::AABBCheck(*m_pEnemy->GetDstP(), *m_pPlatforms[i]))
+		{
+			if (m_pEnemy->GetDstP()->y + m_pEnemy->GetDstP()->h - (float)m_pEnemy->GetVelY() <= m_pPlatforms[i]->y)
+			{ // Colliding top side of platform.
+				m_pEnemy->SetGrounded(true);
+				m_pEnemy->StopY();
+				m_pEnemy->SetY(m_pPlatforms[i]->y - m_pEnemy->GetDstP()->h);
+			}
+			else if (m_pEnemy->GetDstP()->y - (float)m_pEnemy->GetVelY() >= m_pPlatforms[i]->y + m_pPlatforms[i]->h)
+			{ // Colliding bottom side of platform.
+				m_pEnemy->StopY();
+				m_pEnemy->SetY(m_pPlatforms[i]->y + m_pPlatforms[i]->h);
+			}
+			else if (m_pEnemy->GetDstP()->x + m_pEnemy->GetDstP()->w - m_pEnemy->GetVelX() <= m_pPlatforms[i]->x)
+			{ // Collision from left.
+				m_pEnemy->StopX(); // Stop the player from moving horizontally.
+				m_pEnemy->SetX(m_pPlatforms[i]->x - m_pEnemy->GetDstP()->w);
+			}
+			else if (m_pEnemy->GetDstP()->x - (float)m_pEnemy->GetVelX() >= m_pPlatforms[i]->x + m_pPlatforms[i]->w)
+			{ // Colliding right side of platform.
+				m_pEnemy->StopX();
+				m_pEnemy->SetX(m_pPlatforms[i]->x + m_pPlatforms[i]->w);
+			}
+		}
+	}
 }
 
 void GameState::Render()
 {
-	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
+	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
 	// Draw the player.
 	m_pPlayer->Render();
+	m_pEnemy->Render();
 	// Draw the platforms.
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 192, 64, 0, 255);
 	for (int i = 0; i < NUMPLATFORMS; i++)
@@ -113,6 +177,7 @@ void GameState::Render()
 
 void GameState::Exit()
 {
+	delete m_pEnemy;
 	delete m_pPlayer;
 	for (int i = 0; i < NUMPLATFORMS; i++)
 		delete m_pPlatforms[i];
