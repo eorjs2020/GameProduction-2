@@ -24,6 +24,7 @@ class GameState : public State
 private:
 	PlatformPlayer* m_pPlayer;
 	SDL_FRect* m_pPlatforms[NUMPLATFORMS];
+	Button* m_quitBtn;
 public:
 	GameState();
 	void Update();
@@ -37,7 +38,21 @@ public:
 class TitleState : public State
 {
 public:
+	
 	TitleState();
+	void Update();
+	void Render();
+	void Enter();
+	void Exit();
+private:
+	Button* m_playBtn;
+	Button* m_quitBtn;
+		
+};
+class EndState : public State
+{
+public:
+	EndState();
 	void Update();
 	void Render();
 	void Enter();

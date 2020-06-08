@@ -4,6 +4,7 @@
 #include "SoundManager.h"
 #include "StateManager.h"
 #include <SDL.h>
+#include "Engine.h"
 
 Button::Button(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t)
 	: Sprite(src, dst, r, t), m_state(STATE_UP) {}
@@ -52,14 +53,25 @@ int Button::Update()
 void Button::Render()
 {
 	m_src.x = m_src.w * (int)m_state;
+	
 	SDL_RenderCopyF(m_pRend, m_pText, &m_src, &m_dst);
 }
 
 // Create button subclasses and their overridden Execute methods below...
 
 PlayButton::PlayButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
+
 void PlayButton::Execute()
 {
 	SOMA::PlaySound("beep");
 	STMA::ChangeState(new GameState);
+}
+
+QuitButton::QuitButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
+
+void QuitButton::Execute()
+{
+	SOMA::PlaySound("beep");
+	Engine::Instance().Running() = false;
+	
 }

@@ -1,0 +1,21 @@
+﻿  Button.cpp
+  CollisionManager.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\Sprite.h(5,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  DebugManager.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\CollisionManager.h(6,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  Engine.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\DebugManager.h(6,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  EventManager.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\Engine.h(5,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  FontManager.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\EventManager.h(5,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  Label.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\FontManager.h(7,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  Main.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\Engine.h(5,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  MathManager.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\Engine.h(5,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  PlatformPlayer.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\MathManager.h(7,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
+  SoundManager.cpp
+D:\조지브라운 2학기\Game production\GameProduction 2\GameProduction 2\Sprite.h(5,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'SDL.h': No such file or directory
