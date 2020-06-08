@@ -41,7 +41,41 @@ void GameState::Enter()
 
 void GameState::Update()
 {
-	
+	//Grappling Hook input
+	if (EVMA::MouseHeld(1))
+	{
+		if (existHook == false)
+		{
+			float px = m_pPlayer->GetDstP()->x, py = m_pPlayer->GetDstP()->y;
+			m_pHook = new GrapplingHook({ 10,-2,10,10 }, { px, py,30,30 },
+				Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00);
+			m_pHook->SetExist(true);
+			existHook = true;
+		}
+		if (hookColl == true)
+		{
+			double h = 1, o, a;
+			m_pPlayer->SetGrav(0.0);
+			double pA = MAMA::AngleBetweenPoints((m_pHook->GetDstP()->y - m_pPlayer->GetDstP()->y),
+				(m_pHook->GetDstP()->x - m_pPlayer->GetDstP()->x));
+			double pD = MAMA::Distance((m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2.0f), (m_pHook->GetDstP()->x),
+				(m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2.0f), (m_pHook->GetDstP()->y));
+			a = MAMA::SetDeltaX(pA, h);
+			o = MAMA::SetDeltaY(pA, h);
+			m_pPlayer->SetAccelX(a);
+			m_pPlayer->SetAccelY(o);
+			m_pPlayer->SetAccelX(a);
+			m_pPlayer->SetAccelY(o);
+		}
+	}
+	else if (EVMA::MouseReleased(1))
+		{
+			//delete m_pHook;
+			m_pPlayer->SetGrav(6.0);
+			m_pPlayer->Stop();
+			existHook = false;
+			hookColl = false;
+		}
 	// Get input.
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 		m_pPlayer->SetAccelX(-1.0);
@@ -70,7 +104,11 @@ void GameState::Update()
 	m_pPlayer->Update();
 	m_pEnemy->Update();
 	CheckCollision();
-	
+	if (existHook == true)
+	{
+		m_pHook->Update();
+		CheckCollisionHook();
+	}	
 }
 
 void GameState::CheckCollision()
@@ -157,6 +195,40 @@ void GameState::CheckCollision()
 	}
 }
 
+void GameState::CheckCollisionHook()
+{
+	for (int i = 0; i < NUMPLATFORMS; i++) // For each platform.
+	{
+		if (COMA::AABBCheck(*m_pHook->GetDstP(), *m_pPlatforms[i]))
+		{
+			if (m_pHook->GetDstP()->y + m_pHook->GetDstP()->h - (float)m_pHook->GetVelY() <= m_pPlatforms[i]->y)
+			{ // Colliding top side of platform.
+				m_pHook->Stop();
+				m_pHook->SetY(m_pPlatforms[i]->y - m_pHook->GetDstP()->h);
+				hookColl = true;
+			}
+			else if (m_pHook->GetDstP()->y - (float)m_pHook->GetVelY() >= m_pPlatforms[i]->y + m_pPlatforms[i]->h)
+			{ // Colliding bottom side of platform.
+				m_pHook->Stop();
+				m_pHook->SetY(m_pPlatforms[i]->y + m_pPlatforms[i]->h);
+				hookColl = true;
+			}
+			else if (m_pHook->GetDstP()->x + m_pHook->GetDstP()->w - m_pHook->GetVelX() <= m_pPlatforms[i]->x)
+			{ // Collision from left.
+				m_pHook->Stop(); // Stop the player from moving horizontally.
+				m_pHook->SetX(m_pPlatforms[i]->x - m_pHook->GetDstP()->w);
+				hookColl = true;
+			}
+			else if (m_pHook->GetDstP()->x - (float)m_pHook->GetVelX() >= m_pPlatforms[i]->x + m_pPlatforms[i]->w)
+			{ // Colliding right side of platform.
+				m_pHook->Stop();
+				m_pHook->SetX(m_pPlatforms[i]->x + m_pPlatforms[i]->w);
+				hookColl = true;
+			}
+		}
+	}
+}
+
 void GameState::Render()
 {
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
@@ -165,6 +237,11 @@ void GameState::Render()
 	// Draw the player.
 	m_pPlayer->Render();
 	m_pEnemy->Render();
+	//draw the hook
+	if (existHook == true)
+	{
+		m_pHook->Render();
+	}
 	// Draw the platforms.
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 192, 64, 0, 255);
 	for (int i = 0; i < NUMPLATFORMS; i++)

@@ -54,3 +54,8 @@ double PlatformPlayer::GetVelY() { return m_velY; }
 void PlatformPlayer::SetX(float y) { m_dst.x = y; }
 void PlatformPlayer::SetY(float y) { m_dst.y = y; }
 
+void PlatformPlayer::SetGrav(double y)
+{
+	m_grav = y;
+}
+

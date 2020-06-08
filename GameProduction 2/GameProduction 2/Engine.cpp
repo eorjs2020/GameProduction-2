@@ -44,6 +44,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/Concept2.png", "player");
 	TEMA::RegisterTexture("Img/Concept.png", "Enemy");
 	TEMA::RegisterTexture("Img/startBackground.png", "title");
+	TEMA::RegisterTexture("Img/fireball.png", "fireball");
 	FOMA::RegisterFont("Img/LTYPE.TTF", "m_energy", 10);
 	STMA::ChangeState(new TitleState);
 	

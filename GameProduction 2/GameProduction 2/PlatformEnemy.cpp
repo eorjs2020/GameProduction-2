@@ -53,3 +53,8 @@ double PlatformEnemy::GetVelX() { return m_velX; }
 double PlatformEnemy::GetVelY() { return m_velY; }
 void PlatformEnemy::SetX(float y) { m_dst.x = y; }
 void PlatformEnemy::SetY(float y) { m_dst.y = y; }
+
+void PlatformEnemy::SetGrav(double y)
+{
+	m_grav = y;
+}
