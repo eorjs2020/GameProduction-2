@@ -24,6 +24,7 @@ public:
 	double GetVelY();
 	void SetX(float y);
 	void SetY(float y);
+	void SetGrav(double y); //used to negate grav for grappling hook
 private:
 	bool m_grounded;
 	double m_accelX,

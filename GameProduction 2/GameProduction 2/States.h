@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "PlatformPlayer.h"
 #include "PlatformEnemy.h"
+#include "GrapplingHook.h"
 
 class State // This is the abstract base class for all specific states.
 {
@@ -27,10 +28,13 @@ private:
 	PlatformEnemy* m_pEnemy;
 	SDL_FRect* m_pPlatforms[NUMPLATFORMS];
 	Button* m_quitBtn;
+	GrapplingHook* m_pHook;
+	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 public:
 	GameState();
 	void Update();
 	void CheckCollision();
+	void CheckCollisionHook();
 	void Render();
 	void Enter();
 	void Exit();
