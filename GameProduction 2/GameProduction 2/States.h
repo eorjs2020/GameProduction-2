@@ -2,13 +2,14 @@
 #ifndef _STATES_H_
 #define _STATES_H_
 #define NUMPLATFORMS 5
-
+#include <iostream>
 #include <SDL.h>
 #include "Button.h"
 #include "PlatformPlayer.h"
 #include "PlatformEnemy.h"
 #include "GrapplingHook.h"
-
+#include "Label.h"
+using namespace std;
 class State // This is the abstract base class for all specific states.
 {
 protected:
@@ -24,6 +25,8 @@ public:
 class GameState : public State
 {
 private:
+	std::string a, b, c, d;
+	Label* Test, *Test2, *Test3, *Test4;
 	PlatformPlayer* m_pPlayer;
 	PlatformEnemy* m_pEnemy;
 	SDL_FRect* m_pPlatforms[NUMPLATFORMS];

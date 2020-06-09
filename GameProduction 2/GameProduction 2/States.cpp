@@ -2,6 +2,7 @@
 #include "CollisionManager.h"
 #include "EventManager.h"
 #include "SoundManager.h"
+#include "FontManager.h"
 #include "StateManager.h" // Make sure this is NOT in "States.h" or circular reference.
 #include "TextureManager.h"
 #include "Engine.h"
@@ -37,12 +38,22 @@ void GameState::Enter()
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/Space_Loop1.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
+	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
 	SOMA::PlayMusic("BGM");
-	
+	a = "Press X = Quit, A = Left Move, D = Right Move";
+	b = "Press Space = Jump, MouseClick = GrapplingHook";
+	c = "Press Page down&up = Vol";
+	d = "State";
+	Test = new Label("Font_1", 100, 100, a, { 64, 128, 255, 255 });
+	Test2 = new Label("Font_1", 100, 200, b, { 64, 128, 255, 255 });
+	Test3 = new Label("Font_1", 100, 300, c, { 64, 128, 255, 255 });
+	Test4 = new Label("Font_1", 100, 400, d, { 64, 128, 255, 255 });
 }
 
 void GameState::Update()
 {
+	
+	Test4->SetText(d);
 	m_pMusicVolume = m_pMusicSetVol;
 	m_pSFXVolume = m_pSFXSetVol;
 	SOMA::SetSoundVolume(m_pSFXVolume);
@@ -51,6 +62,7 @@ void GameState::Update()
 	//Grappling Hook input
 	if (EVMA::MouseHeld(1))
 	{
+		d = "Grappling";
 		if (existHook == false)
 		{
 			float px = m_pPlayer->GetDstP()->x, py = m_pPlayer->GetDstP()->y;
@@ -90,6 +102,7 @@ void GameState::Update()
 		m_pPlayer->SetAccelX(1.0);
 	else if (EVMA::KeyHeld(SDL_SCANCODE_X))
 	{
+		
 		State::Resume();
 		STMA::PushState(new EndState);
 	}
@@ -105,6 +118,7 @@ void GameState::Update()
 	}
 	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_pPlayer->IsGrounded())
 	{
+		d = "JUMP";
 		SOMA::PlaySound("jump");
 		m_pPlayer->SetAccelY(-JUMPFORCE); // Sets the jump force.
 		m_pPlayer->SetGrounded(false);
@@ -126,6 +140,7 @@ void GameState::Update()
 		m_pHook->Update();
 		CheckCollisionHook();
 	}	
+	
 }
 
 void GameState::CheckCollision()
@@ -254,6 +269,10 @@ void GameState::Render()
 	// Draw the player.
 	m_pPlayer->Render();
 	m_pEnemy->Render();
+	Test->Render();
+	Test2->Render();
+	Test3->Render();
+	Test4->Render();
 	//draw the hook
 	if (existHook == true)
 	{
