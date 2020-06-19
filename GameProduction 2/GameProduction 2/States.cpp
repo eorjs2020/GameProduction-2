@@ -36,8 +36,11 @@ void GameState::Enter()
 	m_pPlatforms[3] = new SDL_FRect({ 462.0f,368.0f,100.0f,20.0f });
 	m_pPlatforms[4] = new SDL_FRect({ 462.0f,648.0f,100.0f,20.0f });
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
-	SOMA::Load("Aud/Space_Loop1.wav", "BGM", SOUND_MUSIC);
+	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
+	SOMA::Load("Aud/hook_extension3.wav", "throw", SOUND_SFX);
+	SOMA::Load("Aud/hook_grappling2.wav", "grab", SOUND_SFX);
+	SOMA::Load("Aud/hook_retraction3.wav", "retract", SOUND_SFX);
 	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
 	SOMA::PlayMusic("BGM");
 	a = "Press X = Quit, A = Left Move, D = Right Move";
@@ -63,6 +66,7 @@ void GameState::Update()
 	if (EVMA::MouseHeld(1))
 	{
 		d = "Grappling";
+		SOMA::PlaySound("throw");
 		if (existHook == false)
 		{
 			float px = m_pPlayer->GetDstP()->x, py = m_pPlayer->GetDstP()->y;
@@ -313,7 +317,7 @@ void TitleState::Enter()
 	m_quitBtn = new QuitButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
-	SOMA::Load("Aud/Space_Loop1.wav", "BGM", SOUND_MUSIC);
+	SOMA::Load("Aud/menu_screen_music1.wav", "BGM", SOUND_MUSIC);
 	SOMA::SetMusicVolume(16);
 	SOMA::SetSoundVolume(20);
 	SOMA::PlayMusic("BGM");
