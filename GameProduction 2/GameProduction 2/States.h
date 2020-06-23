@@ -2,13 +2,21 @@
 #ifndef _STATES_H_
 #define _STATES_H_
 #define NUMPLATFORMS 5
+#define ROWS 73
+#define COLS 171
+
 #include <iostream>
 #include <SDL.h>
+#include <array>
+#include <map>
 #include "Button.h"
 #include "PlatformPlayer.h"
 #include "PlatformEnemy.h"
 #include "GrapplingHook.h"
 #include "Label.h"
+#include "Tile.h"
+#include "Player.h"
+
 using namespace std;
 class State // This is the abstract base class for all specific states.
 {
@@ -32,6 +40,7 @@ private:
 	SDL_FRect* m_pPlatforms[NUMPLATFORMS];
 	Button* m_quitBtn;
 	GrapplingHook* m_pHook;
+	Player* m_player;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
@@ -44,6 +53,7 @@ public:
 	void Enter();
 	void Exit();
 	void Resume();
+
 };
 
 class TitleState : public State

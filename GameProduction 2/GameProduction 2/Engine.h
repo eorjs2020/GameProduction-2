@@ -1,13 +1,16 @@
 #pragma once
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
-
+#define ROWS 73
+#define COLS 171
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include "Label.h"
-
+#include <map>
+#include <array>
+#include "Tile.h"
 
 // Do not include any macros, initialized properties or full function definitions in this header.
 
@@ -19,8 +22,9 @@ private: // Private properties.
 	Uint32 m_start, m_end, m_delta, m_fps; // Fixed timestep variables.
 	SDL_Window* m_pWindow; // This represents the SDL window.
 	SDL_Renderer* m_pRenderer; // This represents the buffer to draw to.
-	
-	// Example-specific properties.
+	std::map<char, Tile*> m_tiles;
+	std::array<std::array<Tile*, COLS>, ROWS> m_level;
+
 
 private: // Private methods.
 	Engine();
@@ -37,6 +41,8 @@ public: // Public methods.
 	SDL_Renderer* GetRenderer();
 	bool& Running();
 	bool& End();
+	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
+	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 };
 
 #endif

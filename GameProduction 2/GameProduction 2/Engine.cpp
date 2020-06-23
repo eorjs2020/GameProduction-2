@@ -7,6 +7,7 @@
 #include "StateManager.h"
 #include "TextureManager.h"
 #include <iostream>
+#include <fstream>
 #define WIDTH 1024
 #define HEIGHT 768
 #define FPS 60
@@ -45,9 +46,11 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/Concept.png", "Enemy");
 	TEMA::RegisterTexture("Img/startBackground.png", "title");
 	TEMA::RegisterTexture("Img/fireball.png", "fireball");
+	TEMA::RegisterTexture("Img/tilemap1.png", "tilemap1");
+	TEMA::RegisterTexture("Img/CharacterWalk.png", "playerWalk");
+	TEMA::RegisterTexture("Img/CharacterJumpFall.png", "playerJump");
+	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
 	STMA::ChangeState(new TitleState);
-	
-	
 	SOMA::AllocateChannels(16);
 	
 	m_running = true; // Everything is okay, start the engine.
@@ -97,6 +100,16 @@ void Engine::Clean()
 	cout << "Cleaning game." << endl;
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
+	for (int row = 0; row < ROWS; row++)
+	{
+		for (int col = 0; col < COLS; col++)
+		{
+			delete m_level[row][col];
+			m_level[row][col] = nullptr; // Wrangle your dangle.
+		}
+	}
+	for (auto const& i : m_tiles)
+		delete m_tiles[i.first];
 	DEMA::Quit();
 	EVMA::Quit();
 	FOMA::Quit();
