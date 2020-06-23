@@ -59,3 +59,8 @@ void PlatformPlayer::SetGrav(double y)
 	m_grav = y;
 }
 
+void PlatformPlayer::AddAccelX(double a)
+{
+	m_accelX = m_accelX + a;
+}
+
