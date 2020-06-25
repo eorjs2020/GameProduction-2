@@ -2,6 +2,7 @@
 #include "CollisionManager.h"
 #include "EventManager.h"
 #include "TextureManager.h"
+#include "Engine.h"
 #define SPEED 2
 
 Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf)
@@ -9,7 +10,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 
 	m_grounded = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
-	m_maxVelX = 10.0;
+	m_maxVelX = 5.0;
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
@@ -27,10 +28,19 @@ void Player::Update()
 	// Now do Y axis.
 	m_velY += m_accelY + m_grav; // Adjust gravity to get slower jump.
 	m_velY = std::min(std::max(m_velY, -(m_maxVelY)), (m_grav * 3));
-	m_dst.y += m_velY; // If you run into issues with vertical collision, you can also cast to int.
+	m_dst.y += (int)m_velY; // If you run into issues with vertical collision, you can also cast to int.
 	m_accelX = m_accelY = 0.0;
-	
-	
+	if (EVMA::KeyHeld(SDL_SCANCODE_A))
+		m_accelX -= 1.0;
+	else if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		m_accelX += 1.0;
+	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && IsGrounded())
+	{
+
+		SetAccelY(-JUMPFORCE); // Sets the jump force.
+		SetGrounded(false);
+	}
+
 	switch (m_state)
 	{
 	case idle:
@@ -39,7 +49,10 @@ void Player::Update()
 			SetState(running);
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_SPACE))
+		{
 			SetState(jump);
+		}
+
 		break;
 	case running:
 		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
@@ -49,28 +62,24 @@ void Player::Update()
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
-			if (m_dst.x > 0 && !COMA::PlayerCollision({ (int)m_dst.x, (int)m_dst.y, (int)32, (int)32 }, -1, 0))
-			{
-				this->SetAccelX(-1.0);
-				m_dir = 1;
-			}
+			m_dir = 1;
 		}
 		else if (EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
-			if (m_dst.x < 1024 - 32 && !COMA::PlayerCollision({ (int)m_dst.x, (int)m_dst.y, (int)32, (int)32 }, 1, 0))
-			{
-				this->SetAccelX(1.0);
-				m_dir = 0;
-			}
-			
+			m_dir = 0;
+
 		}
 		break;
 	case jump:
-		if (EVMA::KeyHeld(SDL_SCANCODE_SPACE))
-		m_accelX = -JUMPFORCE; // Sets the jump force.
-		m_grounded = false;
+		if (IsGrounded())
+		{
+			SetState(idle);
+			break;
+		}
+
 		break;
 	}
+	Collision();
 	Animate();
 }
 
@@ -87,13 +96,13 @@ void Player::SetState(int s)
 	{
 		m_pText = TEMA::GetTexture("playerIdle");
 		m_sprite = m_spriteMin = 0;
-		m_spriteMax = 5;
+		m_spriteMax = 4;
 	}
 	else if(m_state == running)// Only other is running for now...
 	{
 		m_pText = TEMA::GetTexture("playerWalk");
 		m_sprite = m_spriteMin = 0;
-		m_spriteMax = 6;
+		m_spriteMax = 5;
 	}
 	else if (m_state == jump)
 	{
@@ -104,13 +113,54 @@ void Player::SetState(int s)
 	}
 }
 
-void Player::SetAccelX(double a)
+void Player::Collision()
 {
-	m_dst.x = a; 
+	for (int i = 0; i < ROWS; ++i)
+	{
+		for (int j = 0; j < COLS; ++j)
+		{
+
+			if (Engine::Instance().GetLevel()[i][j]->IsObstacle() && COMA::AABBCheck(*this->GetDstP(), *Engine::Instance().GetLevel()[i][j]->GetDstP()))
+			{
+				if (this->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h - (float)this->GetVelY() <= (float)Engine::Instance().GetLevel()[i][j]->GetDstP()->y)
+				{ // Colliding top side of platform.
+					this->SetGrounded(true);
+					this->StopY();
+					this->SetY(Engine::Instance().GetLevel()[i][j]->GetDstP()->y - this->GetDstP()->h);
+				}
+				else if (this->GetDstP()->y - (float)this->GetVelY() >= Engine::Instance().GetLevel()[i][j]->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h)
+				{ // Colliding bottom side of platform.
+					this->StopY();
+					this->SetY(Engine::Instance().GetLevel()[i][j]->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h);
+				}
+				else if (this->GetDstP()->x + this->GetDstP()->w - this->GetVelX() <= Engine::Instance().GetLevel()[i][j]->GetDstP()->x)
+				{ // Collision from left.
+					this->StopX(); // Stop the player from moving horizontally.
+					this->SetX(Engine::Instance().GetLevel()[i][j]->GetDstP()->x - this->GetDstP()->w);
+				}
+				else if (this->GetDstP()->x - (float)this->GetVelX() >= Engine::Instance().GetLevel()[i][j]->GetDstP()->x + Engine::Instance().GetLevel()[i][j]->GetDstP()->w)
+				{ // Colliding right side of platform.
+					this->StopX();
+					this->SetX(Engine::Instance().GetLevel()[i][j]->GetDstP()->x + Engine::Instance().GetLevel()[i][j]->GetDstP()->w);
+				}
+			}
+
+		}
+	}
 }
 
-void Player::SetAccelY(double a)
+void Player::Stop() // If you want a dead stop both axes.
 {
-	m_dst.y = a;
+	StopX();
+	StopY();
 }
-
+void Player::StopX() { m_velX = 0.0; }
+void Player::StopY() { m_velY = 0.0; }
+void Player::SetAccelX(double a) { m_accelX = a; }
+void Player::SetAccelY(double a) { m_accelY = a; }
+bool Player::IsGrounded() { return m_grounded; }
+void Player::SetGrounded(bool g) { m_grounded = g; }
+double Player::GetVelX() { return m_velX; }
+double Player::GetVelY() { return m_velY; }
+void Player::SetX(float y) { m_dst.x = y; }
+void Player::SetY(float y) { m_dst.y = y; }

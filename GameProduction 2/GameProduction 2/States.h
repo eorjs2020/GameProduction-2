@@ -33,14 +33,10 @@ public:
 class GameState : public State
 {
 private:
-	std::string a, b, c, d;
-	Label* Test, *Test2, *Test3, *Test4;
-	PlatformPlayer* m_pPlayer;
-	PlatformEnemy* m_pEnemy;
-	SDL_FRect* m_pPlatforms[NUMPLATFORMS];
-	Button* m_quitBtn;
-	GrapplingHook* m_pHook;
-	Player* m_player;
+
+
+	
+	Player* m_pPlayer;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;

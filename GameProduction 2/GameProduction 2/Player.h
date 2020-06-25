@@ -13,7 +13,7 @@ public:
 	Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf);
 	void Update();
 	void Render();
-	bool IsGrounded() { return m_grounded; }
+	
 private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
@@ -26,11 +26,20 @@ private:
 		m_maxVelY,
 		m_drag,
 		m_grav;
+private:
+	void Collision();
 	void SetState(int s);
-	void StopX() { m_velX = 0.0; }
-	void StopY() { m_velY = 0.0; }
+	void Stop();
+	void StopX();
+	void StopY();
 	void SetAccelX(double a);
 	void SetAccelY(double a);
+	bool IsGrounded();
+	void SetGrounded(bool g);
+	double GetVelX();
+	double GetVelY();
+	void SetX(float y);
+	void SetY(float y);
 	
 };
 

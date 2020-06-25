@@ -141,13 +141,13 @@
     <Image Include="Img\tilemap1.png">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="Img\CharacterIdle.png">
-      <Filter>리소스 파일</Filter>
-    </Image>
     <Image Include="Img\CharacterJumpFall.png">
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Img\CharacterWalk.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\CharacterIdle.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
