@@ -16,6 +16,7 @@
 #include "Label.h"
 #include "Tile.h"
 #include "Player.h"
+#include "glm.hpp"
 
 using namespace std;
 class State // This is the abstract base class for all specific states.
@@ -45,6 +46,7 @@ public:
 	void Update();
 	void CheckCollision();
 	void CheckCollisionHook();
+	void HandleCamera();
 	void Render();
 	void Enter();
 	void Exit();

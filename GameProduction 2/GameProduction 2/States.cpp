@@ -94,6 +94,19 @@ void GameState::CheckCollisionHook()
 
 }
 
+void GameState::HandleCamera()
+{
+	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (WIDTH / 2);
+	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (HEIGHT / 2);
+
+	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
+	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
+	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x > Engine::Instance().GetCamera().w ? Engine::Instance().GetCamera().w : Engine::Instance().GetCamera().x;
+	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y > Engine::Instance().GetCamera().h ? Engine::Instance().GetCamera().h : Engine::Instance().GetCamera().y;
+
+	
+}
+
 void GameState::Render()
 {
 	

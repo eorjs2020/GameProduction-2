@@ -3,6 +3,9 @@
 #define _ENGINE_H_
 #define ROWS 73
 #define COLS 171
+#define WIDTH 1024
+#define HEIGHT 768
+#define FPS 60
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -24,7 +27,7 @@ private: // Private properties.
 	SDL_Renderer* m_pRenderer; // This represents the buffer to draw to.
 	std::map<char, Tile*> m_tiles;
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
-
+	SDL_Rect m_camera = { 0,0,WIDTH,HEIGHT };
 
 private: // Private methods.
 	Engine();
@@ -43,6 +46,7 @@ public: // Public methods.
 	bool& End();
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
+	SDL_Rect& GetCamera() { return m_camera; }
 };
 
 #endif
