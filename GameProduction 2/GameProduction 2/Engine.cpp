@@ -29,7 +29,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 				EVMA::Init();
 				SOMA::Init();
 				TEMA::Init();
-				
+
 			}
 			else return false; // Renderer init fail.
 		}
@@ -48,6 +48,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterWalk.png", "playerWalk");
 	TEMA::RegisterTexture("Img/CharacterJumpFall.png", "playerJump");
 	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
+	m_camera = { 0.0f,0.0f, WIDTH,HEIGHT };
 	STMA::ChangeState(new TitleState);
 	SOMA::AllocateChannels(16);
 	
@@ -76,6 +77,7 @@ void Engine::HandleEvents()
 
 void Engine::Update()
 {
+	
 	STMA::Update();
 	
 }

@@ -60,6 +60,14 @@ void GameState::Enter()
 		}
 	}
 	inFile.close();
+	for (int row = 0; row < ROWS; row++)
+	{
+		for (int col = 0; col < COLS; col++)
+		{
+			m_tilePos[row][col].x = Engine::Instance().GetLevel()[row][col]->GetDstP()->x;
+			m_tilePos[row][col].y = Engine::Instance().GetLevel()[row][col]->GetDstP()->y;
+		}
+	}
 
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
@@ -70,6 +78,8 @@ void GameState::Enter()
 	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
 	SOMA::PlayMusic("BGM");
 
+	
+	
 }
 
 void GameState::Update()
@@ -80,7 +90,8 @@ void GameState::Update()
 	SOMA::SetMusicVolume(m_pMusicVolume);
 
 	m_pPlayer->Update();
-	
+
+	HandleCamera();
 	
 }
 
@@ -96,14 +107,46 @@ void GameState::CheckCollisionHook()
 
 void GameState::HandleCamera()
 {
-	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (WIDTH / 2);
-	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (HEIGHT / 2);
-
+	
+	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (WIDTH /2);
+	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (HEIGHT /2);
+	
 	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
 	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
 	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x > Engine::Instance().GetCamera().w ? Engine::Instance().GetCamera().w : Engine::Instance().GetCamera().x;
 	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y > Engine::Instance().GetCamera().h ? Engine::Instance().GetCamera().h : Engine::Instance().GetCamera().y;
+	std::cout <<"x : " <<Engine::Instance().GetCamera().x << endl;
+	std::cout << "y : " << Engine::Instance().GetCamera().y << endl;
+	std::cout << "player x : " << m_pPlayer->GetDstP()->x << endl;
+	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
+	/*if (Engine::Instance().GetCamera().x < 0)
+	{
+		Engine::Instance().GetCamera().x = 0;
+	}
+	if (Engine::Instance().GetCamera().y < 0)
+	{
+		Engine::Instance().GetCamera().y = 0;
+	}
+	if (Engine::Instance().GetCamera().x > (32*COLS) - Engine::Instance().GetCamera().w)
+	{
+		Engine::Instance().GetCamera().x = (32 * COLS) - Engine::Instance().GetCamera().w;
+	}
+	if (Engine::Instance().GetCamera().y > (32 * ROWS) - Engine::Instance().GetCamera().h)
+	{
+		Engine::Instance().GetCamera().y = (32 *ROWS) - Engine::Instance().GetCamera().h;
+	}*/
+	
+	
+		//m_pPlayer->GetDstP()->x = 30;
+		for (int row = 0; row < ROWS; row++)
+		{
+			for (int col = 0; col < COLS; col++)
+			{
 
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->x = m_tilePos[row][col].x - Engine::Instance().GetCamera().x;
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = m_tilePos[row][col].y - Engine::Instance().GetCamera().y;
+			}
+		}
 	
 }
 

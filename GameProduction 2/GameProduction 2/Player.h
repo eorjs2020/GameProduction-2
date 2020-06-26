@@ -13,7 +13,8 @@ public:
 	Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf);
 	void Update();
 	void Render();
-	
+	double GetVelX();
+	double GetVelY();
 private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
@@ -36,8 +37,7 @@ private:
 	void SetAccelY(double a);
 	bool IsGrounded();
 	void SetGrounded(bool g);
-	double GetVelX();
-	double GetVelY();
+	
 	void SetX(float y);
 	void SetY(float y);
 	

@@ -13,6 +13,7 @@
 #include "Label.h"
 #include <map>
 #include <array>
+#include <vector>
 #include "Tile.h"
 
 // Do not include any macros, initialized properties or full function definitions in this header.
@@ -27,7 +28,7 @@ private: // Private properties.
 	SDL_Renderer* m_pRenderer; // This represents the buffer to draw to.
 	std::map<char, Tile*> m_tiles;
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
-	SDL_Rect m_camera = { 0,0,WIDTH,HEIGHT };
+	SDL_FRect m_camera;
 
 private: // Private methods.
 	Engine();
@@ -46,7 +47,7 @@ public: // Public methods.
 	bool& End();
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
-	SDL_Rect& GetCamera() { return m_camera; }
+	SDL_FRect& GetCamera() { return m_camera; }
 };
 
 #endif

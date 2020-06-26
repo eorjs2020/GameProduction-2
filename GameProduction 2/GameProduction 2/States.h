@@ -17,7 +17,7 @@
 #include "Tile.h"
 #include "Player.h"
 #include "glm.hpp"
-
+#include <array>
 using namespace std;
 class State // This is the abstract base class for all specific states.
 {
@@ -34,8 +34,8 @@ public:
 class GameState : public State
 {
 private:
-
-
+	std::array<std::array<glm::vec2, COLS>, ROWS> m_tilePos;
+	std::array<std::array<Tile*, COLS>, ROWS> m_level;
 	
 	Player* m_pPlayer;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
