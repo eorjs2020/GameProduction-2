@@ -24,16 +24,21 @@ void Player::Update()
 	m_velX += m_accelX;
 	m_velX *= (m_grounded ? m_drag : 1);
 	m_velX = std::min(std::max(m_velX, -(m_maxVelX)), (m_maxVelX));
-	m_dst.x += m_velX; // Had to cast it to int to get crisp collision with side of platform.
+	m_dst.x += (int)m_velX; // Had to cast it to int to get crisp collision with side of platform.
 	// Now do Y axis.
 	m_velY += m_accelY + m_grav; // Adjust gravity to get slower jump.
-	m_velY = std::min(std::max(m_velY, -(m_maxVelY)), (m_grav * 3));
-	m_dst.y += m_velY; // If you run into issues with vertical collision, you can also cast to int.
-	m_accelX = m_accelY = 0.0;
+	m_velY = std::min(std::max(m_velY, -(m_maxVelY)), (m_grav *2));
+	m_dst.y += (int)m_velY; // If you run into issues with vertical collision, you can also cast to int.
+	m_accelX = m_accelY = 0;
+	if (IsGrounded() == false)
+	{
+		m_grav = GRAV;
+	}
+
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
-		m_accelX -= 1.0;
+		m_accelX -= 1;
 	else if (EVMA::KeyHeld(SDL_SCANCODE_D))
-		m_accelX += 1.0;
+		m_accelX += 1;
 	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && IsGrounded())
 	{
 
@@ -79,7 +84,7 @@ void Player::Update()
 
 		break;
 	}
-	Collision();
+	
 	Animate();
 }
 
@@ -127,6 +132,10 @@ void Player::Collision()
 					this->SetGrounded(true);
 					this->StopY();
 					this->SetY(Engine::Instance().GetLevel()[i][j]->GetDstP()->y - this->GetDstP()->h);
+					if (IsGrounded() == true)
+					{
+						m_grav = 0;
+					}
 				}
 				else if (this->GetDstP()->y - (float)this->GetVelY() >= Engine::Instance().GetLevel()[i][j]->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h)
 				{ // Colliding bottom side of platform.

@@ -26,7 +26,7 @@ void GameState::Enter()
 	std::cout << "Entering GameState..." << std::endl;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
-	m_pPlayer = new Player({ 0,0,19,25 }, { 50.0f,50.0f,32.0f,32.0f },
+	m_pPlayer = new Player({ 0,0,19,25 }, { 50.0f,50.0f,48.0f,48.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 
 
@@ -39,7 +39,7 @@ void GameState::Enter()
 		while (!inFile.eof())
 		{
 			inFile >> key >> x >> y >> o >> h;
-			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 127, y * 127, 127, 127 }, { 0,0,16,16 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tilemap1"), o, h));
+			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 127, y * 127, 127, 127 }, { 0,0,32,32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tilemap1"), o, h));
 		}
 	}
 	inFile.close();
@@ -54,8 +54,8 @@ void GameState::Enter()
 			{
 				inFile >> key;
 				Engine::Instance().GetLevel()[row][col] = Engine::Instance().GetTiles()[key]->Clone(); // Prototype design pattern used.
-				Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (float)(16 * col);
-				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (float)(16 * row);
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (float)(32 * col);
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (float)(32 * row);
 			}
 		}
 	}
@@ -88,10 +88,10 @@ void GameState::Update()
 	m_pSFXVolume = m_pSFXSetVol;
 	SOMA::SetSoundVolume(m_pSFXVolume);
 	SOMA::SetMusicVolume(m_pMusicVolume);
-
-	m_pPlayer->Update();
-
 	HandleCamera();
+	m_pPlayer->Update();
+	m_pPlayer->Collision();
+	
 	
 }
 
@@ -108,8 +108,8 @@ void GameState::CheckCollisionHook()
 void GameState::HandleCamera()
 {
 	
-	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (WIDTH /2);
-	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (HEIGHT /2);
+	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (int)(WIDTH * 0.25);
+	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (int)(HEIGHT * 0.25);
 	
 	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
 	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
@@ -119,34 +119,14 @@ void GameState::HandleCamera()
 	std::cout << "y : " << Engine::Instance().GetCamera().y << endl;
 	std::cout << "player x : " << m_pPlayer->GetDstP()->x << endl;
 	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
-	/*if (Engine::Instance().GetCamera().x < 0)
+	for (int row = 0; row < ROWS; row++)
 	{
-		Engine::Instance().GetCamera().x = 0;
-	}
-	if (Engine::Instance().GetCamera().y < 0)
-	{
-		Engine::Instance().GetCamera().y = 0;
-	}
-	if (Engine::Instance().GetCamera().x > (32*COLS) - Engine::Instance().GetCamera().w)
-	{
-		Engine::Instance().GetCamera().x = (32 * COLS) - Engine::Instance().GetCamera().w;
-	}
-	if (Engine::Instance().GetCamera().y > (32 * ROWS) - Engine::Instance().GetCamera().h)
-	{
-		Engine::Instance().GetCamera().y = (32 *ROWS) - Engine::Instance().GetCamera().h;
-	}*/
-	
-	
-		//m_pPlayer->GetDstP()->x = 30;
-		for (int row = 0; row < ROWS; row++)
+		for (int col = 0; col < COLS; col++)
 		{
-			for (int col = 0; col < COLS; col++)
-			{
-
-				Engine::Instance().GetLevel()[row][col]->GetDstP()->x = m_tilePos[row][col].x - Engine::Instance().GetCamera().x;
-				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = m_tilePos[row][col].y - Engine::Instance().GetCamera().y;
-			}
+			Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (int)m_tilePos[row][col].x - (int)Engine::Instance().GetCamera().x;
+			Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (int)m_tilePos[row][col].y - (int)Engine::Instance().GetCamera().y;
 		}
+	}
 	
 }
 

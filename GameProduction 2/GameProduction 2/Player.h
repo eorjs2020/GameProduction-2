@@ -2,7 +2,7 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 #define GRAV 6.0
-#define JUMPFORCE 60.0
+#define JUMPFORCE 20.0
 
 #include "Sprite.h"
 
@@ -15,6 +15,7 @@ public:
 	void Render();
 	double GetVelX();
 	double GetVelY();
+	void Collision();
 private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
@@ -28,7 +29,7 @@ private:
 		m_drag,
 		m_grav;
 private:
-	void Collision();
+	
 	void SetState(int s);
 	void Stop();
 	void StopX();
