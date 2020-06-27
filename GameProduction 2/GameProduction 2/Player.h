@@ -28,6 +28,7 @@ private:
 		m_maxVelY,
 		m_drag,
 		m_grav;
+	double* m_a, * m_aMaxY;
 private:
 	
 	void SetState(int s);
@@ -38,10 +39,10 @@ private:
 	void SetAccelY(double a);
 	bool IsGrounded();
 	void SetGrounded(bool g);
-	
 	void SetX(float y);
 	void SetY(float y);
-	
+	void AddAccelX(double a);
+	void SetMaxVel(double a);
 };
 
 #endif

@@ -3,49 +3,32 @@
 #include "TextureManager.h"
 #include "SkillManager.h"
 
-void Skill::Render()
-{
-	SDL_RenderPresent(Engine::Instance().GetRenderer());
-}
 
-Invis::Invis()
-{
-}
+bool m_speedBoost = false;
+int m_speedBoostTimer = 0;
 
-Invis::~Invis()
+void Speed(double* a, double* b)
 {
-}
+	double * m_accelX = a, *m_mMaxY = b;
+	
 
-int Invis::Update()
-{
-	return 0;
-}
-
-void Invis::Render()
-{
-}
-
-void Invis::Execute()
-{
-}
-
-SpeedBoost::SpeedBoost()
-{
-}
-
-SpeedBoost::~SpeedBoost()
-{
-}
-
-int SpeedBoost::Update()
-{
-	return 0;
-}
-
-void SpeedBoost::Render()
-{
-}
-
-void SpeedBoost::Execute()
-{
+	if (EVMA::KeyPressed(SDL_SCANCODE_1))
+	{
+		m_speedBoost = true;
+	}
+	if (m_speedBoost == true)
+	{
+		*m_mMaxY = 20;
+		++m_speedBoostTimer;
+		if (*m_accelX > 0)
+		*m_accelX += 3.0;
+		if (*m_accelX < 0)
+			*m_accelX -= 3.0;
+	}
+	if (m_speedBoostTimer >= 240)
+	{
+		m_speedBoost = false;
+		m_speedBoostTimer = 0;
+		*m_mMaxY = 10;
+	}
 }
