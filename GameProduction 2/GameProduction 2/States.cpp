@@ -26,7 +26,7 @@ void GameState::Enter()
 	std::cout << "Entering GameState..." << std::endl;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
-	m_pPlayer = new Player({ 0,0,19,25 }, { 50.0f,50.0f,48.0f,48.0f },
+	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,368.0f,48.0f,48.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 
 
@@ -68,7 +68,8 @@ void GameState::Enter()
 			m_tilePos[row][col].y = Engine::Instance().GetLevel()[row][col]->GetDstP()->y;
 		}
 	}
-
+	playerPos.x = m_pPlayer->GetDstP()->x;
+	playerPos.y = m_pPlayer->GetDstP()->y;
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
@@ -90,8 +91,9 @@ void GameState::Update()
 	SOMA::SetMusicVolume(m_pMusicVolume);
 	HandleCamera();
 	m_pPlayer->Update();
-	m_pPlayer->Collision();
 	
+	m_pPlayer->Collision();
+	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
 	
 }
 
@@ -108,13 +110,13 @@ void GameState::CheckCollisionHook()
 void GameState::HandleCamera()
 {
 	
-	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (int)(WIDTH * 0.25);
-	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (int)(HEIGHT * 0.25);
+	Engine::Instance().GetCamera().x = m_pPlayer->GetDstP()->x - (int)(WIDTH /2);
+	Engine::Instance().GetCamera().y = m_pPlayer->GetDstP()->y - (int)(HEIGHT /2);
 	
 	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
 	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
-	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x > Engine::Instance().GetCamera().w ? Engine::Instance().GetCamera().w : Engine::Instance().GetCamera().x;
-	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y > Engine::Instance().GetCamera().h ? Engine::Instance().GetCamera().h : Engine::Instance().GetCamera().y;
+	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x >= ((COLS*32) - Engine::Instance().GetCamera().w) ? ((COLS * 32) - Engine::Instance().GetCamera().w) : Engine::Instance().GetCamera().x;
+	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y >= ((ROWS * 32) - Engine::Instance().GetCamera().h) ? ((ROWS * 32) - Engine::Instance().GetCamera().h) : Engine::Instance().GetCamera().y;
 	std::cout <<"x : " <<Engine::Instance().GetCamera().x << endl;
 	std::cout << "y : " << Engine::Instance().GetCamera().y << endl;
 	std::cout << "player x : " << m_pPlayer->GetDstP()->x << endl;
@@ -142,7 +144,7 @@ void GameState::Render()
 	{
 		for (int col = 0; col < COLS; col++)
 		{
-			Engine::Instance().GetLevel()[row][col]->Render();
+			Engine::Instance().GetLevel()[row][col]->Render(Engine::Instance().GetCamera());
 		}
 	}
 	m_pPlayer->Render();
