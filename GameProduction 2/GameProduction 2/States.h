@@ -8,6 +8,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <array>
+#include <vector>
 #include <map>
 #include "Button.h"
 #include "PlatformPlayer.h"
@@ -34,10 +35,11 @@ public:
 class GameState : public State
 {
 private:
-	std::array<std::array<glm::vec2, COLS>, ROWS> m_tilePos;
-	std::array<std::array<Tile*, COLS>, ROWS> m_level;
+
+	std::vector<Tile*> m_platforms;
 	glm::vec2 playerPos;
 	Player* m_pPlayer;
+	bool m_bgScrollX = false, m_bgScrollY = false;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
@@ -46,13 +48,14 @@ public:
 	void Update();
 	void CheckCollision();
 	void CheckCollisionHook();
-	void HandleCamera();
+	void HandleCamera(float scroll, bool x = false );
 	void Render();
 	void Enter();
 	void Exit();
 	void Resume();
 
 };
+
 
 class TitleState : public State
 {

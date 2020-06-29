@@ -26,7 +26,7 @@ void GameState::Enter()
 	std::cout << "Entering GameState..." << std::endl;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
-	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,368.0f,48.0f,48.0f },
+	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,50.0f,64.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 
 
@@ -39,9 +39,11 @@ void GameState::Enter()
 		while (!inFile.eof())
 		{
 			inFile >> key >> x >> y >> o >> h;
-			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 127, y * 127, 127, 127 }, { 0,0,32,32 }, Engine::Instance().GetRenderer(), TEMA::GetTexture("tilemap1"), o, h));
+			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 127, y * 127, 127, 127 }, { 0,0,32,32 }, 
+				Engine::Instance().GetRenderer(), TEMA::GetTexture("tilemap1"), o, h));
 		}
 	}
+	
 	inFile.close();
 
 	inFile.open("map/Game_map.txt");
@@ -56,20 +58,13 @@ void GameState::Enter()
 				Engine::Instance().GetLevel()[row][col] = Engine::Instance().GetTiles()[key]->Clone(); // Prototype design pattern used.
 				Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (float)(32 * col);
 				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (float)(32 * row);
+				if (Engine::Instance().GetLevel()[row][col]->IsObstacle())
+					m_platforms.push_back(Engine::Instance().GetLevel()[row][col]);
 			}
 		}
 	}
 	inFile.close();
-	for (int row = 0; row < ROWS; row++)
-	{
-		for (int col = 0; col < COLS; col++)
-		{
-			m_tilePos[row][col].x = Engine::Instance().GetLevel()[row][col]->GetDstP()->x;
-			m_tilePos[row][col].y = Engine::Instance().GetLevel()[row][col]->GetDstP()->y;
-		}
-	}
-	playerPos.x = m_pPlayer->GetDstP()->x;
-	playerPos.y = m_pPlayer->GetDstP()->y;
+	
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
@@ -85,21 +80,85 @@ void GameState::Enter()
 
 void GameState::Update()
 {
+	SOMA::StopMusic();
 	m_pMusicVolume = m_pMusicSetVol;
 	m_pSFXVolume = m_pSFXSetVol;
 	SOMA::SetSoundVolume(m_pSFXVolume);
 	SOMA::SetMusicVolume(m_pMusicVolume);
-	HandleCamera();
-	m_pPlayer->Update();
+
+
 	
-	m_pPlayer->Collision();
-	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
+
+	
+	
+	m_bgScrollX = m_bgScrollY = false;
+	if (m_pPlayer->GetVelX() > 0 && m_pPlayer->GetDstP()->x > WIDTH * 0.7f)
+	{
+		if (Engine::Instance().GetLevel()[0][COLS - 1]->GetDstP()->x > WIDTH - 32)
+		{
+			m_bgScrollX = true;
+			HandleCamera((float)m_pPlayer->GetVelX(), true);
+		}
+	}
+	else if (m_pPlayer->GetVelX() < 0 && m_pPlayer->GetDstP()->x < WIDTH * 0.3f)
+	{
+		if (Engine::Instance().GetLevel()[0][0]->GetDstP()->x < 0)
+		{
+			m_bgScrollX = true;
+			HandleCamera((float)m_pPlayer->GetVelX(), true);
+		}
+	}
+	if (m_pPlayer->GetVelY() > 0 && m_pPlayer->GetDstP()->y > HEIGHT * 0.7f)
+	{
+		if (Engine::Instance().GetLevel()[ROWS - 1][0]->GetDstP()->y > HEIGHT - 32)
+		{
+			m_bgScrollY = true;
+			HandleCamera((float)m_pPlayer->GetVelY());
+		}
+	}
+	else if (m_pPlayer->GetVelY() < 0 && m_pPlayer->GetDstP()->y < HEIGHT * 0.3f)
+	{
+		if (Engine::Instance().GetLevel()[0][0]->GetDstP()->y < 0)
+		{
+			m_bgScrollY = true;
+			HandleCamera((float)m_pPlayer->GetVelY());
+		}
+	}
+	m_pPlayer->Update(m_bgScrollX, m_bgScrollY);
+	CheckCollision();
+	
 	
 }
 
 void GameState::CheckCollision()
 {
-	
+	for (unsigned i = 0; i < m_platforms.size(); i++) // For each platform.
+	{
+		if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_platforms[i]->GetDstP()))
+		{
+			if (m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h - (float)m_pPlayer->GetVelY() <= m_platforms[i]->GetDstP()->y)
+			{ // Colliding top side of platform.
+				m_pPlayer->SetGrounded(true);
+				m_pPlayer->StopY();
+				m_pPlayer->SetY(m_platforms[i]->GetDstP()->y - m_pPlayer->GetDstP()->h);
+			}
+			else if (m_pPlayer->GetDstP()->y - (float)m_pPlayer->GetVelY() >= m_platforms[i]->GetDstP()->y + m_platforms[i]->GetDstP()->h)
+			{ // Colliding bottom side of platform.
+				m_pPlayer->StopY();
+				m_pPlayer->SetY(m_platforms[i]->GetDstP()->y + m_platforms[i]->GetDstP()->h);
+			}
+			else if (m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w - m_pPlayer->GetVelX() <= m_platforms[i]->GetDstP()->x)
+			{ // Collision from left.
+				m_pPlayer->StopX(); // Stop the player from moving horizontally.
+				m_pPlayer->SetX(m_platforms[i]->GetDstP()->x - m_pPlayer->GetDstP()->w);
+			}
+			else if (m_pPlayer->GetDstP()->x - (float)m_pPlayer->GetVelX() >= m_platforms[i]->GetDstP()->x + m_platforms[i]->GetDstP()->w)
+			{ // Colliding right side of platform.
+				m_pPlayer->StopX();
+				m_pPlayer->SetX(m_platforms[i]->GetDstP()->x + m_platforms[i]->GetDstP()->w);
+			}
+		}
+	}
 }
 
 void GameState::CheckCollisionHook()
@@ -107,26 +166,16 @@ void GameState::CheckCollisionHook()
 
 }
 
-void GameState::HandleCamera()
+void GameState::HandleCamera(float scroll, bool x)
 {
-	
-	Engine::Instance().GetCamera().x = m_pPlayer->GetDstP()->x - (int)(WIDTH /2);
-	Engine::Instance().GetCamera().y = m_pPlayer->GetDstP()->y - (int)(HEIGHT /2);
-	
-	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
-	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
-	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x >= ((COLS*32) - Engine::Instance().GetCamera().w) ? ((COLS * 32) - Engine::Instance().GetCamera().w) : Engine::Instance().GetCamera().x;
-	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y >= ((ROWS * 32) - Engine::Instance().GetCamera().h) ? ((ROWS * 32) - Engine::Instance().GetCamera().h) : Engine::Instance().GetCamera().y;
-	std::cout <<"x : " <<Engine::Instance().GetCamera().x << endl;
-	std::cout << "y : " << Engine::Instance().GetCamera().y << endl;
-	std::cout << "player x : " << m_pPlayer->GetDstP()->x << endl;
-	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
 	for (int row = 0; row < ROWS; row++)
 	{
 		for (int col = 0; col < COLS; col++)
 		{
-			Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (int)m_tilePos[row][col].x - (int)Engine::Instance().GetCamera().x;
-			Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (int)m_tilePos[row][col].y - (int)Engine::Instance().GetCamera().y;
+			if (x)
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->x -= scroll;
+			else
+				Engine::Instance().GetLevel()[row][col]->GetDstP()->y -= scroll;
 		}
 	}
 	
