@@ -36,7 +36,7 @@ class GameState : public State
 {
 private:
 
-	std::vector<Tile*> m_platforms;
+	
 	glm::vec2 playerPos;
 	Player* m_pPlayer;
 	bool m_bgScrollX = false, m_bgScrollY = false;
@@ -46,9 +46,7 @@ private:
 public:
 	GameState();
 	void Update();
-	void CheckCollision();
 	void CheckCollisionHook();
-	void HandleCamera(float scroll, bool x = false );
 	void Render();
 	void Enter();
 	void Exit();

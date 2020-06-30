@@ -20,8 +20,8 @@ public:
 		m_dst.x = position.x - rect.x;
 		m_dst.y = position.y - rect.y;
 	}
-	void Render(SDL_Rect camera) {
-		SDL_FRect drawing = { m_dst.x - camera. x,m_dst.y - camera.y, m_dst.w, m_dst.h };
+	void Render() {
+		SDL_FRect drawing = { m_dst.x, m_dst.y, m_dst.w, m_dst.h };
 		SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), &drawing, m_angle, 0, SDL_FLIP_NONE); };
 	SDL_FRect Position() { return position; }
 	Tile* Clone() { return new Tile(m_src, m_dst, m_pRend, m_pText, m_obstacle, m_hazard); }
