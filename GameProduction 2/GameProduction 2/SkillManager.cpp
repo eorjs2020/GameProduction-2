@@ -25,7 +25,7 @@ void Speed(double* a, double* b)
 		if (*m_accelX < 0)
 			*m_accelX -= 3.0;
 	}
-	if (m_speedBoostTimer >= 240)
+	if (m_speedBoostTimer >= 140)
 	{
 		m_speedBoost = false;
 		m_speedBoostTimer = 0;

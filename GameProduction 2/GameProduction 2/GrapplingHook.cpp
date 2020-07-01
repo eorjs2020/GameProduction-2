@@ -4,8 +4,9 @@
 #include <iostream>
 #include "MathManager.h"
 #include "EventManager.h"
+#include "CollisionManager.h"
 
-GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir) 
+GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a) 
 	:Sprite(s, d, r, t)
 {
 	direction = dir;
@@ -17,10 +18,36 @@ GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Textu
 	m_grounded = false;
 	m_Exist = false;
 	m_Collision = false;
+	m_Player = a; 
 }
 
-void GrapplingHook::Update()
+
+void GrapplingHook::Update() 
 {
+	
+	if (EVMA::MouseHeld(1))
+	{
+		if (m_Exist == false) {
+			m_dst.x = m_Player->GetDstP()->x;
+			m_dst.y = m_Player->GetDstP()->y;
+			m_Exist = true;
+			m_Player->SetGrav(0.0);
+		}
+		if (m_Exist == false) {
+			double h = 1, o, a;
+			double pA = MAMA::AngleBetweenPoints((m_dst.y - m_Player->GetDstP()->y),
+				(m_dst.x - m_Player->GetDstP()->x));
+			double pD = MAMA::Distance((m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2.0f), (m_dst.x),
+				(m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2.0f), (m_dst.y));
+			a = MAMA::SetDeltaX(pA, h);
+			o = MAMA::SetDeltaY(pA, h);
+		}
+	}
+	else if (EVMA::MouseReleased(1))
+	{
+		m_Exist = false;
+	}
+	
 	// Do X axis first.
 	m_velX += m_accelX;
 	m_velX *= (m_grounded ? m_drag : 1);
@@ -82,4 +109,40 @@ void GrapplingHook::SetExist(bool y)
 bool GrapplingHook::GetExist()
 {
 	return m_Exist;
+}
+
+void GrapplingHook::Collision()
+{
+	for (int i = 0; i < ROWS; ++i)
+	{
+		for (int j = 0; j < COLS; ++j)
+		{
+
+			if (Engine::Instance().GetLevel()[i][j]->IsObstacle() && COMA::AABBCheck(*this->GetDstP(), *Engine::Instance().GetLevel()[i][j]->GetDstP()))
+			{
+				if (this->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h - (float)this->GetVelY() <= (float)Engine::Instance().GetLevel()[i][j]->GetDstP()->y)
+				{ // Colliding top side of platform.
+					this->Stop();
+					this->SetY(Engine::Instance().GetLevel()[i][j]->GetDstP()->y - this->GetDstP()->h);
+					
+				}
+				else if (this->GetDstP()->y - (float)this->GetVelY() >= Engine::Instance().GetLevel()[i][j]->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h)
+				{ // Colliding bottom side of platform.
+					this->Stop();
+					this->SetY(Engine::Instance().GetLevel()[i][j]->GetDstP()->y + Engine::Instance().GetLevel()[i][j]->GetDstP()->h);
+				}
+				else if (this->GetDstP()->x + this->GetDstP()->w - this->GetVelX() <= Engine::Instance().GetLevel()[i][j]->GetDstP()->x)
+				{ // Collision from left.
+					this->Stop(); // Stop the player from moving horizontally.
+					this->SetX(Engine::Instance().GetLevel()[i][j]->GetDstP()->x - this->GetDstP()->w);
+				}
+				else if (this->GetDstP()->x - (float)this->GetVelX() >= Engine::Instance().GetLevel()[i][j]->GetDstP()->x + Engine::Instance().GetLevel()[i][j]->GetDstP()->w)
+				{ // Colliding right side of platform.
+					this->Stop();
+					this->SetX(Engine::Instance().GetLevel()[i][j]->GetDstP()->x + Engine::Instance().GetLevel()[i][j]->GetDstP()->w);
+				}
+			}
+
+		}
+	}
 }

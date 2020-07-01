@@ -16,6 +16,7 @@ public:
 	double GetVelX();
 	double GetVelY();
 	void Collision();
+	void SetGrav(double y);
 private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
@@ -43,6 +44,7 @@ private:
 	void SetY(float y);
 	void AddAccelX(double a);
 	void SetMaxVel(double a);
+	
 };
 
 #endif
