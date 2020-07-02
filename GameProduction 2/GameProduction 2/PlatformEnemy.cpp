@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
+
 PlatformEnemy::PlatformEnemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t)
 	:Sprite(s, d, r, t)
 {

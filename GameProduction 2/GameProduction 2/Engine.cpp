@@ -7,9 +7,8 @@
 #include "StateManager.h"
 #include "TextureManager.h"
 #include <iostream>
-#define WIDTH 1024
-#define HEIGHT 768
-#define FPS 60
+#include <fstream>
+
 using namespace std;
 
 Engine::Engine():m_running(false){ cout << "Engine class constructed!" << endl; }
@@ -30,7 +29,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 				EVMA::Init();
 				SOMA::Init();
 				TEMA::Init();
-				
+
 			}
 			else return false; // Renderer init fail.
 		}
@@ -45,9 +44,11 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/Concept.png", "Enemy");
 	TEMA::RegisterTexture("Img/startBackground.png", "title");
 	TEMA::RegisterTexture("Img/fireball.png", "fireball");
+	TEMA::RegisterTexture("Img/tilemap1.png", "tilemap1");
+	TEMA::RegisterTexture("Img/CharacterWalk.png", "playerWalk");
+	TEMA::RegisterTexture("Img/CharacterJumpFall.png", "playerJump");
+	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
 	STMA::ChangeState(new TitleState);
-	
-	
 	SOMA::AllocateChannels(16);
 	
 	m_running = true; // Everything is okay, start the engine.
@@ -75,6 +76,7 @@ void Engine::HandleEvents()
 
 void Engine::Update()
 {
+	
 	STMA::Update();
 	
 }
@@ -97,6 +99,7 @@ void Engine::Clean()
 	cout << "Cleaning game." << endl;
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
+
 	DEMA::Quit();
 	EVMA::Quit();
 	FOMA::Quit();

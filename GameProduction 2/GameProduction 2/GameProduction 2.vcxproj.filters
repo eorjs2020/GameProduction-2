@@ -63,6 +63,12 @@
     <ClCompile Include="GrapplingHook.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SkillManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathManager.h">
@@ -113,5 +119,36 @@
     <ClInclude Include="GrapplingHook.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SkillManager.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="map\TileDataLevel1.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="map\Game_map.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Img\tilemap1.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\CharacterJumpFall.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\CharacterWalk.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\CharacterIdle.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

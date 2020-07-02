@@ -3,11 +3,12 @@
 #define _GRAPPLINGHOOK_H_
 
 #include "Sprite.h"
+#include "Player.h"
 
 class GrapplingHook : public Sprite
 {
 public:
-	GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir);
+	GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a);
 	void Update();
 	void Render();
 	void Stop();
@@ -19,8 +20,9 @@ public:
 	void SetY(float y);
 	void SetExist(bool y);
 	bool GetExist();
+	void Collision();
 private:
-	bool m_grounded, m_Exist, m_Collision;
+	bool m_grounded, m_Exist = false, m_Collision;
 	double m_lifetime, 
 		m_accelX, 
 		m_accelY, 
@@ -31,6 +33,7 @@ private:
 		m_maxVelY,
 		m_drag,
 		m_grav;
+	Player* m_Player;
 
 };
 #endif

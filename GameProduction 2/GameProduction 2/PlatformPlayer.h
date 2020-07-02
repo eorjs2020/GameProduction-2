@@ -25,6 +25,7 @@ public:
 	void SetY(float y);
 	void SetGrav(double y); //used to negate grav for grappling hook
 private:
+	enum state { idle, running, jump } m_state;
 	bool m_grounded;
 	double m_accelX,
 		m_accelY,

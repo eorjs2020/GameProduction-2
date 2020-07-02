@@ -2,13 +2,23 @@
 #ifndef _STATES_H_
 #define _STATES_H_
 #define NUMPLATFORMS 5
+#define ROWS 73
+#define COLS 171
+
 #include <iostream>
 #include <SDL.h>
+#include <array>
+#include <vector>
+#include <map>
 #include "Button.h"
 #include "PlatformPlayer.h"
 #include "PlatformEnemy.h"
 #include "GrapplingHook.h"
 #include "Label.h"
+#include "Tile.h"
+#include "Player.h"
+#include "glm.hpp"
+#include <array>
 using namespace std;
 class State // This is the abstract base class for all specific states.
 {
@@ -25,26 +35,24 @@ public:
 class GameState : public State
 {
 private:
-	std::string a, b, c, d;
-	Label* Test, *Test2, *Test3, *Test4;
-	PlatformPlayer* m_pPlayer;
-	PlatformEnemy* m_pEnemy;
-	SDL_FRect* m_pPlatforms[NUMPLATFORMS];
-	Button* m_quitBtn;
-	GrapplingHook* m_pHook;
+
+	
+	Player* m_pPlayer;
+	GrapplingHook* m_hook;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
 public:
 	GameState();
 	void Update();
-	void CheckCollision();
 	void CheckCollisionHook();
 	void Render();
 	void Enter();
 	void Exit();
 	void Resume();
+
 };
+
 
 class TitleState : public State
 {
