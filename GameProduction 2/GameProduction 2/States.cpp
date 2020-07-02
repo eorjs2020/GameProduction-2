@@ -28,7 +28,8 @@ void GameState::Enter()
 
 	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,50.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
-
+	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
 
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
@@ -73,8 +74,6 @@ void GameState::Enter()
 	SOMA::Load("Aud/hook_retraction3.wav", "retract", SOUND_SFX);
 	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
 	SOMA::PlayMusic("BGM");
-
-	
 	
 }
 
@@ -87,6 +86,9 @@ void GameState::Update()
 	SOMA::SetMusicVolume(m_pMusicVolume);
 
 	m_pPlayer->Update();
+	m_hook->Update();
+	m_pPlayer->Collision();
+	m_hook->Collision();
 	
 	
 }
@@ -94,6 +96,31 @@ void GameState::Update()
 void GameState::CheckCollisionHook()
 {
 
+}
+
+void GameState::HandleCamera()
+{
+	
+	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (int)(WIDTH * 0.25);
+	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (int)(HEIGHT * 0.25);
+	
+	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
+	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
+	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x > Engine::Instance().GetCamera().w ? Engine::Instance().GetCamera().w : Engine::Instance().GetCamera().x;
+	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y > Engine::Instance().GetCamera().h ? Engine::Instance().GetCamera().h : Engine::Instance().GetCamera().y;
+	std::cout <<"x : " <<Engine::Instance().GetCamera().x << endl;
+	std::cout << "y : " << Engine::Instance().GetCamera().y << endl;
+	std::cout << "player x : " << m_pPlayer->GetDstP()->x << endl;
+	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
+	for (int row = 0; row < ROWS; row++)
+	{
+		for (int col = 0; col < COLS; col++)
+		{
+			Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (int)m_tilePos[row][col].x - (int)Engine::Instance().GetCamera().x;
+			Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (int)m_tilePos[row][col].y - (int)Engine::Instance().GetCamera().y;
+		}
+	}
+	
 }
 
 void GameState::Render()
@@ -114,7 +141,8 @@ void GameState::Render()
 	m_pPlayer->Render();
 	
 	//draw the hook
-
+	if (m_hook->GetExist() == true)
+		m_hook->Render();
 	// If GameState != current state.
 	if (dynamic_cast<GameState*>(STMA::GetStates().back()))
 		State::Render();

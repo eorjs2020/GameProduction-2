@@ -37,9 +37,8 @@ class GameState : public State
 private:
 
 	
-	glm::vec2 playerPos;
 	Player* m_pPlayer;
-	bool m_bgScrollX = false, m_bgScrollY = false;
+	GrapplingHook* m_hook;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;

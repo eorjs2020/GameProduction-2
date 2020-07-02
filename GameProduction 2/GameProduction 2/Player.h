@@ -16,7 +16,7 @@ public:
 	double GetVelX();
 	double GetVelY();
 	void Collision();
-	
+	void SetGrav(double y);
 private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
@@ -30,6 +30,7 @@ private:
 		m_drag,
 		m_grav;
 	bool m_bgScrollX = false, m_bgScrollY = false;
+	double* m_a, * m_aMaxY;
 private:
 	void HandleCamera(float scroll, bool x = false);
 	void UpdateAxis(bool ax, bool ay);
@@ -43,6 +44,8 @@ private:
 	void SetX(float y);
 	void SetY(float y);
 	void SetState(int s);
+	void AddAccelX(double a);
+	void SetMaxVel(double a);
 	
 	
 };

@@ -3,6 +3,8 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 #include "Engine.h"
+#include "SkillManager.h"
+
 #define SPEED 2
 
 Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf)
@@ -14,8 +16,8 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_maxVelY = JUMPFORCE;
 	m_grav = GRAV;
 	m_drag = 0.88;
-
-
+	m_a = &m_accelX;
+	m_aMaxY = &m_maxVelX;
 }
 
 void Player::Update()
@@ -37,6 +39,7 @@ void Player::Update()
 		SetAccelY(-JUMPFORCE); // Sets the jump force.
 		SetGrounded(false);
 	}
+	Speed(m_a, m_aMaxY);
 
 
 	m_bgScrollX = m_bgScrollY = false;
@@ -222,3 +225,17 @@ double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 void Player::SetX(float y) { m_dst.x = y; }
 void Player::SetY(float y) { m_dst.y = y; }
+
+void Player::AddAccelX(double a)
+{
+	m_accelX = m_accelX + a;
+}
+
+void Player::SetMaxVel(double a)
+{
+	m_maxVelX = a;
+}
+void Player::SetGrav(double y)
+{
+	m_grav = y;
+}
