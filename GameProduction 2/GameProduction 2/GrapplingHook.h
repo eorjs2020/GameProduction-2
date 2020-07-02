@@ -32,7 +32,9 @@ private:
 		m_velY,
 		m_maxVelY,
 		m_drag,
-		m_grav;
+		m_grav, 
+		m_destinationX,
+		m_destinationY;
 	Player* m_Player;
 
 };
