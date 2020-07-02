@@ -1,13 +1,14 @@
 #pragma once
 #include "Sprite.h"
 #include "vec2.hpp"
+#include "Player.h"
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 class Enemy :public AnimatedSprite
 {
 public:
 	Enemy (SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf, int boundery);
-	void Update(float AccelX,float AccelY, bool x, bool bgscroll, Sprite* p);
+	void Update(float AccelX,float AccelY, bool x, bool bgscroll, Player* p);
 	void Render();
 	double GetVelX();
 	double GetVelY();
@@ -25,7 +26,7 @@ private:
 	void SetY(float y);
 	void AI(SDL_Rect* a);
 private:
-	int chasingTimer, searchingDelay;
+	int chasingTimer, searchingDelay, m_slowCooldown = 0;
 	bool m_dir;
 	bool m_grounded;
 	double m_accelX,
@@ -37,7 +38,7 @@ private:
 		m_drag,
 		m_grav,
 		dx, dy, boundary;
-	bool m_bgScrollX = false, m_bgScrollY = false, m_moving = false;
+	bool m_bgScrollX = false, m_bgScrollY = false, m_moving = false, m_playerslow = false;
 public:
 	glm::vec2 m_ePos;
 };

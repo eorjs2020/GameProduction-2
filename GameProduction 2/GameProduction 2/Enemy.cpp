@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "MathManager.h"
 #include "EventManager.h"
+
 Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf, int boundary)
 	:AnimatedSprite(s, d, r, t, sstart, smin, smax, nf), m_dir(0), m_State(idle)
 {		
@@ -16,7 +17,7 @@ Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstar
 	searchingDelay = 0;
 }
 
-void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Sprite* p)
+void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 {
 
 	if (x)
@@ -88,10 +89,10 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Sprite* p)
 		GetDstP()->x += (int)round(dx); // Our rects are integers! Boo! This is a job for SuperFRect!
 		GetDstP()->y += (int)round(dy);
 
-		if (SDL_HasIntersection(&temp2, &temp1))
-		{
-			
+		if (SDL_HasIntersection(&temp2, &temp1)) {
 			m_State = arrive;
+			if (m_slowCooldown == 0 && m_playerslow == false)
+				m_playerslow = true;
 		}
 		if (chasingTimer == 150)
 		{
@@ -102,12 +103,12 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Sprite* p)
 		break;
 	}
 	case arrive:
-	{
+	{	
 		if (m_dst.x > m_ePos.x)
 			m_dir = 1;
 		else
 			m_dir = 0;
-	
+		
 		if (MAMA::Distance(GetDstP()->x + GetDstP()->w / 2, m_ePos.x, GetDstP()->y + GetDstP()->h / 2, m_ePos.y) <= 5)
 		{
 			dx = dy = 0.0;
@@ -117,14 +118,18 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Sprite* p)
 			(m_ePos.x) - (GetDstP()->x + GetDstP()->w / 2));
 		MAMA::SetDeltas(a, dx, dy, 2.0, 2.0);
 		GetDstP()->x += (int)round(dx); // Our rects are integers! Boo! This is a job for SuperFRect!
-		GetDstP()->y += (int)round(dy);
-
-		
+		GetDstP()->y += (int)round(dy);	
 	}
-	
-
 	}
-
+	if (m_playerslow == true && m_slowCooldown < 40) {
+			p->SetMaxVel(2);
+			++m_slowCooldown;
+		}
+	if (m_slowCooldown >= 40) {
+			m_slowCooldown = 0;
+			p->SetMaxVel(5);
+			m_playerslow = false;
+		}
 	Animate();
 }
 

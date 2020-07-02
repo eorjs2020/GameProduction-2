@@ -230,7 +230,7 @@ void Player::SetY(float y) { m_dst.y = y; }
 
 void Player::AddAccelX(double a)
 {
-	m_accelX = m_accelX + a;
+	m_accelX += a;
 }
 
 void Player::SetMaxVel(double a)

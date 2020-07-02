@@ -19,6 +19,8 @@ public:
 	void SetGrav(double y);
 	bool BGScorllX() { return m_bgScrollX; }
 	bool BGScrollY() { return m_bgScrollY; }
+	void AddAccelX(double a);	
+	void SetMaxVel(double a);
 private:
 	int speedDowncount;
 	enum state { idle, running, jump } m_state;
@@ -47,8 +49,8 @@ private:
 	void SetX(float y);
 	void SetY(float y);
 	void SetState(int s);
-	void AddAccelX(double a);
-	void SetMaxVel(double a);
+	
+
 	
 	
 };
