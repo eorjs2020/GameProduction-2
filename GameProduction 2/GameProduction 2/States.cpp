@@ -98,30 +98,7 @@ void GameState::CheckCollisionHook()
 
 }
 
-void GameState::HandleCamera()
-{
-	
-	Engine::Instance().GetCamera().x = (int)m_pPlayer->GetDstP()->x - (int)(WIDTH * 0.25);
-	Engine::Instance().GetCamera().y = (int)m_pPlayer->GetDstP()->y - (int)(HEIGHT * 0.25);
-	
-	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x < 0 ? 0 : Engine::Instance().GetCamera().x;
-	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y < 0 ? 0 : Engine::Instance().GetCamera().y;
-	Engine::Instance().GetCamera().x = Engine::Instance().GetCamera().x > Engine::Instance().GetCamera().w ? Engine::Instance().GetCamera().w : Engine::Instance().GetCamera().x;
-	Engine::Instance().GetCamera().y = Engine::Instance().GetCamera().y > Engine::Instance().GetCamera().h ? Engine::Instance().GetCamera().h : Engine::Instance().GetCamera().y;
-	std::cout <<"x : " <<Engine::Instance().GetCamera().x << endl;
-	std::cout << "y : " << Engine::Instance().GetCamera().y << endl;
-	std::cout << "player x : " << m_pPlayer->GetDstP()->x << endl;
-	std::cout << "player y : " << m_pPlayer->GetDstP()->y << endl;
-	for (int row = 0; row < ROWS; row++)
-	{
-		for (int col = 0; col < COLS; col++)
-		{
-			Engine::Instance().GetLevel()[row][col]->GetDstP()->x = (int)m_tilePos[row][col].x - (int)Engine::Instance().GetCamera().x;
-			Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (int)m_tilePos[row][col].y - (int)Engine::Instance().GetCamera().y;
-		}
-	}
-	
-}
+
 
 void GameState::Render()
 {
@@ -204,10 +181,6 @@ void TitleState::Update()
 void TitleState::Render()
 {
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
-	
-	
-	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 128, 0, 255, 255);
-	//SDL_RenderClear(Engine::Instance().GetRenderer());
 	m_playBtn->Render();
 	m_quitBtn->Render();
 	State::Render();
