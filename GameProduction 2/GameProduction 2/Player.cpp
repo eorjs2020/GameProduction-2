@@ -18,6 +18,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_drag = 0.88;
 	m_a = &m_accelX;
 	m_aMaxY = &m_maxVelX;
+	speedDowncount = 0;
 }
 
 void Player::Update()
@@ -114,6 +115,7 @@ void Player::Update()
 		}
 
 		break;
+
 	}
 	
 	Animate();
