@@ -32,6 +32,7 @@ void GameState::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 }, 
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
+
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -87,8 +88,11 @@ void GameState::Update()
 	SOMA::SetMusicVolume(m_pMusicVolume);
 
 	m_pPlayer->Update();
-	Engine::Instance().GetEnemy()[0]->Update(m_pPlayer->GetVelX(),
-		m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(),m_pPlayer->BGScrollY(), m_pPlayer);
+	for (unsigned i = 0; i < Engine::Instance().GetEnemy.size(); ++i)
+	{
+		Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+	}
 	m_hook->Update();
 	m_pPlayer->Collision();
 	m_hook->Collision();
@@ -145,7 +149,7 @@ void GameState::Exit()
 	for (auto const& i : Engine::Instance().GetTiles())
 		delete Engine::Instance().GetTiles()[i.first];
 	Engine::Instance().GetTiles().clear();
-
+	Engine::Instance().GetEnemy().clear();
 	Engine::Instance().GetPlatform().clear();
 
 	
