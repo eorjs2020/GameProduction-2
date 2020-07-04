@@ -65,7 +65,7 @@ void PlayButton::Execute()
 {
 	//SOMA::SetSoundVolume(60);
 	SOMA::PlaySound("beep");
-	STMA::ChangeState(new GameState);
+	STMA::ChangeState(new Level1State);
 }
 
 QuitButton::QuitButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}

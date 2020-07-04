@@ -171,7 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="map\Game_map.txt" />
+    <Text Include="map\Level2.txt" />
     <Text Include="map\TileDataLevel1.txt" />
+    <Text Include="map\TileDataLevel2.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Img\CharacterIdle.png" />

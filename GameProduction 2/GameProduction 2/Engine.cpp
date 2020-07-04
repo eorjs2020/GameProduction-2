@@ -105,7 +105,17 @@ void Engine::Clean()
 	cout << "Cleaning game." << endl;
 	SDL_DestroyRenderer(m_pRenderer);
 	SDL_DestroyWindow(m_pWindow);
-
+	for (int row = 0; row < ROWS; row++)
+	{
+		for (int col = 0; col < COLS; col++)
+		{
+			delete m_level[row][col];
+			m_level[row][col] = nullptr; // Wrangle your dangle.
+		}
+	}
+	for (auto const& i : m_tiles)
+		delete m_tiles[i.first];
+	m_tiles.clear();
 	DEMA::Quit();
 	EVMA::Quit();
 	FOMA::Quit();

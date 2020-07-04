@@ -18,12 +18,12 @@ void State::Resume() {}
 // End State.
 
 // Begin GameState.
-GameState::GameState() {}
+Level1State::Level1State() {}
 
-void GameState::Enter()
+void Level1State::Enter()
 {
 
-	std::cout << "Entering GameState..." << std::endl;
+	std::cout << "Entering Level1State..." << std::endl;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
 	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,50.0f,46.0f,64.0f },
@@ -40,6 +40,7 @@ void GameState::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	m_resume = new ResumeButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -86,7 +87,7 @@ void GameState::Enter()
 	
 }
 
-void GameState::Update()
+void Level1State::Update()
 {
 	if (Engine::Instance().Pause() == true)
 	{
@@ -115,20 +116,24 @@ void GameState::Update()
 		m_hook->Collision();
 		m_timer = new Label("font1", 900, 10, "Timer: ", { 255,255,255,255 });
 		m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
+	if (EVMA::KeyReleased(SDL_SCANCODE_P))
+	{
+		STMA::ChangeState(new Level2State);
+	}
 	
         
 	}
 	
 }
 
-void GameState::CheckCollisionHook()
+void Level1State::CheckCollisionHook()
 {
 
 }
 
 
 
-void GameState::Render()
+void Level1State::Render()
 {
 	
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
@@ -159,7 +164,7 @@ void GameState::Render()
 	if (m_hook->GetExist() == true)
 		m_hook->Render();
 	// If GameState != current state.
-	if (dynamic_cast<GameState*>(STMA::GetStates().back()))
+	if (dynamic_cast<Level1State*>(STMA::GetStates().back()))
 		State::Render();
 	if (Engine::Instance().Pause() == true)
 	{
@@ -167,9 +172,10 @@ void GameState::Render()
 	}
 }
 
-void GameState::Exit()
+void Level1State::Exit()
 {
-	
+	delete m_pPlayer;
+	delete m_hook;
 	for (int row = 0; row < ROWS; row++)
 	{
 		for (int col = 0; col < COLS; col++)
@@ -179,18 +185,140 @@ void GameState::Exit()
 		}
 	}
 	for (auto const& i : Engine::Instance().GetTiles())
+	{
+		
 		delete Engine::Instance().GetTiles()[i.first];
+	}
+
 	Engine::Instance().GetTiles().clear();
 	Engine::Instance().GetEnemy().clear();
 	Engine::Instance().GetPlatform().clear();
-
+	
+	
+	std::cout << "Cleaning Level1" << endl;
 	
 	
 }
 
-void GameState::Resume() { }
+void Level1State::Resume() { }
 // End GameState.
 
+// Begin Level 2
+Level2State::Level2State()
+{
+}
+void Level2State::Enter()
+{
+
+	std::cout << "Entering Level2State..." << std::endl;
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+
+	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,50.0f,46.0f,64.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
+	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
+	
+	ifstream inFile("map/TileDataLevel2.txt");
+	if (inFile.is_open())
+	{ // Create map of Tile prototypes.
+		char key;
+		int x, y;
+		bool o, h;
+		while (!inFile.eof())
+		{
+			inFile >> key >> x >> y >> o >> h;
+			Engine::Instance().GetTiles().emplace(key, new Tile({ x * 128, y * 128, 127, 127 }, { 0,0,32,32 },
+				Engine::Instance().GetRenderer(), TEMA::GetTexture("tilemap1"), o, h));
+		}
+	}
+
+	inFile.close();
+	
+
+	inFile.open("map/Level2.txt");
+	if (inFile.is_open())
+	{ // Build the level from Tile prototypes.
+		char key;
+		for (int row = 0; row < ROWS2; row++)
+		{
+			for (int col = 0; col < COLS2; col++)
+			{
+				inFile >> key;
+				Engine::Instance().GetLevel2()[row][col] = Engine::Instance().GetTiles()[key]->Clone(); // Prototype design pattern used.
+				Engine::Instance().GetLevel2()[row][col]->GetDstP()->x = (float)(32 * col);
+				Engine::Instance().GetLevel2()[row][col]->GetDstP()->y = (float)(32 * row);
+				if (Engine::Instance().GetLevel2()[row][col]->IsObstacle())
+					Engine::Instance().GetPlatform().push_back(Engine::Instance().GetLevel2()[row][col]);
+			}
+		}
+	}
+	inFile.close();
+
+	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
+	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
+	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
+	SOMA::Load("Aud/hook_extension3.wav", "throw", SOUND_SFX);
+	SOMA::Load("Aud/hook_grappling2.wav", "grab", SOUND_SFX);
+	SOMA::Load("Aud/hook_retraction3.wav", "retract", SOUND_SFX);
+	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
+	SOMA::PlayMusic("BGM");
+
+}
+void Level2State::Update()
+{
+
+	m_pPlayer->Update(2);
+	m_hook->Update();
+	m_pPlayer->Collision();
+	m_hook->Collision(2);
+}
+
+void Level2State::Render()
+{
+	
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
+	
+	for (int row = 0; row < ROWS2; row++)
+	{
+		for (int col = 0; col < COLS2; col++)
+		{
+			Engine::Instance().GetLevel2()[row][col]->Render();
+		}
+	}
+
+	m_pPlayer->Render();
+
+	//draw the hook
+	if (m_hook->GetExist() == true)
+		m_hook->Render();
+	// If GameState != current state.
+	if (dynamic_cast<Level2State*>(STMA::GetStates().back()))
+		State::Render();
+}
+
+
+
+void Level2State::Exit()
+{
+	delete m_pPlayer;
+	delete m_hook;
+	for (int row = 0; row < ROWS2; row++)
+	{
+		for (int col = 0; col < COLS2; col++)
+		{
+			delete Engine::Instance().GetLevel2()[row][col];
+			Engine::Instance().GetLevel2()[row][col] = nullptr; // Wrangle your dangle.
+		}
+	}
+
+	Engine::Instance().GetTiles().clear();
+	
+	Engine::Instance().GetPlatform().clear();
+}
+
+void Level2State::Resume(){}
+//End Level2State
 // Begin TitleState.
 TitleState::TitleState() {
 
@@ -263,3 +391,5 @@ void EndState::Exit()
 	std::cout << "Exiting EndState..." << std::endl;
 }
 // End TitleState.
+
+

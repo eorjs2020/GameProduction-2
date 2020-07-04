@@ -20,7 +20,7 @@ public:
 	void SetY(float y);
 	void SetExist(bool y);
 	bool GetExist();
-	void Collision();
+	void Collision(int stage = 1);
 private:
 	bool m_grounded, m_Exist = false, m_Collision;
 	double m_lifetime, 
