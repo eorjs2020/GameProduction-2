@@ -106,17 +106,19 @@ void GameState::Update()
 		m_pause->Update();
 		m_pPlayer->Update();
 		m_hook->Update();
+		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		{
+			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+		}
 		m_pPlayer->Collision();
 		m_hook->Collision();
 		m_timer = new Label("font1", 900, 10, "Timer: ", { 255,255,255,255 });
 		m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
+	
         
 	}
-	for (unsigned i = 0; i < Engine::Instance().GetEnemy.size(); ++i)
-	{
-		Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
-			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
-	}
+	
 }
 
 void GameState::CheckCollisionHook()
