@@ -15,7 +15,7 @@
 #include <array>
 #include <vector>
 #include "Tile.h"
-
+#include "Enemy.h"
 // Do not include any macros, initialized properties or full function definitions in this header.
 
 class Engine
@@ -29,7 +29,7 @@ private: // Private properties.
 	std::map<char, Tile*> m_tiles;
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
 	std::vector<Tile*> m_platforms;
-
+	std::vector<Enemy*> m_enemies;
 private: // Private methods.
 	Engine();
 	bool Init(const char* title, int xpos, int ypos, int width, int height, int flags);
@@ -48,5 +48,6 @@ public: // Public methods.
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 	std::vector<Tile*>& GetPlatform() { return m_platforms; }
+	std::vector<Enemy*>& GetEnemy() { return m_enemies; }
 };
 #endif

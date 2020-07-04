@@ -18,17 +18,17 @@ void Speed(double* a, double* b)
 	}
 	if (m_speedBoost == true)
 	{
-		*m_mMaxY = 20;
+		*m_mMaxY = 10;
 		++m_speedBoostTimer;
 		if (*m_accelX > 0)
 		*m_accelX += 3.0;
 		if (*m_accelX < 0)
 			*m_accelX -= 3.0;
 	}
-	if (m_speedBoostTimer >= 140)
+	if (m_speedBoostTimer >= 30)
 	{
 		m_speedBoost = false;
 		m_speedBoostTimer = 0;
-		*m_mMaxY = 10;
+		*m_mMaxY = 5;
 	}
 }

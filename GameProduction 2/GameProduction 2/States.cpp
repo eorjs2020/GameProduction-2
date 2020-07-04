@@ -30,6 +30,8 @@ void GameState::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 }, 
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
 
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
@@ -86,6 +88,11 @@ void GameState::Update()
 	SOMA::SetMusicVolume(m_pMusicVolume);
 
 	m_pPlayer->Update();
+	for (unsigned i = 0; i < Engine::Instance().GetEnemy.size(); ++i)
+	{
+		Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+	}
 	m_hook->Update();
 	m_pPlayer->Collision();
 	m_hook->Collision();
@@ -116,7 +123,10 @@ void GameState::Render()
 	}
 	
 	m_pPlayer->Render();
-	
+	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size();++i)
+	{
+		Engine::Instance().GetEnemy()[i]->Render();
+	}
 	//draw the hook
 	if (m_hook->GetExist() == true)
 		m_hook->Render();
@@ -139,7 +149,7 @@ void GameState::Exit()
 	for (auto const& i : Engine::Instance().GetTiles())
 		delete Engine::Instance().GetTiles()[i.first];
 	Engine::Instance().GetTiles().clear();
-
+	Engine::Instance().GetEnemy().clear();
 	Engine::Instance().GetPlatform().clear();
 
 	

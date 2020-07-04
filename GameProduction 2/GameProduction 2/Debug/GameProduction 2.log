@@ -1,13 +1,71 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GAME1017_Template_W01.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GAME1017_Template_W01.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Button.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : see previous definition of 'JUMPFORCE'
+  CollisionManager.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5): message : see previous definition of 'JUMPFORCE'
+  DebugManager.cpp
+  Enemy.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,34): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,51): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,51): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,72): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,72): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,96): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(79,96): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,34): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,34): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,51): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,51): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,68): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,68): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,85): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Enemy.cpp(80,85): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Engine.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5): message : see previous definition of 'JUMPFORCE'
+  EventManager.cpp
+  FontManager.cpp
+  GrapplingHook.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\GrapplingHook.cpp(59,19): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Label.cpp
+  Main.cpp
+  MathManager.cpp
+  PlatformEnemy.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformEnemy.h(5): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformEnemy.h(6): message : see previous definition of 'JUMPFORCE'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformEnemy.cpp(28,19): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  PlatformPlayer.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : see previous definition of 'JUMPFORCE'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.cpp(27,19): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Player.cpp
+  SkillManager.cpp
+  SoundManager.cpp
+  StateManager.cpp
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : see previous definition of 'JUMPFORCE'
   States.cpp
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : see previous definition of 'GRAV'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': macro redefinition
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : see previous definition of 'JUMPFORCE'
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\States.cpp(91,21): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\GameProduction 2\States.cpp(90,61): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   TextureManager.cpp
-  코드를 생성하고 있습니다...
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
-  LINK : D:\겜프\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
-SoundManager.obj : warning LNK4099: 'vc142.pdb' PDB를 'SoundManager.obj' 또는 'D:\겜프\GameProduction-2\GameProduction 2\Debug\vc142.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-MathManager.obj : warning LNK4099: 'vc142.pdb' PDB를 'MathManager.obj' 또는 'D:\겜프\GameProduction-2\GameProduction 2\Debug\vc142.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-FontManager.obj : warning LNK4099: 'vc142.pdb' PDB를 'FontManager.obj' 또는 'D:\겜프\GameProduction-2\GameProduction 2\Debug\vc142.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-  GameProduction 2.vcxproj -> D:\겜프\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe
+  Generating Code...
+  GameProduction 2.vcxproj -> C:\Users\eorjs\Documents\겜프\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe

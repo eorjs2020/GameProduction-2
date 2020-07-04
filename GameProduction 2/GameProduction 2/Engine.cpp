@@ -48,6 +48,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterWalk.png", "playerWalk");
 	TEMA::RegisterTexture("Img/CharacterJumpFall.png", "playerJump");
 	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
+	TEMA::RegisterTexture("Img/DroneIdle.png", "droneIdle");
 	STMA::ChangeState(new TitleState);
 	SOMA::AllocateChannels(16);
 	

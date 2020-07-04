@@ -17,7 +17,12 @@ public:
 	double GetVelY();
 	void Collision();
 	void SetGrav(double y);
+	bool BGScorllX() { return m_bgScrollX; }
+	bool BGScrollY() { return m_bgScrollY; }
+	void AddAccelX(double a);	
+	void SetMaxVel(double a);
 private:
+	int speedDowncount;
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
 	bool m_grounded;
@@ -44,8 +49,8 @@ private:
 	void SetX(float y);
 	void SetY(float y);
 	void SetState(int s);
-	void AddAccelX(double a);
-	void SetMaxVel(double a);
+	
+
 	
 	
 };
