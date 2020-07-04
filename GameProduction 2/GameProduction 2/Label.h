@@ -15,6 +15,7 @@ private:
 	SDL_Texture* m_pTexture;
 	char m_String[256];
 public:
+	Label();
 	Label(std::string key, const float x, const float y, std::string, const SDL_Color col = { 255,255,255,255 });
 	~Label();
 	void Render();

@@ -32,6 +32,8 @@ void GrapplingHook::Update()
 			m_dst.y = m_Player->GetDstP()->y;
 			m_Exist = true;
 			m_Player->SetGrav(0.0);
+			m_destinationX = EVMA::GetMousePos().x;
+			m_destinationY = EVMA::GetMousePos().y;
 		}
 		if (m_Exist == false) {
 			double h = 1, o, a;
@@ -61,16 +63,16 @@ void GrapplingHook::Update()
 	if (m_Exist == true)
 	{
 		double h = 1, o, a;
-		if (MAMA::Distance((GetDstP()->x), (EVMA::GetMousePos().x),
-			(GetDstP()->y), (EVMA::GetMousePos().x)) <= 1.0)
+		if (MAMA::Distance((GetDstP()->x), (m_destinationX),
+			(GetDstP()->y), (m_destinationY)) <= 1.0)
 		{
 			Stop();
 		}
 		else {
-			double pA = MAMA::AngleBetweenPoints((EVMA::GetMousePos().y - GetDstP()->y),
-				(EVMA::GetMousePos().x - GetDstP()->x));
-			double pD = MAMA::Distance((GetDstP()->x + GetDstP()->w / 2.0f), (EVMA::GetMousePos().x),
-				(GetDstP()->y + GetDstP()->h / 2.0f), (EVMA::GetMousePos().x));
+			double pA = MAMA::AngleBetweenPoints((m_destinationY - GetDstP()->y),
+				(m_destinationX - GetDstP()->x));
+			double pD = MAMA::Distance((GetDstP()->x + GetDstP()->w / 2.0f), (m_destinationX),
+				(GetDstP()->y + GetDstP()->h / 2.0f), (m_destinationX));
 			a = MAMA::SetDeltaX(pA, h);
 			o = MAMA::SetDeltaY(pA, h);
 			SetAccelX(a);

@@ -36,7 +36,10 @@ class GameState : public State
 {
 private:
 
-	
+	Sprite * m_interface;
+	Label* m_timer, * m_energy;
+	PauseButton* m_pause;
+	ResumeButton* m_resume;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move

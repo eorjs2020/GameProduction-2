@@ -30,6 +30,7 @@ private: // Private properties.
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
 	std::vector<Tile*> m_platforms;
 	std::vector<Enemy*> m_enemies;
+	bool m_pPause;
 private: // Private methods.
 	Engine();
 	bool Init(const char* title, int xpos, int ypos, int width, int height, int flags);
@@ -49,5 +50,6 @@ public: // Public methods.
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 	std::vector<Tile*>& GetPlatform() { return m_platforms; }
 	std::vector<Enemy*>& GetEnemy() { return m_enemies; }
+	bool& Pause();
 };
 #endif
