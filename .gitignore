@@ -2,3 +2,53 @@
 GameProduction 2/.vs/GameProduction 2/v16/
 
 GameProduction 2/Debug/GameProduction 2.exe
+
+GameProduction 2/Debug/GameProduction 2.ilk
+
+GameProduction 2/Debug/GameProduction 2.pdb
+
+GameProduction 2/GameProduction 2/Debug/Button.obj
+
+GameProduction 2/GameProduction 2/Debug/CollisionManager.obj
+
+GameProduction 2/GameProduction 2/Debug/DebugManager.obj
+
+GameProduction 2/GameProduction 2/Debug/Enemy.obj
+
+GameProduction 2/GameProduction 2/Debug/Engine.obj
+
+GameProduction 2/GameProduction 2/Debug/EventManager.obj
+
+GameProduction 2/GameProduction 2/Debug/GameProduction 2.log
+
+GameProduction 2/GameProduction 2/Debug/GameProduction 2.tlog/CL.command.1.tlog
+
+GameProduction 2/GameProduction 2/Debug/GameProduction 2.tlog/CL.read.1.tlog
+
+GameProduction 2/GameProduction 2/Debug/GameProduction 2.tlog/CL.write.1.tlog
+
+GameProduction 2/GameProduction 2/Debug/GameProduction 2.tlog/link.read.1.tlog
+
+GameProduction 2/GameProduction 2/Debug/GameProduction 2.tlog/link.write.1.tlog
+
+GameProduction 2/GameProduction 2/Debug/GrapplingHook.obj
+
+GameProduction 2/GameProduction 2/Debug/Label.obj
+
+GameProduction 2/GameProduction 2/Debug/Main.obj
+
+GameProduction 2/GameProduction 2/Debug/PlatformEnemy.obj
+
+GameProduction 2/GameProduction 2/Debug/PlatformPlayer.obj
+
+GameProduction 2/GameProduction 2/Debug/Player.obj
+
+GameProduction 2/GameProduction 2/Debug/SkillManager.obj
+
+GameProduction 2/GameProduction 2/Debug/States.obj
+
+GameProduction 2/GameProduction 2/Debug/TextureManager.obj
+
+GameProduction 2/GameProduction 2/Debug/vc142.idb
+
+GameProduction 2/GameProduction 2/Debug/vc142.pdb
