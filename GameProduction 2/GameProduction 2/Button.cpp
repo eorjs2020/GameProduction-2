@@ -76,3 +76,18 @@ void QuitButton::Execute()
 	Engine::Instance().Running() = false;
 	
 }
+
+void PauseButton::Execute()
+{
+	Engine::Instance().Pause() = true;
+}
+
+PauseButton::PauseButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
+
+void ResumeButton::Execute()
+{
+	Engine::Instance().Pause() = false;
+}
+
+ResumeButton::ResumeButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
+

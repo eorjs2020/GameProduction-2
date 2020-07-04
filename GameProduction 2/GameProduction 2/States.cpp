@@ -30,7 +30,14 @@ void GameState::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
-
+	m_interface = new Sprite({ 6,455,224,44 }, { 400.0f,724.0f,224.0f,44.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("interface"));
+	m_timer = new Label("font1", 900, 10, "Timer: ", {255,255,255,255});
+	m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
+	m_pause = new PauseButton({ 0,0,480,140 }, { 2.0f,2.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	m_resume = new ResumeButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -79,18 +86,30 @@ void GameState::Enter()
 
 void GameState::Update()
 {
-	SOMA::StopMusic();
-	m_pMusicVolume = m_pMusicSetVol;
-	m_pSFXVolume = m_pSFXSetVol;
-	SOMA::SetSoundVolume(m_pSFXVolume);
-	SOMA::SetMusicVolume(m_pMusicVolume);
+	if (Engine::Instance().Pause() == true)
+	{
+		m_resume->Update();
+	}
+	if (EVMA::KeyHeld(SDL_SCANCODE_X))
+	{
+		Engine::Instance().Pause() = true;
+	}
+	if (Engine::Instance().Pause() == false)
+	{
 
-	m_pPlayer->Update();
-	m_hook->Update();
-	m_pPlayer->Collision();
-	m_hook->Collision();
-	
-	
+		SOMA::StopMusic();
+		m_pMusicVolume = m_pMusicSetVol;
+		m_pSFXVolume = m_pSFXSetVol;
+		SOMA::SetSoundVolume(m_pSFXVolume);
+		SOMA::SetMusicVolume(m_pMusicVolume);
+		m_pause->Update();
+		m_pPlayer->Update();
+		m_hook->Update();
+		m_pPlayer->Collision();
+		m_hook->Collision();
+		m_timer = new Label("font1", 900, 10, "Timer: ", { 255,255,255,255 });
+		m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
+	}
 }
 
 void GameState::CheckCollisionHook()
@@ -107,6 +126,7 @@ void GameState::Render()
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
 	// Draw the player.
+
 	for (int row = 0; row < ROWS; row++)
 	{
 		for (int col = 0; col < COLS; col++)
@@ -114,15 +134,24 @@ void GameState::Render()
 			Engine::Instance().GetLevel()[row][col]->Render();
 		}
 	}
-	
+	if (Engine::Instance().Pause() == false)
+	{
+		m_pause->Render();
+	}
 	m_pPlayer->Render();
-	
+	m_interface->Render();
+	m_timer->Render();
+	m_energy->Render();
 	//draw the hook
 	if (m_hook->GetExist() == true)
 		m_hook->Render();
 	// If GameState != current state.
 	if (dynamic_cast<GameState*>(STMA::GetStates().back()))
 		State::Render();
+	if (Engine::Instance().Pause() == true)
+	{
+		m_resume->Render();
+	}
 }
 
 void GameState::Exit()

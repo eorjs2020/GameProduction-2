@@ -11,7 +11,10 @@
 
 using namespace std;
 
-Engine::Engine():m_running(false){ cout << "Engine class constructed!" << endl; }
+Engine::Engine():m_running(false){ 
+	cout << "Engine class constructed!" << endl; 
+	m_pPause = false;
+}
 
 bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, int flags)
 {
@@ -48,6 +51,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterWalk.png", "playerWalk");
 	TEMA::RegisterTexture("Img/CharacterJumpFall.png", "playerJump");
 	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
+	TEMA::RegisterTexture("Img/Kit.png", "interface");
+	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
 	STMA::ChangeState(new TitleState);
 	SOMA::AllocateChannels(16);
 	
@@ -138,3 +143,8 @@ Engine& Engine::Instance()
 SDL_Renderer* Engine::GetRenderer() { return m_pRenderer; }
 bool& Engine::Running() { return m_running; }
 bool& Engine::End() { return m_exit; }
+
+bool& Engine::Pause()
+{
+	return m_pPause;
+}

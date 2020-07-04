@@ -29,6 +29,7 @@ private: // Private properties.
 	std::map<char, Tile*> m_tiles;
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
 	std::vector<Tile*> m_platforms;
+	bool m_pPause;
 
 private: // Private methods.
 	Engine();
@@ -48,5 +49,6 @@ public: // Public methods.
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 	std::vector<Tile*>& GetPlatform() { return m_platforms; }
+	bool& Pause();
 };
 #endif

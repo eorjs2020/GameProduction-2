@@ -3,6 +3,10 @@
 #include "FontManager.h"
 #include <cstring>
 
+Label::Label()
+{
+}
+
 Label::Label(std::string key, const float x, const float y, std::string str,
 	const SDL_Color col) :m_TextColor(col)
 {
