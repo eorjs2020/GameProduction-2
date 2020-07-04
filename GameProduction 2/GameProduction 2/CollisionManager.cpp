@@ -46,25 +46,25 @@ bool CollisionManager::LinePointCheck(const SDL_FPoint object1_start, const SDL_
 	return false;
 }
 
-bool CollisionManager::PlayerCollision(const SDL_Rect player, const int dX, const int dY)
-{
-	int playerX = player.x / 32;
-	int playerY = player.y / 32;
-	SDL_Rect p = { player.x + dX + 8 , player.y + dY + 6, player.w - 16, player.h - 10 }; // Adjusted bounding box.
-	Tile* tiles[4] = { Engine::Instance().GetLevel()[playerY][playerX],																				// Player's tile.
-					   Engine::Instance().GetLevel()[playerY][(playerX + 1 == COLS ? COLS - 1 : playerX + 1)],										// Right tile.
-					   Engine::Instance().GetLevel()[(playerY + 1 == ROWS ? ROWS - 1 : playerY + 1)][(playerX + 1 == COLS ? COLS - 1 : playerX + 1)],	// Bottom-Right tile.
-					   Engine::Instance().GetLevel()[(playerY + 1 == ROWS ? ROWS - 1 : playerY + 1)][playerX] };										// Bottom tile.
-	
-	for (int i = 0; i < 4; i++)
-	{
-		SDL_Rect t = MAMA::ConvertFRect2Rect(*(tiles[i]->GetDstP()));
-		if (tiles[i]->IsObstacle() && SDL_HasIntersection(&p, &t))
-		{ // Collision!
-			return true;
-			// Other potential code...
-		}
-	}
-		
-	return false;
-}
+//bool CollisionManager::PlayerCollision(const SDL_Rect player, const int dX, const int dY)
+//{
+//	int playerX = player.x / 32;
+//	int playerY = player.y / 32;
+//	SDL_Rect p = { player.x + dX + 8 , player.y + dY + 6, player.w - 16, player.h - 10 }; // Adjusted bounding box.
+//	Tile* tiles[4] = { Engine::Instance().GetLevel()[playerY][playerX],																				// Player's tile.
+//					   Engine::Instance().GetLevel()[playerY][(playerX + 1 == COLS ? COLS - 1 : playerX + 1)],										// Right tile.
+//					   Engine::Instance().GetLevel()[(playerY + 1 == ROWS ? ROWS - 1 : playerY + 1)][(playerX + 1 == COLS ? COLS - 1 : playerX + 1)],	// Bottom-Right tile.
+//					   Engine::Instance().GetLevel()[(playerY + 1 == ROWS ? ROWS - 1 : playerY + 1)][playerX] };										// Bottom tile.
+//	
+//	for (int i = 0; i < 4; i++)
+//	{
+//		SDL_Rect t = MAMA::ConvertFRect2Rect(*(tiles[i]->GetDstP()));
+//		if (tiles[i]->IsObstacle() && SDL_HasIntersection(&p, &t))
+//		{ // Collision!
+//			return true;
+//			// Other potential code...
+//		}
+//	}
+//		
+//	return false;
+//}

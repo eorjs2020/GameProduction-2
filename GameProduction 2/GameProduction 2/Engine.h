@@ -6,6 +6,8 @@
 #define WIDTH 1024
 #define HEIGHT 768
 #define FPS 60
+#define ROWS2 51
+#define COLS2 419
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -28,8 +30,9 @@ private: // Private properties.
 	SDL_Renderer* m_pRenderer; // This represents the buffer to draw to.
 	std::map<char, Tile*> m_tiles;
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
+	std::array<std::array<Tile*, COLS2>, ROWS2> m_level2;
 	std::vector<Tile*> m_platforms;
-
+	std::vector<Tile*> m_platforms2;
 private: // Private methods.
 	Engine();
 	bool Init(const char* title, int xpos, int ypos, int width, int height, int flags);
@@ -46,7 +49,9 @@ public: // Public methods.
 	bool& Running();
 	bool& End();
 	std::array<std::array<Tile*, COLS>, ROWS>& GetLevel() { return m_level; }
+	std::array<std::array<Tile*, COLS2>, ROWS2>& GetLevel2() { return m_level2; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 	std::vector<Tile*>& GetPlatform() { return m_platforms; }
+	std::vector<Tile*>& GetPlatform2() { return m_platforms2; }
 };
 #endif

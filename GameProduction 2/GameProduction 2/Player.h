@@ -5,13 +5,13 @@
 #define JUMPFORCE 30.0
 
 #include "Sprite.h"
-
+#include <array>
 
 class Player : public AnimatedSprite
 {
 public:
 	Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf);
-	void Update();
+	void Update(int x = 1);
 	void Render();
 	double GetVelX();
 	double GetVelY();
@@ -32,7 +32,7 @@ private:
 	bool m_bgScrollX = false, m_bgScrollY = false;
 	double* m_a, * m_aMaxY;
 private:
-	void HandleCamera(float scroll, bool x = false);
+	void HandleCamera(float scroll, bool x = false , int stage = 1);
 	void UpdateAxis(bool ax, bool ay);
 	bool IsGrounded();
 	void Stop();

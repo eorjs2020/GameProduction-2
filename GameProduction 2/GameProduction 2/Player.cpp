@@ -20,7 +20,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_aMaxY = &m_maxVelX;
 }
 
-void Player::Update()
+void Player::Update(int stage)
 {
 	
 	
@@ -43,36 +43,74 @@ void Player::Update()
 
 
 	m_bgScrollX = m_bgScrollY = false;
-	if (GetVelX() > 0 && GetDstP()->x > WIDTH * 0.7f)
+	if (stage == 1)
 	{
-		if (Engine::Instance().GetLevel()[0][COLS - 1]->GetDstP()->x > WIDTH - 32)
+		if (GetVelX() > 0 && GetDstP()->x > WIDTH * 0.7f)
 		{
-			m_bgScrollX = true;
-			HandleCamera((float)GetVelX(), true);
+			if (Engine::Instance().GetLevel()[0][COLS - 1]->GetDstP()->x > WIDTH - 32)
+			{
+				m_bgScrollX = true;
+				HandleCamera((float)GetVelX(), true);
+			}
+		}
+		else if (GetVelX() < 0 && GetDstP()->x < WIDTH * 0.3f)
+		{
+			if (Engine::Instance().GetLevel()[0][0]->GetDstP()->x < 0)
+			{
+				m_bgScrollX = true;
+				HandleCamera((float)GetVelX(), true);
+			}
+		}
+		if (GetVelY() > 0 && GetDstP()->y > HEIGHT * 0.7f)
+		{
+			if (Engine::Instance().GetLevel()[ROWS - 1][0]->GetDstP()->y > HEIGHT - 32)
+			{
+				m_bgScrollY = true;
+				HandleCamera((float)GetVelY());
+			}
+		}
+		else if (GetVelY() < 0 && GetDstP()->y < HEIGHT * 0.3f)
+		{
+			if (Engine::Instance().GetLevel()[0][0]->GetDstP()->y < 0)
+			{
+				m_bgScrollY = true;
+				HandleCamera((float)GetVelY());
+			}
 		}
 	}
-	else if (GetVelX() < 0 && GetDstP()->x < WIDTH * 0.3f)
+	else if (stage == 2)
 	{
-		if (Engine::Instance().GetLevel()[0][0]->GetDstP()->x < 0)
+		if (GetVelX() > 0 && GetDstP()->x > WIDTH * 0.7f)
 		{
-			m_bgScrollX = true;
-			HandleCamera((float)GetVelX(), true);
+			if (Engine::Instance().GetLevel2()[0][COLS2 - 1]->GetDstP()->x > WIDTH - 32)
+			{
+				m_bgScrollX = true;
+				HandleCamera((float)GetVelX(), true, stage);
+			}
 		}
-	}
-	if (GetVelY() > 0 && GetDstP()->y > HEIGHT * 0.7f)
-	{
-		if (Engine::Instance().GetLevel()[ROWS - 1][0]->GetDstP()->y > HEIGHT - 32)
+		else if (GetVelX() < 0 && GetDstP()->x < WIDTH * 0.3f)
 		{
-			m_bgScrollY = true;
-			HandleCamera((float)GetVelY());
+			if (Engine::Instance().GetLevel2()[0][0]->GetDstP()->x < 0)
+			{
+				m_bgScrollX = true;
+				HandleCamera((float)GetVelX(), true, stage);
+			}
 		}
-	}
-	else if (GetVelY() < 0 && GetDstP()->y < HEIGHT * 0.3f)
-	{
-		if (Engine::Instance().GetLevel()[0][0]->GetDstP()->y < 0)
+		if (GetVelY() > 0 && GetDstP()->y > HEIGHT * 0.7f)
 		{
-			m_bgScrollY = true;
-			HandleCamera((float)GetVelY());
+			if (Engine::Instance().GetLevel2()[ROWS2 - 1][0]->GetDstP()->y > HEIGHT - 32)
+			{
+				m_bgScrollY = true;
+				HandleCamera((float)GetVelY(), false, stage);
+			}
+		}
+		else if (GetVelY() < 0 && GetDstP()->y < HEIGHT * 0.3f)
+		{
+			if (Engine::Instance().GetLevel2()[0][0]->GetDstP()->y < 0)
+			{
+				m_bgScrollY = true;
+				HandleCamera((float)GetVelY(), false, stage);
+			}
 		}
 	}
 	UpdateAxis(m_bgScrollX, m_bgScrollY);
@@ -181,16 +219,32 @@ void Player::Collision()
 		}
 	}
 }
-void Player::HandleCamera(float scroll, bool x)
-{
-	for (int row = 0; row < ROWS; row++)
+void Player::HandleCamera(float scroll, bool x, int stage)
+{ 
+	if (stage == 1)
 	{
-		for (int col = 0; col < COLS; col++)
+		for (int row = 0; row < ROWS; row++)
 		{
-			if (x)
-				Engine::Instance().GetLevel()[row][col]->GetDstP()->x -= scroll;
-			else
-				Engine::Instance().GetLevel()[row][col]->GetDstP()->y -= scroll;
+			for (int col = 0; col < COLS; col++)
+			{
+				if (x)
+					Engine::Instance().GetLevel()[row][col]->GetDstP()->x -= scroll;
+				else
+					Engine::Instance().GetLevel()[row][col]->GetDstP()->y -= scroll;
+			}
+		}
+	}
+	else if (stage == 2)
+	{
+		for (int row = 0; row < ROWS2; row++)
+		{
+			for (int col = 0; col < COLS2; col++)
+			{
+				if (x)
+					Engine::Instance().GetLevel2()[row][col]->GetDstP()->x -= scroll;
+				else
+					Engine::Instance().GetLevel2()[row][col]->GetDstP()->y -= scroll;
+			}
 		}
 	}
 }

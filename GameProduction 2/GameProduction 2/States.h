@@ -4,6 +4,8 @@
 #define NUMPLATFORMS 5
 #define ROWS 73
 #define COLS 171
+#define ROWS2 51
+#define COLS2 419
 
 #include <iostream>
 #include <SDL.h>
@@ -32,7 +34,7 @@ public:
 	virtual void Resume();
 };
 
-class GameState : public State
+class Level1State : public State
 {
 private:
 
@@ -43,7 +45,7 @@ private:
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
 public:
-	GameState();
+	Level1State();
 	void Update();
 	void CheckCollisionHook();
 	void Render();
@@ -51,6 +53,19 @@ public:
 	void Exit();
 	void Resume();
 
+};
+class Level2State : public State
+{
+private:
+	Player* m_pPlayer;
+	GrapplingHook* m_hook;
+public:
+	Level2State();
+	void Update();
+	void Render();
+	void Enter();
+	void Exit();
+	void Resume();
 };
 
 

@@ -1,13 +1,30 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (GAME1017_Template_W01.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: 중간 디렉터리(Debug\)에 다른 프로젝트(GAME1017_Template_W01.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+  Button.cpp
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
+  CollisionManager.cpp
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
+  Engine.cpp
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
+  GrapplingHook.cpp
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\GrapplingHook.cpp(59,19): warning C4244: '+=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  StateManager.cpp
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
   States.cpp
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
-  TextureManager.cpp
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(4,1): warning C4005: 'GRAV': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(4): message : 'GRAV'의 이전 정의를 참조하십시오.
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\Player.h(5,1): warning C4005: 'JUMPFORCE': 매크로 재정의
+D:\코딩\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
   코드를 생성하고 있습니다...
-D:\겜프\GameProduction-2\GameProduction 2\GameProduction 2\PlatformPlayer.h(5): message : 'JUMPFORCE'의 이전 정의를 참조하십시오.
-  LINK : D:\겜프\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
-SoundManager.obj : warning LNK4099: 'vc142.pdb' PDB를 'SoundManager.obj' 또는 'D:\겜프\GameProduction-2\GameProduction 2\Debug\vc142.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-MathManager.obj : warning LNK4099: 'vc142.pdb' PDB를 'MathManager.obj' 또는 'D:\겜프\GameProduction-2\GameProduction 2\Debug\vc142.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-FontManager.obj : warning LNK4099: 'vc142.pdb' PDB를 'FontManager.obj' 또는 'D:\겜프\GameProduction-2\GameProduction 2\Debug\vc142.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-  GameProduction 2.vcxproj -> D:\겜프\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe
+  GameProduction 2.vcxproj -> D:\코딩\겜프\GameProduction-2\GameProduction 2\Debug\GameProduction 2.exe
