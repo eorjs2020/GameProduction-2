@@ -53,8 +53,9 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
 	TEMA::RegisterTexture("Img/DroneIdle.png", "droneIdle");
 	TEMA::RegisterTexture("Img/Kit.png", "interface");
+	TEMA::RegisterTexture("Img/Assets.png", "Key");
 	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
-	STMA::ChangeState(new TitleState);
+	STMA::ChangeState(new TutorialState);
 	SOMA::AllocateChannels(16);
 	
 	m_running = true; // Everything is okay, start the engine.

@@ -37,14 +37,14 @@ public:
 class Level1State : public State
 {
 private:
-
+	Sprite* m_goal;
 	Sprite * m_interface;
 	Label* m_timer, * m_energy;
 	PauseButton* m_pause;
 	ResumeButton* m_resume;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
-	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
+	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
 public:
@@ -70,7 +70,32 @@ public:
 	void Exit();
 	void Resume();
 };
-
+class TutorialState : public State
+{
+private:
+	Sprite* explainKey;
+	Sprite* m_goal;
+	Sprite* m_interface;
+	Label* m_timer, * m_energy;
+	Label* tuto1, *tuto2, *tuto3, *tuto4, *tuto5, *tuto6;
+	Label* pressEnterL;
+	Player* m_pPlayer;
+	GrapplingHook* m_hook;
+	bool explainPause = true;
+	int pressEnter = 0;
+	bool explain = true;
+	bool existHook = false, hookColl = false, m_stageEnd = false; 
+	int m_pSFXVolume, m_pMusicVolume;
+	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
+public:
+	TutorialState();
+	void Update();
+	void CheckCollisionHook();
+	void Render();
+	void Enter();
+	void Exit();
+	void Resume();
+};
 
 class TitleState : public State
 {

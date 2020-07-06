@@ -15,6 +15,7 @@ Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstar
 	m_ePos.y = m_dst.y;
 	chasingTimer = 0;
 	searchingDelay = 0;
+	
 }
 
 void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
@@ -136,6 +137,7 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 void Enemy::Render()
 {
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
+
 }
 void Enemy::AI(SDL_Rect* a)
 {

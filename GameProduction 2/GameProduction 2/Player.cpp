@@ -24,9 +24,6 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 void Player::Update(int stage)
 {
 	
-	
-	
-
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{		
 		m_accelX -= 1;				
