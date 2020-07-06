@@ -48,4 +48,18 @@ private:
 public:
 	ResumeButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
 };
+class TutorialButton :public Button
+{
+private:
+	void Execute();
+public:
+	TutorialButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
+};
+class MainMenuButton :public Button
+{
+private:
+	void Execute();
+public:
+	MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
+};
 #endif

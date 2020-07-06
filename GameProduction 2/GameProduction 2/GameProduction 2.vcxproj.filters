@@ -148,6 +148,9 @@
     <Text Include="map\TileDataLevel2.txt">
       <Filter>리소스 파일</Filter>
     </Text>
+    <Text Include="map\tutorial.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Img\tilemap1.png">
@@ -163,6 +166,15 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Img\DroneIdle.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\Assets.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\Kit.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\tutorialButton.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

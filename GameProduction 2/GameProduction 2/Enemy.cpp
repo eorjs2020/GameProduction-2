@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "MathManager.h"
 #include "EventManager.h"
+#include "CollisionManager.h"
 
 Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf, int boundary)
 	:AnimatedSprite(s, d, r, t, sstart, smin, smax, nf), m_dir(0), m_State(idle)
@@ -15,20 +16,34 @@ Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstar
 	m_ePos.y = m_dst.y;
 	chasingTimer = 0;
 	searchingDelay = 0;
+	m_pSBox = { m_dst.x + m_dst.w, m_dst.y + 5, 160.0f, 80.0f };
 }
 
 void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 {
+	if (m_dir == 0)
+	{
+		m_pSBox.x = (int)m_dst.x + (int)m_dst.w;
+		m_pSBox.y = m_dst.y;
+	}
+
+	if (m_dir == 1)
+	{
+		m_pSBox.x = m_dst.x - (m_pSBox.w);
+		m_pSBox.y = m_dst.y;
+	}
 
 	if (x)
 	{
 		m_ePos.x -= AccelX;
 		m_dst.x -= AccelX;
+		m_pSBox.x -= AccelX;
 	}
 	if (y)
 	{
 		m_ePos.y -= AccelY;
 		m_dst.y -= AccelY;
+		m_pSBox.y -= AccelX;
 	}
 	if (EVMA::KeyHeld(SDL_SCANCODE_2))
 		m_State = seeking;
@@ -37,10 +52,13 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 	switch (m_State)
 	{
 	case idle:
-		dx = dy = 0.0;
-		if (p->GetDstP()->x + p->GetDstP()->w / 2 < m_ePos.x + boundary && p->GetDstP()->x + p->GetDstP()->w / 2 >= m_ePos.x &&
-			p->GetDstP()->y + p->GetDstP()->h / 2 < m_ePos.y + 100 && p->GetDstP()->y + p->GetDstP()->h / 2 >= m_ePos.y - 100)
+	{	dx = dy = 0.0;
+	
+		if (COMA::AABBCheck(m_pSBox,*p->GetDstP()))
+		{
 			++searchingDelay;
+		}
+
 		if (searchingDelay == 30)
 		{
 			searchingDelay = 0;
@@ -48,30 +66,30 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 		}
 		if (!m_moving)
 		{
-			
+
 			m_dir = 0;
 			m_dst.x += 2;
-			
+	
 			if (m_dst.x >= m_ePos.x + boundary)
 			{
-				m_moving = true;
+			m_moving = true;
 			}
 
 		}
 		else if (m_moving)
 		{
-			
+
 			m_dir = 1;
 			m_dst.x -= 2.0f;
-			
+
 			if (m_dst.x <= m_ePos.x)
 			{
 				m_moving = false;
 			}
-		
+
 		}
-		
 		break;
+	}
 	case seeking:
 	{ // {} Needed because of local var.
 		SDL_Rect temp1 = { MAMA::ConvertFRect2Rect(*GetDstP()) };
@@ -136,6 +154,8 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 void Enemy::Render()
 {
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
+	SDL_SetRenderDrawColor(m_pRend, 192, 64, 0, 255);
+	SDL_RenderFillRectF(m_pRend, &m_pSBox);
 }
 void Enemy::AI(SDL_Rect* a)
 {
