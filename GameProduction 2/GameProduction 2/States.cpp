@@ -57,18 +57,18 @@ void Level1State::Enter()
 
 	m_interface = new Sprite({ 6,455,224,44 }, { 400.0f,724.0f,224.0f,44.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("interface"));
-	
-	m_timer = new Label("font1", 900, 10, "Timer: ", {255,255,255,255});
-	m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
 	m_pause = new PauseButton({ 0,0,490,140 }, { 2.0f,2.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("pause"));
 	m_quit = new QuitButton({ 0,0,490,140 }, { 380.0f,280.0f,240.0f,70.0f },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	    Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	m_timer = new Label("font1", 850, 10, m_defualtTimer, {255,255,255,255});
+	m_energy = new Label("font1", 410, 680, m_defualtEnergy, { 255,255,255,255 });
 	m_mainMenu = new MainMenuButton({ 0,0,490,140 }, { 380.0f,210.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("mainmenu"));
 	m_resume = new ResumeButton({ 0,0,490,140 }, { 380.0f,420.0f,240.0f,70.0f },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("resume"));
 	
+	timer.start();
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -103,6 +103,8 @@ void Level1State::Enter()
 		}
 	}
 	inFile.close();
+	m_battery = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[12][40]->GetDstP()->x,Engine::Instance().GetLevel()[12][40]->GetDstP()->y, 32, 32 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
 	m_goal = new Sprite({ 226,37,12,7 }, {Engine::Instance().GetLevel()[72][166]->GetDstP()->x,Engine::Instance().GetLevel()[72][166]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
@@ -152,8 +154,11 @@ void Level1State::Update()
 		}
 		m_pPlayer->Collision();
 		m_hook->Collision();
-		m_timer = new Label("font1", 900, 10, "Timer: ", { 255,255,255,255 });
-		m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
+		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
+		m_timer->SetText(m_updateTimer);
+		m_energyNum = std::to_string(m_pPlayer->getEnergy());
+		m_updateEnergy = m_defualtEnergy + m_energyNum;
+		m_energy->SetText(m_updateEnergy);
 		if (m_stageEnd)
 			STMA::ChangeState(new Level2State);
 	
@@ -161,7 +166,13 @@ void Level1State::Update()
 	
         
 	}
-	
+	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
+		m_pPlayer->setEnergy(10);
+		m_batteryExist = false;
+		delete m_battery;
+	}
+	m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
+	m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
 }
 
 void Level1State::CheckCollisionHook()
@@ -195,6 +206,8 @@ void Level1State::Render()
 	m_timer->Render();
 	m_energy->Render();
 	m_goal->Render();
+	if (m_batteryExist == true)
+		m_battery->Render();
 	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size();++i)
 	{
 		Engine::Instance().GetEnemy()[i]->Render();

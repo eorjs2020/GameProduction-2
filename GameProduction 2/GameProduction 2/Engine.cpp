@@ -57,6 +57,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterIdle.png", "playerIdle");
 	TEMA::RegisterTexture("Img/DroneIdle.png", "droneIdle");
 	TEMA::RegisterTexture("Img/Kit.png", "interface");
+	TEMA::RegisterTexture("Img/battery.png", "battery");
 	TEMA::RegisterTexture("Img/Assets.png", "Key");
 	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
 	STMA::ChangeState(new TitleState);
@@ -89,7 +90,7 @@ void Engine::Update()
 {
 	
 	STMA::Update();
-	
+
 }
 
 void Engine::Render() 
