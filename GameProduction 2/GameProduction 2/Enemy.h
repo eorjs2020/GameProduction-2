@@ -26,6 +26,7 @@ private:
 	void SetY(float y);
 	void AI(SDL_Rect* a);
 private:
+	SDL_FRect m_pSBox;
 	int chasingTimer, searchingDelay, m_slowCooldown = 0;
 	bool m_dir;
 	bool m_grounded;
@@ -38,6 +39,7 @@ private:
 		m_drag,
 		m_grav,
 		dx, dy, boundary;
+	bool searchingDir = false;
 	bool m_bgScrollX = false, m_bgScrollY = false, m_moving = false, m_playerslow = false;
 public:
 	glm::vec2 m_ePos;

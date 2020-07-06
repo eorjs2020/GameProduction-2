@@ -41,7 +41,8 @@ void Level1State::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	m_resume = new ResumeButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
-	
+	m_mainMenu = new MainMenuButton({ 0,0,480,140 }, { 380.0f,350.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("mainmenu"));
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -95,6 +96,8 @@ void Level1State::Update()
 		m_stageEnd = true;
 	if (Engine::Instance().Pause() == true)
 	{
+		if (m_mainMenu->Update() == 1)
+			return;
 		m_resume->Update();
 	}
 	if (EVMA::KeyHeld(SDL_SCANCODE_X))
@@ -104,7 +107,7 @@ void Level1State::Update()
 	
 	if (Engine::Instance().Pause() == false)
 	{
-		SOMA::StopMusic();
+		
 		m_pMusicVolume = m_pMusicSetVol;
 		m_pSFXVolume = m_pSFXSetVol;
 		SOMA::SetSoundVolume(m_pSFXVolume);
@@ -176,6 +179,7 @@ void Level1State::Render()
 		State::Render();
 	if (Engine::Instance().Pause() == true)
 	{
+		m_mainMenu->Render();
 		m_resume->Render();
 	}
 }
@@ -391,6 +395,8 @@ void TutorialState::Enter()
 		}
 	}
 	inFile.close();
+	m_MainMenu = new MainMenuButton({ 0,0,480,140 }, { 0.0f,0.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("mainmenu"));
 	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel()[20][81]->GetDstP()->x,Engine::Instance().GetLevel()[20][81]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
@@ -406,12 +412,12 @@ void TutorialState::Enter()
 
 void TutorialState::Update()
 {
-
-	
-		
+	if (m_MainMenu->Update() == 1)
+		return;
+			
 	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_goal->GetDstP()))
 		m_stageEnd = true;
-
+	
 	if (EVMA::KeyReleased(SDL_SCANCODE_RETURN) && explainPause)
 	{
 		++pressEnter;
@@ -420,7 +426,6 @@ void TutorialState::Update()
 	}
 	if (!explainPause)
 	{
-		SOMA::StopMusic();
 		m_pMusicVolume = m_pMusicSetVol;
 		m_pSFXVolume = m_pSFXSetVol;
 		SOMA::SetSoundVolume(m_pSFXVolume);
@@ -490,6 +495,7 @@ void TutorialState::Render()
 	//draw the hook
 	if (m_hook->GetExist() == true)
 		m_hook->Render();
+	m_MainMenu->Render();
 	// If GameState != current state.
 	if (dynamic_cast<Level1State*>(STMA::GetStates().back()))
 		State::Render();
@@ -545,8 +551,10 @@ void TitleState::Enter()
 	
 	m_playBtn = new PlayButton({ 0,0,480,140 }, { 380.0f,350.0f,240.0f,70.0f }, 
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("play"));
-	m_quitBtn = new QuitButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
+	m_quitBtn = new QuitButton({ 0,0,480,140 }, { 380.0f,490.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	m_tuto = new TutorialButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("tutorial"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/menu_screen_music1.wav", "BGM", SOUND_MUSIC);
 	SOMA::SetMusicVolume(16);
@@ -556,7 +564,9 @@ void TitleState::Enter()
 
 void TitleState::Update()
 {
-	
+	if (m_tuto->Update() == 1)
+		return;
+
 	if (m_playBtn->Update() == 1)
 		return;
 	if (m_quitBtn->Update() == 1)
@@ -568,6 +578,7 @@ void TitleState::Render()
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
 	m_playBtn->Render();
 	m_quitBtn->Render();
+	m_tuto->Render();
 	State::Render();
 }
 

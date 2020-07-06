@@ -91,3 +91,22 @@ void ResumeButton::Execute()
 
 ResumeButton::ResumeButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
 
+void TutorialButton::Execute()
+{
+	SOMA::PlaySound("beep");
+	STMA::ChangeState(new TutorialState);
+}
+
+TutorialButton::TutorialButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) : Button(src, dst, r, t)
+{
+}
+
+void MainMenuButton::Execute()
+{
+	SOMA::PlaySound("beep");
+	STMA::ChangeState(new TitleState);
+}
+
+MainMenuButton::MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button (src, dst, r, t)
+{
+}

@@ -40,8 +40,9 @@ private:
 	Sprite* m_goal;
 	Sprite * m_interface;
 	Label* m_timer, * m_energy;
-	PauseButton* m_pause;
-	ResumeButton* m_resume;
+	Button* m_pause;
+	Button* m_resume;
+	Button* m_mainMenu;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
@@ -76,6 +77,7 @@ private:
 	Sprite* explainKey;
 	Sprite* m_goal;
 	Sprite* m_interface;
+	Button* m_MainMenu;
 	Label* m_timer, * m_energy;
 	Label* tuto1, *tuto2, *tuto3, *tuto4, *tuto5, *tuto6;
 	Label* pressEnterL;
@@ -109,6 +111,8 @@ public:
 private:
 	Button* m_playBtn;
 	Button* m_quitBtn;
+	Button* m_tuto;
+	
 		
 };
 class EndState : public State

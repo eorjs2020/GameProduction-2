@@ -42,6 +42,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	m_fps = (Uint32)round((1 / (double)FPS) * 1000); // Sets FPS in milliseconds and rounds.
 	TEMA::RegisterTexture("Img/startButton.png", "play");
 	TEMA::RegisterTexture("Img/quitButtons.png", "quit");
+	TEMA::RegisterTexture("Img/tutorial.png", "tutorial");
+	TEMA::RegisterTexture("Img/mainmenu.png", "mainmenu");
 	TEMA::RegisterTexture("Img/exit.png", "end");
 	TEMA::RegisterTexture("Img/Concept2.png", "player");
 	TEMA::RegisterTexture("Img/Concept.png", "Enemy");
@@ -55,7 +57,7 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/Kit.png", "interface");
 	TEMA::RegisterTexture("Img/Assets.png", "Key");
 	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
-	STMA::ChangeState(new TutorialState);
+	STMA::ChangeState(new TitleState);
 	SOMA::AllocateChannels(16);
 	
 	m_running = true; // Everything is okay, start the engine.
