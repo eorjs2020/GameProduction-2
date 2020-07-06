@@ -45,7 +45,7 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 		m_updateEnergy, m_energyNum;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
-	
+	Button* m_quit, * m_mainMenu, * m_resume, * m_pause;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
