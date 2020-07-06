@@ -18,6 +18,7 @@
 #include <vector>
 #include "Tile.h"
 #include "Enemy.h"
+#include <chrono>
 // Do not include any macros, initialized properties or full function definitions in this header.
 
 class Engine
@@ -35,6 +36,7 @@ private: // Private properties.
 	std::vector<Tile*> m_platforms2;
 	std::vector<Enemy*> m_enemies;
 	bool m_pPause;
+
 private: // Private methods.
 	Engine();
 	bool Init(const char* title, int xpos, int ypos, int width, int height, int flags);

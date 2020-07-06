@@ -84,7 +84,7 @@ void Engine::Update()
 {
 	
 	STMA::Update();
-	
+
 }
 
 void Engine::Render() 

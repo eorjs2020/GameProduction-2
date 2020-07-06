@@ -21,6 +21,7 @@
 #include "Player.h"
 #include "glm.hpp"
 #include <array>
+#include "Timer.h"
 using namespace std;
 class State // This is the abstract base class for all specific states.
 {
@@ -40,13 +41,18 @@ private:
 
 	Sprite * m_interface;
 	Label* m_timer, * m_energy;
+	std::string m_a, m_b = "Timer: ", m_c;
 	PauseButton* m_pause;
 	ResumeButton* m_resume;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
+	
 	bool existHook = false, hookColl = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
+	LTimer timer;
+
+	
 public:
 	Level1State();
 	void Update();
