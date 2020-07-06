@@ -43,6 +43,7 @@ private:
 	Button* m_pause;
 	Button* m_resume;
 	Button* m_mainMenu;
+	Button* m_quit;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move

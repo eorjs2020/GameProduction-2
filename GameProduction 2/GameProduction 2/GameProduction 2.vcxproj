@@ -184,6 +184,7 @@
     <Image Include="Img\DroneIdle.png" />
     <Image Include="Img\Kit.png" />
     <Image Include="Img\tilemap1.png" />
+    <Image Include="Img\tutorialButton.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
