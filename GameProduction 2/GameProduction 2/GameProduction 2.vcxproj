@@ -146,6 +146,7 @@
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="States.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="map\Game_map.txt" />
@@ -176,6 +178,7 @@
     <Text Include="map\TileDataLevel2.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Img\battery.png" />
     <Image Include="Img\CharacterIdle.png" />
     <Image Include="Img\CharacterJumpFall.png" />
     <Image Include="Img\CharacterWalk.png" />

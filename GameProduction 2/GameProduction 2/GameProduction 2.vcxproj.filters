@@ -72,6 +72,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathManager.h">
@@ -134,6 +137,9 @@
     <ClInclude Include="Enemy.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="map\TileDataLevel1.txt">
@@ -163,6 +169,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="Img\DroneIdle.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Img\battery.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

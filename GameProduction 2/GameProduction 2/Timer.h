@@ -8,7 +8,7 @@
 class LTimer
 {
 public:
-    std::string getrunnningtime(LTimer a);
+    std::string getrunnningtime();
     //Initializes variables
     LTimer();
 

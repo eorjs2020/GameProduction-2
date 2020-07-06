@@ -21,7 +21,7 @@ void LTimer::start()
 	m_paused = false;
 
 	//Get the current clock time
-	m_startTicks = SDL_GetTicks();
+	m_startTicks = 0;
 	m_pausedTicks = 0;
 }
 
@@ -72,7 +72,12 @@ Uint32 LTimer::getTicks()
 {
 	//The actual timer time
 	Uint32 time = 0;
-
+	
+	if (SDL_GetTicks()/1000 - m_startTicks/1000  == 60)
+	{
+		++m_minutes;
+		m_startTicks = SDL_GetTicks();
+	}
 	//If the timer is running
 	if (m_started)
 	{
@@ -84,10 +89,12 @@ Uint32 LTimer::getTicks()
 		}
 		else
 		{
+			
 			//Return the current time minus the start time
 			time = SDL_GetTicks() - m_startTicks;
 		}
 	}
+
 	return time;
 }
 
@@ -101,15 +108,12 @@ bool LTimer::isPaused()
 	return m_paused && m_started;
 }
 
-std::string LTimer::getrunnningtime(LTimer a)
+std::string LTimer::getrunnningtime()
 {
-	m_seconds = a.getTicks() / 1000;
 	
-	if (m_seconds > 59)
-		{
-			m_minutes++;
-			m_seconds = 0;
-		}
+	m_seconds = this->getTicks() / 1000 ;
+		
+	
 	std::string m_a, m_b, m_c;
 	m_a = std::to_string(m_seconds);
 	m_b = std::to_string(m_minutes);

@@ -119,7 +119,7 @@ void Level1State::Update()
 		m_pPlayer->Collision();
 		m_hook->Collision();
 		
-		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
+		m_updateTimer = m_defualtTimer + timer.getrunnningtime();
 		m_timer->SetText(m_updateTimer);
 		
 		
