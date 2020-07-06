@@ -21,6 +21,8 @@ public:
 	bool BGScrollY() { return m_bgScrollY; }
 	void AddAccelX(double a);	
 	void SetMaxVel(double a);
+	int getEnergy() { return m_energy; }
+	void setEnergy(int a);
 private:
 	int speedDowncount;
 	enum state { idle, running, jump } m_state;
@@ -33,7 +35,8 @@ private:
 		m_velY,
 		m_maxVelY,
 		m_drag,
-		m_grav;
+		m_grav,
+		m_energy;
 	bool m_bgScrollX = false, m_bgScrollY = false;
 	double* m_a, * m_aMaxY;
 private:

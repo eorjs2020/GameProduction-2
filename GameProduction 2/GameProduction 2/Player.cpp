@@ -19,6 +19,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_a = &m_accelX;
 	m_aMaxY = &m_maxVelX;
 	speedDowncount = 0;
+	m_energy = 0; 
 }
 
 void Player::Update(int stage)
@@ -290,6 +291,11 @@ void Player::AddAccelX(double a)
 void Player::SetMaxVel(double a)
 {
 	m_maxVelX = a;
+}
+
+void Player::setEnergy(int a)
+{
+	m_energy += a;
 }
 void Player::SetGrav(double y)
 {

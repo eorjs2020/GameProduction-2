@@ -39,9 +39,10 @@ class Level1State : public State
 {
 private:
 
-	Sprite * m_interface;
+	Sprite * m_interface, * m_battery;
 	Label* m_timer, * m_energy;
-	std::string m_a, m_b = "Timer: ", m_c;
+	std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEnergy = "Energy: 0", 
+		m_updateEnergy, m_energyNum;
 	PauseButton* m_pause;
 	ResumeButton* m_resume;
 	Player* m_pPlayer;
@@ -51,7 +52,7 @@ private:
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
 	LTimer timer;
-
+	bool m_batteryExist = true; 
 	
 public:
 	Level1State();
