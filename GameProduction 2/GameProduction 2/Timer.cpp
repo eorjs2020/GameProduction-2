@@ -103,13 +103,16 @@ bool LTimer::isPaused()
 
 std::string LTimer::getrunnningtime(LTimer a)
 {
-	m_seconds = a.getTicks() / 1000;
 	
-	if (m_seconds > 59)
+	m_seconds = a.getTicks() / 1000;
+	m_minutes = a.getTicks() / 60000;
+	m_seconds %= 60;
+	/*if (m_seconds > 59)
 		{
 			m_minutes++;
 			m_seconds = 0;
-		}
+		}*/
+
 	std::string m_a, m_b, m_c;
 	m_a = std::to_string(m_seconds);
 	m_b = std::to_string(m_minutes);
