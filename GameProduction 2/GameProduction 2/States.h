@@ -42,6 +42,7 @@ private:
 	Label* m_timer, * m_energy;
 	PauseButton* m_pause;
 	ResumeButton* m_resume;
+	
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
@@ -109,7 +110,7 @@ public:
 private:
 	Button* m_playBtn;
 	Button* m_quitBtn;
-		
+	Button* m_tutoBtn;
 };
 class EndState : public State
 {

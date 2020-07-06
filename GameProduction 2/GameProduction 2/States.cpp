@@ -41,7 +41,7 @@ void Level1State::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
 	m_resume = new ResumeButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
-	
+
 	ifstream inFile("map/TileDataLevel1.txt");
 	if (inFile.is_open())
 	{ // Create map of Tile prototypes.
@@ -547,6 +547,8 @@ void TitleState::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("play"));
 	m_quitBtn = new QuitButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	m_tutoBtn = new TutorialButton({ 0,0,480,140 }, { 380.0f,420.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("tutorial"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/menu_screen_music1.wav", "BGM", SOUND_MUSIC);
 	SOMA::SetMusicVolume(16);
@@ -559,6 +561,7 @@ void TitleState::Update()
 	
 	if (m_playBtn->Update() == 1)
 		return;
+
 	if (m_quitBtn->Update() == 1)
 		return; 
 }

@@ -57,13 +57,12 @@ void Button::Render()
 	SDL_RenderCopyF(m_pRend, m_pText, &m_src, &m_dst);
 }
 
-// Create button subclasses and their overridden Execute methods below...
 
 PlayButton::PlayButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
 
 void PlayButton::Execute()
 {
-	//SOMA::SetSoundVolume(60);
+	
 	SOMA::PlaySound("beep");
 	STMA::ChangeState(new Level1State);
 }
@@ -91,3 +90,22 @@ void ResumeButton::Execute()
 
 ResumeButton::ResumeButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t) {}
 
+void MainMenuButton::Excute()
+{
+	SOMA::PlaySound("beep");
+	STMA::ChangeState(new TitleState);
+}
+
+MainMenuButton::MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t)
+{
+}
+
+void TutorialButton::Excute()
+{
+	SOMA::PlaySound("beep");
+	STMA::ChangeState(new TutorialState);
+}
+
+TutorialButton::TutorialButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t)
+{
+}

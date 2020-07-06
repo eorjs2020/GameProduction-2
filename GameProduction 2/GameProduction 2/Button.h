@@ -19,7 +19,6 @@ protected: // Private but inherited!
 };
 
 // List button subclasses here...
-
 class PlayButton : public Button
 {
 private:
@@ -47,5 +46,19 @@ private:
 	void Execute();
 public:
 	ResumeButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
+};
+class MainMenuButton :public Button
+{
+private:
+	void Excute();
+public:
+	MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
+};
+class TutorialButton :public Button
+{
+private:
+	void Excute();
+public:
+	TutorialButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
 };
 #endif
