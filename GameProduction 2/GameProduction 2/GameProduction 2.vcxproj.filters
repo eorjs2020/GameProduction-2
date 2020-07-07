@@ -18,9 +18,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlatformPlayer.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
     <ClCompile Include="MathManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PlatformEnemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="GrapplingHook.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -78,9 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathManager.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PlatformPlayer.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="SoundManager.h">
@@ -119,9 +110,6 @@
     <ClInclude Include="Label.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="PlatformEnemy.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GrapplingHook.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
@@ -135,6 +123,9 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

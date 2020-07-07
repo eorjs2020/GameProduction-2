@@ -1,13 +1,7 @@
 #pragma once
 #ifndef _ENGINE_H_
 #define _ENGINE_H_
-#define ROWS 73
-#define COLS 171
-#define WIDTH 1024
-#define HEIGHT 768
-#define FPS 60
-#define ROWS2 51
-#define COLS2 419
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -18,7 +12,8 @@
 #include <vector>
 #include "Tile.h"
 #include "Enemy.h"
-#include <chrono>
+#include "Define.h"
+
 // Do not include any macros, initialized properties or full function definitions in this header.
 
 class Engine

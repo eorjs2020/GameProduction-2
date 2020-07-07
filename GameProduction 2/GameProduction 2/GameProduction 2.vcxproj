@@ -138,8 +138,6 @@
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathManager.cpp" />
-    <ClCompile Include="PlatformEnemy.cpp" />
-    <ClCompile Include="PlatformPlayer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SkillManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -152,6 +150,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DebugManager.h" />
+    <ClInclude Include="Define.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EventManager.h" />
@@ -159,8 +158,6 @@
     <ClInclude Include="GrapplingHook.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="MathManager.h" />
-    <ClInclude Include="PlatformEnemy.h" />
-    <ClInclude Include="PlatformPlayer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SkillManager.h" />
     <ClInclude Include="SoundManager.h" />

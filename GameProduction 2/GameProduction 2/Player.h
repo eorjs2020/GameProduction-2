@@ -1,9 +1,6 @@
 #pragma once
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
-#define GRAV 4.0
-#define JUMPFORCE 30.0
-
 #include "Sprite.h"
 #include <array>
 

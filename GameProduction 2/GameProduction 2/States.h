@@ -13,8 +13,6 @@
 #include <vector>
 #include <map>
 #include "Button.h"
-#include "PlatformPlayer.h"
-#include "PlatformEnemy.h"
 #include "GrapplingHook.h"
 #include "Label.h"
 #include "Tile.h"
