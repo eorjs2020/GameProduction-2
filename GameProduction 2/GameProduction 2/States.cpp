@@ -146,14 +146,16 @@ void Level1State::Update()
 		m_pPlayer->Update();
 		m_goal->GetDstP()->x = Engine::Instance().GetLevel()[71][165]->GetDstP()->x;
 		m_goal->GetDstP()->y = Engine::Instance().GetLevel()[71][165]->GetDstP()->y;
+		m_hook->Collision();
 		m_hook->Update();
+		
 		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
 		{
 			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
 				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
 		}
 		m_pPlayer->Collision();
-		m_hook->Collision();
+		
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
 		m_timer->SetText(m_updateTimer);
 		m_energyNum = std::to_string(m_pPlayer->getEnergy());
@@ -322,9 +324,10 @@ void Level2State::Update()
 {
 
 	m_pPlayer->Update(2);
+	m_hook->Collision(2);
 	m_hook->Update();
 	m_pPlayer->Collision();
-	m_hook->Collision(2);
+	
 	
 }
 

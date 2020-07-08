@@ -278,7 +278,7 @@ double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 void Player::SetX(float y) { m_dst.x = y; }
 void Player::SetY(float y) { m_dst.y = y; }
-
+void Player::SetVel(double a, double b) { m_velX = a; m_velY = b; }
 void Player::AddAccelX(double a)
 {
 	m_accelX += a;

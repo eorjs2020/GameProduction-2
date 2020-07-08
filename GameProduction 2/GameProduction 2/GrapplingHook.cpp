@@ -5,10 +5,12 @@
 #include "MathManager.h"
 #include "EventManager.h"
 #include "CollisionManager.h"
+#include "DebugManager.h"
 
 GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a) 
 	:Sprite(s, d, r, t)
 {
+	dx = dy = 0.0f;
 	direction = dir;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
 	m_maxVelX = 10.0;
@@ -19,73 +21,81 @@ GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Textu
 	m_Exist = false;
 	m_Collision = false;
 	m_Player = a; 
+	m_destinationX = m_Player->GetDstP()->x;
+	m_destinationY = m_Player->GetDstP()->y;
+	grap = true;
 }
 
 
 void GrapplingHook::Update() 
 {
+	if (m_Player->BGScorllX())
+	{
+		m_destinationX -= m_Player->GetVelX();
+		m_dst.x -= m_Player->GetVelX();
+	}
+	if (m_Player->BGScrollY())
+	{
+		m_destinationY -= m_Player->GetVelY();
+		m_dst.y -= m_Player->GetVelY();
+	}
 	
 	if (EVMA::MouseHeld(1))
 	{
-		if (m_Exist == false) {
-			m_dst.x = m_Player->GetDstP()->x;
-			m_dst.y = m_Player->GetDstP()->y;
-			m_Exist = true;
-			m_Player->SetGrav(0.0);
-			m_destinationX = EVMA::GetMousePos().x;
-			m_destinationY = EVMA::GetMousePos().y;
-		}
-		if (m_Exist == false) {
-			double h = 1, o, a;
-			double pA = MAMA::AngleBetweenPoints((m_dst.y - m_Player->GetDstP()->y),
-				(m_dst.x - m_Player->GetDstP()->x));
-			double pD = MAMA::Distance((m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2.0f), (m_dst.x),
-				(m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2.0f), (m_dst.y));
-			a = MAMA::SetDeltaX(pA, h);
-			o = MAMA::SetDeltaY(pA, h);
-		}
-	}
-	else if (EVMA::MouseReleased(1))
-	{
-		m_Exist = false;
-	}
+		m_destinationX = EVMA::GetMousePos().x;
+		m_destinationY = EVMA::GetMousePos().y;
+		m_dst.x = m_destinationX;
+		m_dst.y = m_destinationY;
+		m_Exist = true;
 	
-	// Do X axis first.
-	m_velX += m_accelX;
-	m_velX *= (m_grounded ? m_drag : 1);
-	m_velX = std::min(std::max(m_velX, -(m_maxVelX)), (m_maxVelX));
-	m_dst.x += (int)m_velX; // Had to cast it to int to get crisp collision with side of platform.
-	// Now do Y axis.
-	m_velY += m_accelY + m_grav; // Adjust gravity to get slower jump.
-	m_velY = std::min(std::max(m_velY, -(m_maxVelY)), (m_grav * 3));
-	m_dst.y += m_velY; // If you run into issues with vertical collision, you can also cast to int.
-	m_accelX = m_accelY = 0.0;
-	if (m_Exist == true)
-	{
-		double h = 1, o, a;
-		if (MAMA::Distance((GetDstP()->x), (m_destinationX),
-			(GetDstP()->y), (m_destinationY)) <= 1.0)
-		{
-			Stop();
-		}
-		else {
-			double pA = MAMA::AngleBetweenPoints((m_destinationY - GetDstP()->y),
-				(m_destinationX - GetDstP()->x));
-			double pD = MAMA::Distance((GetDstP()->x + GetDstP()->w / 2.0f), (m_destinationX),
-				(GetDstP()->y + GetDstP()->h / 2.0f), (m_destinationX));
-			a = MAMA::SetDeltaX(pA, h);
-			o = MAMA::SetDeltaY(pA, h);
-			SetAccelX(a);
-			SetAccelY(o);
-		}
+
+
 	}
 
+	if (EVMA::MouseHeld(3)&& m_Exist)
+	{
+		m_Player->SetGrav(0.0f);
+	
 
+		if (MAMA::Distance(m_Player->GetDstP()->x + m_Player->GetDstP()->w /2, m_dst.x + m_dst.w /2, m_Player->GetDstP()->y + m_Player->GetDstP()->h /2, m_dst.y + m_dst.h /2) <= 5)
+		{
+			dx = dy = 0.0;
+			m_Player->Stop();
+			m_Exist = false;
+		}
+			
+		else 
+		{
+			double a = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
+				(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
+			MAMA::SetDeltas(a, dx, dy, 10.0, 10.0);
+			
+		}
+		
+	}
+
+	else if (EVMA::MouseReleased(3))
+	{
+		dx = dy = 0;
+		m_Player->SetGrav(6.0f);
+	}
+	std::cout << dx << std::endl;
+	/*m_Player->SetAccelX(dx);
+	m_Player->SetAccelY(dy);*/
+	/*m_Player->GetDstP()->x += (int)round(dx);
+	m_Player->GetDstP()->y += (int)round(dy);*/
+	//m_Player->SetVel((int)round(dx), (int)round(dy));
+	
 }
 
 void GrapplingHook::Render()
 {
-	SDL_RenderCopyF(m_pRend, m_pText, &m_src, &m_dst);
+	
+	if (m_Exist)
+	{
+		SDL_RenderCopyF(m_pRend, m_pText, &m_src, &m_dst);
+	}
+
 }
 
 void GrapplingHook::Stop()

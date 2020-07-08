@@ -18,8 +18,12 @@ public:
 	bool BGScrollY() { return m_bgScrollY; }
 	void AddAccelX(double a);	
 	void SetMaxVel(double a);
+	void SetAccelX(double a);
+	void SetAccelY(double a);
 	int getEnergy() { return m_energy; }
 	void setEnergy(int a);
+	void SetVel(double a, double b);
+	void Stop();
 private:
 	int speedDowncount;
 	enum state { idle, running, jump } m_state;
@@ -40,11 +44,8 @@ private:
 	void HandleCamera(float scroll, bool x = false , int stage = 1);
 	void UpdateAxis(bool ax, bool ay);
 	bool IsGrounded();
-	void Stop();
 	void StopX();
 	void StopY();
-	void SetAccelX(double a);
-	void SetAccelY(double a);
 	void SetGrounded(bool g);
 	void SetX(float y);
 	void SetY(float y);
