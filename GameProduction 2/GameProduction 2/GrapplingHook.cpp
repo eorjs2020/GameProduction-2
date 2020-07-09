@@ -29,16 +29,17 @@ GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Textu
 
 void GrapplingHook::Update() 
 {
-	if (m_Player->BGScorllX())
-	{
-		m_destinationX -= m_Player->GetVelX();
-		m_dst.x -= m_Player->GetVelX();
-	}
 	if (m_Player->BGScrollY())
 	{
 		m_destinationY -= m_Player->GetVelY();
 		m_dst.y -= m_Player->GetVelY();
 	}
+	if (m_Player->BGScorllX())
+	{
+		m_destinationX -= m_Player->GetVelX();
+		m_dst.x -= m_Player->GetVelX();
+	}
+
 	
 	if (EVMA::MouseHeld(1))
 	{
@@ -68,8 +69,8 @@ void GrapplingHook::Update()
 		{
 			double a = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
 				(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
-			MAMA::SetDeltas(a, dx, dy, 10.0, 10.0);
-			
+			MAMA::SetDeltas(a, dx, dy, 5.0, 5.0);
+			m_Player->SetVel(dx, dy);
 		}
 		
 	}
@@ -79,12 +80,7 @@ void GrapplingHook::Update()
 		dx = dy = 0;
 		m_Player->SetGrav(6.0f);
 	}
-	std::cout << dx << std::endl;
-	/*m_Player->SetAccelX(dx);
-	m_Player->SetAccelY(dy);*/
-	/*m_Player->GetDstP()->x += (int)round(dx);
-	m_Player->GetDstP()->y += (int)round(dy);*/
-	//m_Player->SetVel((int)round(dx), (int)round(dy));
+	
 	
 }
 

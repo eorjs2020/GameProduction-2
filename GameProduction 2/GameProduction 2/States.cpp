@@ -161,20 +161,21 @@ void Level1State::Update()
 		m_energyNum = std::to_string(m_pPlayer->getEnergy());
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
 		m_energy->SetText(m_updateEnergy);
-		if (m_stageEnd)
-			STMA::ChangeState(new Level2State);
+		if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
+			m_pPlayer->setEnergy(10);
+			m_batteryExist = false;
+			delete m_battery;
+		}
+		m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
+		m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
 	
-		
 	
         
 	}
-	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
-		m_pPlayer->setEnergy(10);
-		m_batteryExist = false;
-		delete m_battery;
-	}
-	m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
-	m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
+		
+	if (m_stageEnd)
+		STMA::ChangeState(new Level2State);
+
 }
 
 void Level1State::CheckCollisionHook()
