@@ -3,5 +3,7 @@
 #include "Sprite.h"
 #include "SDL.h"
 #include "Player.h"
+#include "Enemy.h"
 
-void Speed (double* a, double* b);
+void speedBoost (double* a, double* b);
+void invisibility();

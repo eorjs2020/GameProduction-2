@@ -30,7 +30,7 @@ private: // Private properties.
 	std::vector<Tile*> m_platforms;
 	std::vector<Tile*> m_platforms2;
 	std::vector<Enemy*> m_enemies;
-	bool m_pPause;
+	bool m_pPause, m_invis = false;
 
 private: // Private methods.
 	Engine();
@@ -54,5 +54,7 @@ public: // Public methods.
 	std::vector<Enemy*>& GetEnemy() { return m_enemies; }
 	bool& Pause();
 	std::vector<Tile*>& GetPlatform2() { return m_platforms2; }
+	bool& getinvis() { return m_invis; }
+	void setinvis(bool a) { m_invis = a; }
 };
 #endif

@@ -39,10 +39,11 @@ private:
 		m_drag,
 		m_grav,
 		dx, dy, boundary;
-	bool searchingDir = false;
+	bool searchingDir = false, m_invis = false;
 	bool m_bgScrollX = false, m_bgScrollY = false, m_moving = false, m_playerslow = false;
 public:
 	glm::vec2 m_ePos;
+	void setInvis(bool a);
 };
 
 #endif

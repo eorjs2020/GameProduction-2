@@ -37,8 +37,9 @@ void Player::Update(int stage)
 		SetAccelY(-JUMPFORCE); // Sets the jump force.
 		SetGrounded(false);
 	}
-	Speed(m_a, m_aMaxY);
-
+	speedBoost(m_a, m_aMaxY);
+	invisibility();
+	//std::cout << Engine::Instance().getinvis();
 
 	m_bgScrollX = m_bgScrollY = false;
 	if (stage == 1)

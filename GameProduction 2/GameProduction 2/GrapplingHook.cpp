@@ -79,7 +79,7 @@ void GrapplingHook::Update()
 		dx = dy = 0;
 		m_Player->SetGrav(6.0f);
 	}
-	std::cout << dx << std::endl;
+	//std::cout << dx << std::endl;
 	/*m_Player->SetAccelX(dx);
 	m_Player->SetAccelY(dy);*/
 	/*m_Player->GetDstP()->x += (int)round(dx);
