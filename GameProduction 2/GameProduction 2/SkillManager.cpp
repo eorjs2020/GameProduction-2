@@ -10,7 +10,6 @@ int m_speedBoostTimer = 0, m_invisTimer = 0;
 void speedBoost(double* a, double* b)
 {
 	double * m_accelX = a, *m_mMaxY = b;
-	
 
 	if (EVMA::KeyPressed(SDL_SCANCODE_1))
 	{

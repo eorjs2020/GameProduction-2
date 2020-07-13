@@ -38,6 +38,11 @@ void Player::Update(int stage)
 		SetGrounded(false);
 	}
 	speedBoost(m_a, m_aMaxY);
+	if (EVMA::KeyPressed(SDL_SCANCODE_1))
+	{
+			a = new AnimatedSprite({ 0,0,96,96 }, { this->GetDstP()->x,this->GetDstP()->y,32.0f,32.0f },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("lightEffect"), 0, 28, 28, 4);
+	}
 	invisibility();
 	//std::cout << Engine::Instance().getinvis();
 
@@ -160,6 +165,11 @@ void Player::Update(int stage)
 void Player::Render()
 {	
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
+	if (a != nullptr) {
+		a->Render();
+		a->Animate();
+		a->SetDstP(this->GetDstP()->x, this->GetDstP()->y);
+	}
 }
 
 void Player::SetState(int s)

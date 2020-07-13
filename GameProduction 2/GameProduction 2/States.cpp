@@ -103,9 +103,12 @@ void Level1State::Enter()
 		}
 	}
 	inFile.close();
-	m_battery = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[12][40]->GetDstP()->x,Engine::Instance().GetLevel()[12][40]->GetDstP()->y, 32, 32 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
-	m_goal = new Sprite({ 226,37,12,7 }, {Engine::Instance().GetLevel()[72][166]->GetDstP()->x,Engine::Instance().GetLevel()[72][166]->GetDstP()->y, 32, 32 },
+	
+	for (int i = 0; i < 10; i++) {
+		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
+	}
+	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel()[72][166]->GetDstP()->x,Engine::Instance().GetLevel()[72][166]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
@@ -168,13 +171,16 @@ void Level1State::Update()
 	
         
 	}
-	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
-		m_pPlayer->setEnergy(10);
-		m_batteryExist = false;
-		delete m_battery;
+	for (int i = 0; i < 10; i++) {
+		if(m_battery[i] != nullptr){
+			m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
+		m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
+		if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery[i]->GetDstP())) {
+				m_pPlayer->setEnergy(10);
+				m_battery[i] = nullptr;
+			}
+		}
 	}
-	m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
-	m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
 }
 
 void Level1State::CheckCollisionHook()
@@ -208,8 +214,10 @@ void Level1State::Render()
 	m_timer->Render();
 	m_energy->Render();
 	m_goal->Render();
-	if (m_batteryExist == true)
-		m_battery->Render();
+	for (int i = 0; i < 10; i++) {
+		if (m_battery[i] != nullptr)
+			m_battery[i]->Render();
+	}
 	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size();++i)
 	{
 		Engine::Instance().GetEnemy()[i]->Render();

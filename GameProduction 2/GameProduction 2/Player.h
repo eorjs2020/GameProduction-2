@@ -29,6 +29,7 @@ private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
 	bool m_grounded;
+	AnimatedSprite* a;
 	double m_accelX,
 		m_accelY,
 		m_velX,
