@@ -162,7 +162,9 @@ void Level1State::Update()
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
 		m_timer->SetText(m_updateTimer);
 		m_energyNum = std::to_string(m_pPlayer->getEnergy());
+		
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
+		
 		m_energy->SetText(m_updateEnergy);
 		if (m_stageEnd)
 			STMA::ChangeState(new Level2State);

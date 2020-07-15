@@ -19,6 +19,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_aMaxY = &m_maxVelX;
 	speedDowncount = 0;
 	m_energy = 0; 
+	m_en = &m_energy;
 }
 
 void Player::Update(int stage)
@@ -37,13 +38,13 @@ void Player::Update(int stage)
 		SetAccelY(-JUMPFORCE); // Sets the jump force.
 		SetGrounded(false);
 	}
-	speedBoost(m_a, m_aMaxY);
+	speedBoost(m_a, m_aMaxY, m_en);
 	if (EVMA::KeyPressed(SDL_SCANCODE_1))
 	{
 			a = new AnimatedSprite({ 0,0,96,96 }, { this->GetDstP()->x,this->GetDstP()->y,32.0f,32.0f },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("lightEffect"), 0, 28, 28, 4);
 	}
-	invisibility();
+	invisibility(m_en);
 	//std::cout << Engine::Instance().getinvis();
 
 	m_bgScrollX = m_bgScrollY = false;

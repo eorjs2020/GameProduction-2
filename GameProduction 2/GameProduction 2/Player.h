@@ -40,7 +40,7 @@ private:
 		m_grav,
 		m_energy;
 	bool m_bgScrollX = false, m_bgScrollY = false;
-	double* m_a, * m_aMaxY;
+	double* m_a, * m_aMaxY, * m_en;
 private:
 	void HandleCamera(float scroll, bool x = false , int stage = 1);
 	void UpdateAxis(bool ax, bool ay);

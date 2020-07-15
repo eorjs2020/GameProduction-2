@@ -7,13 +7,14 @@
 bool m_speedBoost = false;
 int m_speedBoostTimer = 0, m_invisTimer = 0;
 
-void speedBoost(double* a, double* b)
+void speedBoost(double* a, double* b, double *c)
 {
-	double * m_accelX = a, *m_mMaxY = b;
+	double * m_accelX = a, *m_mMaxY = b, *m_energy = c;
 
-	if (EVMA::KeyPressed(SDL_SCANCODE_1))
+	if (EVMA::KeyPressed(SDL_SCANCODE_1) && *m_energy > 0)
 	{
 		m_speedBoost = true;
+		*m_energy -= 5;
 	}
 	if (m_speedBoost == true)
 	{
@@ -33,11 +34,13 @@ void speedBoost(double* a, double* b)
 
 }
 
-void invisibility()
+void invisibility(double* c)
 {
-	if (EVMA::KeyPressed(SDL_SCANCODE_2))
+	double* m_energy = c;
+	if (EVMA::KeyPressed(SDL_SCANCODE_2) && *m_energy > 0)
 	{
 		Engine::Instance().setinvis(true);
+		*m_energy -= 5;
 	}
 	if (Engine::Instance().getinvis() == true)
 	{
