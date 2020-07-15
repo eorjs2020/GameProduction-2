@@ -212,7 +212,7 @@ void Level1State::Render()
 		m_pause->Render();
 	}
 	m_pPlayer->Render();
-	m_interface->Render();
+	//m_interface->Render();
 	m_timer->Render();
 	m_energy->Render();
 	m_goal->Render();

@@ -22,7 +22,7 @@ public:
 	void Update(double* a, double* b, double* c, float* x, float* y);
 	void Render();
 private:
-	AnimatedSprite* effect;
+	AnimatedSprite* effect, *iconA;
 	bool m_speedBoost = false;
 	int m_speedBoostTimer = 0;
 };
@@ -35,4 +35,5 @@ public:
 	void Render();
 private:
 	int m_invisTimer = 0;
+	AnimatedSprite* effect, * iconB;
 };
