@@ -3,6 +3,7 @@
 #define _PLAYER_H_
 #include "Sprite.h"
 #include <array>
+#include "SkillManager.h"
 
 class Player : public AnimatedSprite
 {
@@ -30,6 +31,8 @@ private:
 	bool m_dir;
 	bool m_grounded;
 	AnimatedSprite* a;
+	invisibility* m_invis;
+	SpeedBoost* m_speedBoost;
 	double m_accelX,
 		m_accelY,
 		m_velX,

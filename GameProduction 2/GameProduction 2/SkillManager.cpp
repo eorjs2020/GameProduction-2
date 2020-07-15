@@ -4,10 +4,13 @@
 #include "SkillManager.h"
 
 
-bool m_speedBoost = false;
-int m_speedBoostTimer = 0, m_invisTimer = 0;
+SpeedBoost::SpeedBoost()
+{
+	m_speedBoost = false;
+	m_speedBoostTimer = 0;
+}
 
-void speedBoost(double* a, double* b, double *c)
+void SpeedBoost::Update(double* a, double* b, double* c)
 {
 	double * m_accelX = a, *m_mMaxY = b, *m_energy = c;
 
@@ -31,10 +34,17 @@ void speedBoost(double* a, double* b, double *c)
 		m_speedBoostTimer = 0;
 		*m_mMaxY = 5;
 	}
-
 }
 
-void invisibility(double* c)
+void SpeedBoost::Render()
+{
+}
+
+invisibility::invisibility()
+{
+}
+
+void invisibility::Update(double* c)
 {
 	double* m_energy = c;
 	if (EVMA::KeyPressed(SDL_SCANCODE_2) && *m_energy > 0)
@@ -51,4 +61,9 @@ void invisibility(double* c)
 		Engine::Instance().setinvis(false);
 		m_invisTimer = 0;
 	}
+}
+
+void invisibility::Render()
+{
+	m_invisTimer = 0;
 }
