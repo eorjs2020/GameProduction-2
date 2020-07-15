@@ -30,7 +30,6 @@ private:
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
 	bool m_grounded;
-	AnimatedSprite* a;
 	invisibility* m_invis;
 	SpeedBoost* m_speedBoost;
 	double m_accelX,
@@ -44,6 +43,7 @@ private:
 		m_energy;
 	bool m_bgScrollX = false, m_bgScrollY = false;
 	double* m_a, * m_aMaxY, * m_en;
+	float *m_dX, * m_dY;
 private:
 	void HandleCamera(float scroll, bool x = false , int stage = 1);
 	void UpdateAxis(bool ax, bool ay);

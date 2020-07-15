@@ -19,9 +19,10 @@ class SpeedBoost : public SkillManager {
 public:
 	SpeedBoost();
 	void Update() {}
-	void Update(double* a, double* b, double* c);
+	void Update(double* a, double* b, double* c, float* x, float* y);
 	void Render();
 private:
+	AnimatedSprite* effect;
 	bool m_speedBoost = false;
 	int m_speedBoostTimer = 0;
 };
