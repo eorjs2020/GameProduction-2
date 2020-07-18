@@ -35,7 +35,8 @@ private:
 		m_grav, 
 		m_destinationX,
 		m_destinationY;
+	double dx, dy, angle;
 	Player* m_Player;
-
+	bool grap;
 };
 #endif

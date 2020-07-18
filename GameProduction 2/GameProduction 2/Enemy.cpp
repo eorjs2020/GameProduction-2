@@ -3,6 +3,7 @@
 #include "MathManager.h"
 #include "EventManager.h"
 #include "CollisionManager.h"
+#include "Engine.h"
 
 Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf, int boundary)
 	:AnimatedSprite(s, d, r, t, sstart, smin, smax, nf), m_dir(0), m_State(idle)
@@ -45,10 +46,10 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 		m_dst.y -= AccelY;
 		m_pSBox.y -= AccelX;
 	}
-	if (EVMA::KeyHeld(SDL_SCANCODE_2))
+	/*if (EVMA::KeyHeld(SDL_SCANCODE_2))
 		m_State = seeking;
 	else if (EVMA::KeyHeld(SDL_SCANCODE_3))
-		m_State = idle;
+		m_State = idle;*/
 	switch (m_State)
 	{
 	case idle:
@@ -58,8 +59,7 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 		{
 			++searchingDelay;
 		}
-
-		if (searchingDelay == 30)
+		if (searchingDelay >= 30 && Engine::Instance().getinvis() == false)
 		{
 			searchingDelay = 0;
 			m_State = seeking;
@@ -117,7 +117,7 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 			chasingTimer = 0;
 			m_State = arrive;
 		}
-		++chasingTimer;
+		++chasingTimer; 
 		break;
 	}
 	case arrive:
@@ -163,6 +163,11 @@ void Enemy::AI(SDL_Rect* a)
 	double dist = MAMA::Distance(m_dst.x + m_dst.w / 2.0f, temp->x + temp->w / 2.0f, m_dst.y + m_dst.h / 2.0f, temp->y + temp->h / 2.0f);
 
 
+}
+
+void Enemy::setInvis(bool a)
+{
+	m_invis = a;
 }
 
 void Enemy::StopX() { m_velX = 0.0; }

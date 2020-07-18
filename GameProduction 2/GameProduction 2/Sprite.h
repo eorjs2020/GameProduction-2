@@ -12,6 +12,8 @@ public: // Inherited and public.
 	virtual void Render() {	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, SDL_FLIP_NONE); }
 	SDL_Rect* GetSrcP() { return &m_src; }
 	SDL_FRect* GetDstP() { return &m_dst; }
+	void SetDstP(double a, double b) { m_dst.x = a; m_dst.y = b; }
+	void SetSrcP(double a, double b) { m_src.x = a; m_src.y = b; }
 	double& GetAngle() { return m_angle; }
 	void SetAngle(double a) { m_angle = a; }
 protected: // Private BUT inherited.

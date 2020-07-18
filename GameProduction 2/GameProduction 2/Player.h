@@ -3,6 +3,7 @@
 #define _PLAYER_H_
 #include "Sprite.h"
 #include <array>
+#include "SkillManager.h"
 
 class Player : public AnimatedSprite
 {
@@ -18,13 +19,19 @@ public:
 	bool BGScrollY() { return m_bgScrollY; }
 	void AddAccelX(double a);	
 	void SetMaxVel(double a);
+	void SetAccelX(double a);
+	void SetAccelY(double a);
 	int getEnergy() { return m_energy; }
 	void setEnergy(int a);
+	void SetVel(double a, double b);
+	void Stop();
 private:
 	int speedDowncount;
 	enum state { idle, running, jump } m_state;
 	bool m_dir;
 	bool m_grounded;
+	invisibility* m_invis;
+	SpeedBoost* m_speedBoost;
 	double m_accelX,
 		m_accelY,
 		m_velX,
@@ -35,16 +42,14 @@ private:
 		m_grav,
 		m_energy;
 	bool m_bgScrollX = false, m_bgScrollY = false;
-	double* m_a, * m_aMaxY;
+	double* m_a, * m_aMaxY, * m_en;
+	float *m_dX, * m_dY;
 private:
 	void HandleCamera(float scroll, bool x = false , int stage = 1);
 	void UpdateAxis(bool ax, bool ay);
 	bool IsGrounded();
-	void Stop();
 	void StopX();
 	void StopY();
-	void SetAccelX(double a);
-	void SetAccelY(double a);
 	void SetGrounded(bool g);
 	void SetX(float y);
 	void SetY(float y);

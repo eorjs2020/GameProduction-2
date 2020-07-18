@@ -3,7 +3,6 @@
 #include "EventManager.h"
 #include "TextureManager.h"
 #include "Engine.h"
-#include "SkillManager.h"
 
 
 Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf)
@@ -19,6 +18,9 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_aMaxY = &m_maxVelX;
 	speedDowncount = 0;
 	m_energy = 0; 
+	m_en = &m_energy;
+	m_invis = new invisibility();
+	m_speedBoost= new SpeedBoost();
 }
 
 void Player::Update(int stage)
@@ -37,8 +39,12 @@ void Player::Update(int stage)
 		SetAccelY(-JUMPFORCE); // Sets the jump force.
 		SetGrounded(false);
 	}
-	Speed(m_a, m_aMaxY);
+	m_dX = &this->GetDstP()->x;
+	m_dY = &this->GetDstP()->y;
+	m_speedBoost->Update(m_a, m_aMaxY, m_en, m_dX, m_dY);
+	m_invis->Update(m_en);
 
+	//std::cout << Engine::Instance().getinvis();
 
 	m_bgScrollX = m_bgScrollY = false;
 	if (stage == 1)
@@ -159,6 +165,8 @@ void Player::Update(int stage)
 void Player::Render()
 {	
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
+	m_speedBoost->Render();
+	m_invis->Render();
 }
 
 void Player::SetState(int s)
@@ -278,7 +286,7 @@ double Player::GetVelX() { return m_velX; }
 double Player::GetVelY() { return m_velY; }
 void Player::SetX(float y) { m_dst.x = y; }
 void Player::SetY(float y) { m_dst.y = y; }
-
+void Player::SetVel(double a, double b) { m_velX = a; m_velY = b; }
 void Player::AddAccelX(double a)
 {
 	m_accelX += a;

@@ -103,9 +103,12 @@ void Level1State::Enter()
 		}
 	}
 	inFile.close();
-	m_battery = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[12][40]->GetDstP()->x,Engine::Instance().GetLevel()[12][40]->GetDstP()->y, 32, 32 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
-	m_goal = new Sprite({ 226,37,12,7 }, {Engine::Instance().GetLevel()[72][166]->GetDstP()->x,Engine::Instance().GetLevel()[72][166]->GetDstP()->y, 32, 32 },
+	
+	for (int i = 0; i < 10; i++) {
+		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
+	}
+	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel()[72][166]->GetDstP()->x,Engine::Instance().GetLevel()[72][166]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
@@ -146,18 +149,22 @@ void Level1State::Update()
 		m_pPlayer->Update();
 		m_goal->GetDstP()->x = Engine::Instance().GetLevel()[71][165]->GetDstP()->x;
 		m_goal->GetDstP()->y = Engine::Instance().GetLevel()[71][165]->GetDstP()->y;
+		m_hook->Collision();
 		m_hook->Update();
+		
 		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
 		{
 			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
 				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
 		}
 		m_pPlayer->Collision();
-		m_hook->Collision();
+		
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
 		m_timer->SetText(m_updateTimer);
 		m_energyNum = std::to_string(m_pPlayer->getEnergy());
+		
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
+		
 		m_energy->SetText(m_updateEnergy);
 		if (m_stageEnd)
 			STMA::ChangeState(new Level2State);
@@ -166,13 +173,16 @@ void Level1State::Update()
 	
         
 	}
-	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
-		m_pPlayer->setEnergy(10);
-		m_batteryExist = false;
-		delete m_battery;
+	for (int i = 0; i < 10; i++) {
+		if(m_battery[i] != nullptr){
+			m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
+		m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
+		if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery[i]->GetDstP())) {
+				m_pPlayer->setEnergy(10);
+				m_battery[i] = nullptr;
+			}
+		}
 	}
-	m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
-	m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
 }
 
 void Level1State::CheckCollisionHook()
@@ -202,12 +212,14 @@ void Level1State::Render()
 		m_pause->Render();
 	}
 	m_pPlayer->Render();
-	m_interface->Render();
+	//m_interface->Render();
 	m_timer->Render();
 	m_energy->Render();
 	m_goal->Render();
-	if (m_batteryExist == true)
-		m_battery->Render();
+	for (int i = 0; i < 10; i++) {
+		if (m_battery[i] != nullptr)
+			m_battery[i]->Render();
+	}
 	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size();++i)
 	{
 		Engine::Instance().GetEnemy()[i]->Render();
@@ -322,9 +334,10 @@ void Level2State::Update()
 {
 
 	m_pPlayer->Update(2);
+	m_hook->Collision(2);
 	m_hook->Update();
 	m_pPlayer->Collision();
-	m_hook->Collision(2);
+	
 	
 }
 
