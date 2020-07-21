@@ -170,13 +170,7 @@ void Level1State::Update()
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
 		
 		m_energy->SetText(m_updateEnergy);
-		if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
-			m_pPlayer->setEnergy(10);
-			m_batteryExist = false;
-			delete m_battery;
-		}
-		m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
-		m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
+		
 		m_hook->Collision();
 		m_hook->Update();
         
