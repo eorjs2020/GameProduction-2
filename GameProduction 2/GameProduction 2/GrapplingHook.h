@@ -37,6 +37,6 @@ private:
 		m_destinationY;
 	double dx, dy, angle;
 	Player* m_Player;
-	bool grap;
+	bool shoot;
 };
 #endif

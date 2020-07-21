@@ -229,15 +229,15 @@ void Player::Collision()
 void Player::HandleCamera(float scroll, bool x, int stage)
 { 
 	if (stage == 1)
-	{
+	{		
 		for (int row = 0; row < ROWS; row++)
 		{
 			for (int col = 0; col < COLS; col++)
 			{
 				if (x)
-					Engine::Instance().GetLevel()[row][col]->GetDstP()->x -= scroll;
+					Engine::Instance().GetLevel()[row][col]->GetDstP()->x -= (int)scroll;
 				else
-					Engine::Instance().GetLevel()[row][col]->GetDstP()->y -= scroll;
+					Engine::Instance().GetLevel()[row][col]->GetDstP()->y -= (int)scroll;
 			}
 		}
 	}

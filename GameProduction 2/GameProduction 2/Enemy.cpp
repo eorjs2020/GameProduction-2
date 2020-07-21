@@ -154,8 +154,11 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 void Enemy::Render()
 {
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
-	SDL_SetRenderDrawColor(m_pRend, 192, 64, 0, 255);
-	SDL_RenderFillRectF(m_pRend, &m_pSBox);
+	if (m_State == idle)
+	{
+		SDL_SetRenderDrawColor(m_pRend, 192, 64, 0, 255);
+		SDL_RenderFillRectF(m_pRend, &m_pSBox);
+	}
 }
 void Enemy::AI(SDL_Rect* a)
 {

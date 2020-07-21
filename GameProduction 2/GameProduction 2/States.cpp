@@ -35,6 +35,9 @@ void Level1State::Enter()
 	///   enemy spawn and mvmt boundaries   ///
 	///////////////////////////////////////////
 
+
+
+
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 }, 
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 1000,300,22,38 },
@@ -140,6 +143,11 @@ void Level1State::Update()
 	
 	if (Engine::Instance().Pause() == false)
 	{
+		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		{
+			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+		}
 		
 		m_pMusicVolume = m_pMusicSetVol;
 		m_pSFXVolume = m_pSFXSetVol;
@@ -149,14 +157,10 @@ void Level1State::Update()
 		m_pPlayer->Update();
 		m_goal->GetDstP()->x = Engine::Instance().GetLevel()[71][165]->GetDstP()->x;
 		m_goal->GetDstP()->y = Engine::Instance().GetLevel()[71][165]->GetDstP()->y;
-		m_hook->Collision();
-		m_hook->Update();
 		
-		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
-		{
-			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
-				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
-		}
+		
+		
+	
 		m_pPlayer->Collision();
 		
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
@@ -166,11 +170,15 @@ void Level1State::Update()
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
 		
 		m_energy->SetText(m_updateEnergy);
-		if (m_stageEnd)
-			STMA::ChangeState(new Level2State);
-	
-		
-	
+		if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery->GetDstP())) {
+			m_pPlayer->setEnergy(10);
+			m_batteryExist = false;
+			delete m_battery;
+		}
+		m_battery->GetDstP()->x = Engine::Instance().GetLevel()[12][40]->GetDstP()->x;
+		m_battery->GetDstP()->y = Engine::Instance().GetLevel()[12][40]->GetDstP()->y;
+		m_hook->Collision();
+		m_hook->Update();
         
 	}
 	for (int i = 0; i < 10; i++) {
@@ -183,6 +191,10 @@ void Level1State::Update()
 			}
 		}
 	}
+		
+	if (m_stageEnd)
+		STMA::ChangeState(new Level2State);
+
 }
 
 void Level1State::CheckCollisionHook()
