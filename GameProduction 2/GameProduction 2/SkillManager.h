@@ -21,6 +21,7 @@ public:
 	void Update() {}
 	void Update(double* a, double* b, double* c, float* x, float* y);
 	void Render();
+	bool getspeedBoost() { return m_speedBoost; }
 private:
 	AnimatedSprite* effect, *iconA;
 	bool m_speedBoost = false;
@@ -33,7 +34,10 @@ public:
 	void Update() {}
 	void Update(double* c);
 	void Render();
+	bool getinvis() { return m_invis; }
+
 private:
+	bool m_invis = false;
 	int m_invisTimer = 0;
 	AnimatedSprite* effect, * iconB;
 };

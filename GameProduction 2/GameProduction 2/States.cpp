@@ -473,6 +473,7 @@ void TutorialState::Enter()
 
 void TutorialState::Update()
 {
+
 	if (m_MainMenu->Update() == 1)
 		return;
 			

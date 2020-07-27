@@ -27,7 +27,7 @@ public:
 	void Stop();
 private:
 	int speedDowncount;
-	enum state { idle, running, jump } m_state;
+	enum state { idle, running, jump, boost, invis } m_state;
 	bool m_dir;
 	bool m_grounded;
 	invisibility* m_invis;

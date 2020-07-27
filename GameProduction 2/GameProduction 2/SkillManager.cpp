@@ -21,8 +21,8 @@ void SpeedBoost::Update(double* a, double* b, double* c, float* x, float* y)
 	{
 		m_speedBoost = true;
 		*m_energy -= 5;	
-		effect = new AnimatedSprite({ 0,0,96,96 }, { *x, *y,32.0f,32.0f },
-			Engine::Instance().GetRenderer(), TEMA::GetTexture("lightEffect"), 0, 28, 28, 4);
+		/*effect = new AnimatedSprite({ 0,0,96,96 }, { *x, *y,32.0f,32.0f },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("lightEffect"), 0, 28, 28, 4);*/
 	}
 	if (m_speedBoost == true)
 	{
@@ -39,17 +39,17 @@ void SpeedBoost::Update(double* a, double* b, double* c, float* x, float* y)
 		m_speedBoost = false;
 		m_speedBoostTimer = 0;
 		*m_mMaxY = 5;
-		effect = nullptr;
+		/*effect = nullptr;*/
 		iconA->SetSrcP(0, 97);
 	}
 }
 
 void SpeedBoost::Render()
 {	
-	if (effect != nullptr) {
+	/*if (effect != nullptr) {
 		effect->Render();
 		effect->Animate();
-	}
+	}*/
 	if (iconA != nullptr)
 		iconA->Render();
 }
@@ -68,6 +68,7 @@ void invisibility::Update(double* c)
 	{
 		Engine::Instance().setinvis(true);
 		*m_energy -= 5;
+		m_invis = true;
 	}
 	if (Engine::Instance().getinvis() == true)
 	{
@@ -79,6 +80,7 @@ void invisibility::Update(double* c)
 		Engine::Instance().setinvis(false);
 		m_invisTimer = 0;
 		iconB->SetSrcP(0, 119);
+		m_invis = true;
 	}
 }
 

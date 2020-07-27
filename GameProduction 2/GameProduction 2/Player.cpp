@@ -133,6 +133,10 @@ void Player::Update(int stage)
 
 		break;
 	case running:
+		if(m_speedBoost->getspeedBoost() == true)
+			SetState(boost);
+		if (m_invis->getinvis() == true)
+			SetState(invis);
 		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
 		{
 			SetState(idle);
@@ -156,7 +160,38 @@ void Player::Update(int stage)
 		}
 
 		break;
+	case boost:
+		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
+		{
+			SetState(idle);
+			break; // Skip movement parsing below.
+		}
+		if (EVMA::KeyHeld(SDL_SCANCODE_A))
+		{
+			m_dir = 1;
+		}
+		else if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		{
+			m_dir = 0;
 
+		}
+		break;
+	case invis:
+		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
+		{
+			SetState(idle);
+			break; // Skip movement parsing below.
+		}
+		if (EVMA::KeyHeld(SDL_SCANCODE_A))
+		{
+			m_dir = 1;
+		}
+		else if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		{
+			m_dir = 0;
+
+		}
+		break;
 	}
 	
 	Animate();
@@ -179,7 +214,7 @@ void Player::SetState(int s)
 		m_sprite = m_spriteMin = 0;
 		m_spriteMax = 4;
 	}
-	else if(m_state == running)// Only other is running for now...
+	else if (m_state == running)// Only other is running for now...
 	{
 		m_pText = TEMA::GetTexture("playerWalk");
 		m_sprite = m_spriteMin = 0;
@@ -191,6 +226,19 @@ void Player::SetState(int s)
 		m_sprite = 0;
 		m_spriteMin = 0;
 		m_spriteMax = 11;
+	}
+	else if (m_state == boost)
+	{
+		m_pText = TEMA::GetTexture("playerboost");
+		m_sprite = m_spriteMin = 0;
+		m_spriteMax = 5;
+
+	}
+	else if (m_state == invis)
+	{
+		m_pText = TEMA::GetTexture("playerinvis");
+		m_sprite = m_spriteMin = 0;
+		m_spriteMax = 5;
 	}
 }
 
