@@ -39,5 +39,6 @@ private:
 	Player* m_Player;
 	bool shoot;
 	Sprite* m_line;
+	SDL_FPoint point;
 };
 #endif

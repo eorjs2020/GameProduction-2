@@ -123,7 +123,7 @@ void Level1State::Enter()
 	SOMA::Load("Aud/hook_grappling2.wav", "grab", SOUND_SFX);
 	SOMA::Load("Aud/hook_retraction3.wav", "retract", SOUND_SFX);
 	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
-	SOMA::PlayMusic("BGM");
+	//SOMA::PlayMusic("BGM");
 	
 }
 

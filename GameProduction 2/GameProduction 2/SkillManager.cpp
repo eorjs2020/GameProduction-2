@@ -80,7 +80,7 @@ void invisibility::Update(double* c)
 		Engine::Instance().setinvis(false);
 		m_invisTimer = 0;
 		iconB->SetSrcP(0, 119);
-		m_invis = true;
+		m_invis = false;
 	}
 }
 
@@ -112,7 +112,7 @@ void doubleJump::Update(double* c)
 	if (m_doubleJumpTimer >= 200)
 	{
 		m_doubleJumpTimer = 0;
-		iconC->SetSrcP(0, 119);
+		iconC->SetSrcP(0, 141);
 		m_doubleJump = false;
 	}
 	

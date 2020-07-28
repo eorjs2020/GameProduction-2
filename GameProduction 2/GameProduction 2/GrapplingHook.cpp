@@ -29,10 +29,13 @@ GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Textu
 	shoot = false;
 	m_line = new Sprite({ 0,20,189,30 }, { m_Player->GetDstP()->x, m_Player->GetDstP()->y, 100, 3 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"));
+	point.x = 0;
+	point.y = 0;
+	m_line->SetPoint(&point);
 }
 
 
-void GrapplingHook::Update() 
+void GrapplingHook::Update()
 {
 	// Do X axis first.
 	m_velX += m_accelX;
@@ -54,7 +57,7 @@ void GrapplingHook::Update()
 
 		m_dst.x -= m_Player->GetVelX();
 	}
-	
+
 	if (EVMA::MouseReleased(1))
 	{
 		m_destinationX = EVMA::GetMousePos().x;
@@ -65,11 +68,11 @@ void GrapplingHook::Update()
 		shoot = true;
 
 	}
-	
+
 	if (shoot)
 	{
 		//std::cout << "a" << std::endl;
-		if (MAMA::Distance(m_dst.x + m_dst.w/2, m_destinationX, m_dst.y + m_dst.h/2, m_destinationY) <= 5)
+		if (MAMA::Distance(m_dst.x + m_dst.w / 2, m_destinationX, m_dst.y + m_dst.h / 2, m_destinationY) <= 5)
 		{
 			dx = dy = 0.0;
 			shoot = false;
@@ -84,12 +87,12 @@ void GrapplingHook::Update()
 			m_velY = (int)round(dy);
 		}
 	}
-	if (EVMA::MouseHeld(3)&& m_Exist)
+	if (EVMA::MouseHeld(3) && m_Exist)
 	{
 		m_Player->SetGrav(0.0f);
-	
 
-		if (MAMA::Distance(m_Player->GetDstP()->x + m_Player->GetDstP()->w /2, m_dst.x + m_dst.w /2, m_Player->GetDstP()->y + m_Player->GetDstP()->h /2, m_dst.y + m_dst.h /2) <= 5)
+
+		if (MAMA::Distance(m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2, m_dst.x + m_dst.w / 2, m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2, m_dst.y + m_dst.h / 2) <= 5)
 		{
 			m_dst.x = m_Player->GetDstP()->x;
 			m_dst.x = m_Player->GetDstP()->y;
@@ -97,15 +100,15 @@ void GrapplingHook::Update()
 			m_Player->Stop();
 			m_Exist = false;
 		}
-			
-		else 
+
+		else
 		{
 			double a = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
 				(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
 			MAMA::SetDeltas(a, dx, dy, 4.0, 4.0);
-			m_Player->SetVel((int)round(dx), (int)round(dy));			
+			m_Player->SetVel((int)round(dx), (int)round(dy));
 		}
-		
+
 	}
 
 	else if (EVMA::MouseReleased(3))
@@ -113,14 +116,27 @@ void GrapplingHook::Update()
 		dx = dy = 0;
 		m_Player->SetGrav(4.0f);
 	}
-	m_line->SetDstP(m_Player->GetDstP()->x + 32, m_Player->GetDstP()->y + 15);
-	//std::cout << m_line->GetDstP()->y << std::endl;
-	m_line->setSize(  sqrt(  pow( abs(this->m_dst.x - m_Player->GetDstP()->x), 2) + pow( abs(this->m_dst.y - m_Player->GetDstP()->y), 2 )  ), 3);
-	double m_lineAngle = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
+	double m_lineAngle;
+	 m_lineAngle = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
 		(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
-	m_line->SetAngle(m_lineAngle * 180 / 3.14);
-	//std::cout << m_line->GetDstP()->y << std::endl;
+	/*if(m_Player->GetDstP()->x - this->GetDstP()->x)*/
+	m_line->SetAngle(((m_lineAngle * 180 / 3.14) + 180));
 	
+	m_line->SetDstP(this->GetDstP()->x, this->GetDstP()->y);
+	
+	/*if ( -90 < m_lineAngle && m_lineAngle < -180 )
+		m_line->SetDstP(m_Player->GetDstP()->x - 32 * cos(m_lineAngle), m_Player->GetDstP()->y + 15 * 1 - cos(m_lineAngle));
+	if (0 < m_lineAngle && m_lineAngle < -90)
+		m_line->SetDstP(m_Player->GetDstP()->x + 32 * cos(m_lineAngle), m_Player->GetDstP()->y + 15 * 1 - cos(m_lineAngle));*/
+
+
+	//std::cout << (m_lineAngle * 180 / 3.14) << std::endl;
+	m_line->setSize(sqrt(pow(abs(this->m_dst.x - m_Player->GetDstP()->x), 2) + pow(abs(this->m_dst.y - m_Player->GetDstP()->y), 2)), 3);
+
+
+	
+	//std::cout << m_line->GetDstP()->y << std::endl;
+	//m_line->SetDstP(m_Player->GetDstP()->x, m_Player->GetDstP()->y);
 	
 	//m_line->SetDstP( m_Player->GetDstP()->x + 32 - (m_line->GetDstP()->w) / 2 * cos(m_lineAngle), m_Player->GetDstP()->y + 15 - sqrt(pow( (m_line->GetDstP()->w)/2, 2) * 2 - 2 * (m_line->GetDstP()->w)  * cos(m_lineAngle)));
 	//m_line->SetDstP(m_Player->GetDstP()->x + 32 - (m_line->GetDstP()->w) / (2 * cos(m_lineAngle)), m_Player->GetDstP()->y + 15 - (m_line->GetDstP()->w) / (2 * sin(m_lineAngle))) ;
