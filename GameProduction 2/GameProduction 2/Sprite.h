@@ -16,6 +16,7 @@ public: // Inherited and public.
 	void SetSrcP(double a, double b) { m_src.x = a; m_src.y = b; }
 	double& GetAngle() { return m_angle; }
 	void SetAngle(double a) { m_angle = a; }
+	void setSize(double a, double b) { m_dst.w = a; m_dst.h = b; }
 protected: // Private BUT inherited.
 	double m_angle;
 	SDL_Rect m_src;

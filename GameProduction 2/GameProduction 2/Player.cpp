@@ -128,7 +128,7 @@ void Player::Update(int stage)
 	}
 	UpdateAxis(m_bgScrollX, m_bgScrollY);
 	Collision();
-	std::cout << GetVelY() << std::endl;
+	//std::cout << GetVelY() << std::endl;
 	switch (m_state)
 	{
 	case idle:

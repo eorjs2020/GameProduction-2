@@ -38,5 +38,6 @@ private:
 	double dx, dy, angle;
 	Player* m_Player;
 	bool shoot;
+	Sprite* m_line;
 };
 #endif
