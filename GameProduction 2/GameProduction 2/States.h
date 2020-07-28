@@ -20,6 +20,9 @@
 #include "glm.hpp"
 #include <array>
 #include "Timer.h"
+#include "FireDrone.h"
+#include "Bullet.h"
+
 using namespace std;
 class State // This is the abstract base class for all specific states.
 {
@@ -48,8 +51,10 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryX[10] = {12, 12, 12, 12, 12, 12, 12, 12, 12, 12}, m_batteryY[10] = { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49 };
 	LTimer timer;
-	bool m_batteryExist = true; 
-
+	bool m_batteryExist = true;
+	bool m_bullNull;
+	std::vector<FireDrone*> fDrone;
+	std::vector<Bullet*> m_vEBullets;
 	
 public:
 	Level1State();
@@ -59,6 +64,9 @@ public:
 	void Enter();
 	void Exit();
 	void Resume();
+	void BulletCollision();
+	void RenderLOS();
+	
 
 };
 class Level2State : public State
@@ -92,6 +100,9 @@ private:
 	bool existHook = false, hookColl = false, m_stageEnd = false; 
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
+	bool m_bullNull;
+	std::vector<FireDrone*> fDrone;
+	std::vector<Bullet*> m_vEBullets;
 public:
 	TutorialState();
 	void Update();

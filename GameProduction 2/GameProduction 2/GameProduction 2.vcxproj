@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="DebugManager.cpp" />
@@ -139,6 +140,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="FireDrone.cpp" />
     <ClCompile Include="SkillManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -147,6 +149,7 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DebugManager.h" />
@@ -159,6 +162,7 @@
     <ClInclude Include="Label.h" />
     <ClInclude Include="MathManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="FireDrone.h" />
     <ClInclude Include="SkillManager.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Sprite.h" />
@@ -166,6 +170,7 @@
     <ClInclude Include="States.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="map\Game_map.txt" />
@@ -179,6 +184,8 @@
     <Image Include="Img\CharacterIdle.png" />
     <Image Include="Img\CharacterJumpFall.png" />
     <Image Include="Img\CharacterWalk.png" />
+    <Image Include="Img\DroneBullet.png" />
+    <Image Include="Img\DroneFireIdle.png" />
     <Image Include="Img\DroneIdle.png" />
     <Image Include="Img\Kit.png" />
     <Image Include="Img\tilemap1.png" />

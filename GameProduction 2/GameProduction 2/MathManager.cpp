@@ -10,7 +10,7 @@ double MathManager::AngleBetweenPoints(const double dy, const double dx)
 	return atan2(dy, dx); // In radians.
 }
 
-void MathManager::SetDeltas(const double angle, double& dx, double &dy, double fx, double fy)
+void MathManager::SetDeltas(const double angle, double& dx, double& dy, double fx, double fy)
 {
 	dx = SetDeltaX(angle, fx);
 	dy = SetDeltaY(angle, fy);
@@ -28,16 +28,74 @@ double MathManager::SetDeltaY(const double angle, double fy)
 
 double MathManager::Deg2Rad(const double angle)
 {
-	return angle * M_PI / 180.0;
+	return angle * (M_PI / 180.0);
 }
 
 double MathManager::Rad2Deg(const double angle)
 {
-	return angle * 180.0 / M_PI;
+	return angle * (180.0 / M_PI);
 }
 
 SDL_Rect MathManager::ConvertFRect2Rect(const SDL_FRect& r)
 {
 	SDL_Rect temp = { (int)r.x, (int)r.y, (int)r.w, (int)r.h };
 	return temp;
+}
+
+double MathManager::Angle180(double a)
+{ // Constrains an angle between -180 and 180.
+	a = fmod(a + 180.0, 360.0);
+	if (a < 0)
+		a += 360.0;
+	return a - 180.0;
+}
+
+double MathManager::Angle360(double a)
+{ // Constrains an angle between 0 and 360.
+	a = fmod(a, 360.0);
+	if (a < 0)
+		a += 360.0;
+	return a;
+}
+
+double MathManager::LerpD(double a, double b, double factor)
+{
+	return ((1.0 - factor) * a) + (factor * b);
+}
+
+double MathManager::LerpRad(double a, double b, double factor)
+{
+	double result;
+	double diff = b - a;
+	if (diff < -M_PI)
+	{
+		b += M_PI * 2;
+		result = LerpD(a, b, factor);
+		if (result >= M_PI * 2)
+			result -= M_PI * 2;
+	}
+	else if (diff > M_PI)
+	{
+		b -= M_PI * 2;
+		result = LerpD(a, b, factor);
+		if (result < 0.0)
+			result += M_PI * 2;
+	}
+	else
+		result = LerpD(a, b, factor);
+	return result;
+}
+
+glm::vec2 MathManager::normalize(glm::vec2 vec)
+{
+	glm::vec2 dest;
+	auto x = vec.x;
+	auto y = vec.y;
+	auto length = (x * x) + (y * y);
+	if (length > 0) {
+		length = 1.0 / sqrt(length);
+		dest.x = vec.x * length;
+		dest.y = vec.y * length;
+	}
+	return dest;
 }

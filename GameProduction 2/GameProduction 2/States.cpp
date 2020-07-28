@@ -9,6 +9,8 @@
 #include "Button.h"
 #include <iostream>
 #include <fstream>
+#include "DebugManager.h"
+#include "Utility.h"
 // Begin State. CTRL+M+H and CTRL+M+U to turn on/off collapsed code.
 void State::Render()
 {
@@ -34,9 +36,10 @@ void Level1State::Enter()
 	///////////////////////////////////////////
 	///   enemy spawn and mvmt boundaries   ///
 	///////////////////////////////////////////
+	fDrone.push_back( new FireDrone({ 0,0,11,19 }, { 100.0f,200.0f,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
 
-
-
+	m_bullNull = false;
 
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 }, 
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
@@ -126,6 +129,7 @@ void Level1State::Enter()
 
 void Level1State::Update()
 {
+	
 	if(COMA::AABBCheck(*m_pPlayer->GetDstP(),*m_goal->GetDstP()))
 		m_stageEnd = true;
 	if (Engine::Instance().Pause() == true)
@@ -159,8 +163,11 @@ void Level1State::Update()
 		m_goal->GetDstP()->y = Engine::Instance().GetLevel()[71][165]->GetDstP()->y;
 		
 		
-		
-	
+		for (auto i = 0; i < fDrone.size(); ++i)
+		{
+			fDrone[i]->Update(m_pPlayer->GetVelX(),
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+		}
 		m_pPlayer->Collision();
 		
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
@@ -170,7 +177,11 @@ void Level1State::Update()
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
 		
 		m_energy->SetText(m_updateEnergy);
-		
+		BulletCollision();
+		for (auto i = 0; i < m_vEBullets.size(); ++i)
+		{
+			m_vEBullets[i]->Update();
+		}
 		m_hook->Collision();
 		m_hook->Update();
         
@@ -185,7 +196,7 @@ void Level1State::Update()
 			}
 		}
 	}
-		
+	
 	if (m_stageEnd)
 		STMA::ChangeState(new Level2State);
 
@@ -213,11 +224,20 @@ void Level1State::Render()
 			Engine::Instance().GetLevel()[row][col]->Render();
 		}
 	}
+	for (auto i = 0; i < m_vEBullets.size(); ++i)
+	{
+		m_vEBullets[i]->Render();
+	}
 	if (Engine::Instance().Pause() == false)
 	{
 		m_pause->Render();
 	}
+	for (auto i = 0; i < fDrone.size(); ++i)
+	{
+		fDrone[i]->Render();
+	}
 	m_pPlayer->Render();
+	RenderLOS();
 	//m_interface->Render();
 	m_timer->Render();
 	m_energy->Render();
@@ -242,6 +262,7 @@ void Level1State::Render()
 		m_mainMenu->Render();
 		m_resume->Render();
 	}
+	
 }
 
 void Level1State::Exit()
@@ -265,14 +286,74 @@ void Level1State::Exit()
 	Engine::Instance().GetTiles().clear();
 	Engine::Instance().GetEnemy().clear();
 	Engine::Instance().GetPlatform().clear();
-	
-	
+	fDrone.clear();
+	m_vEBullets.clear();
 	std::cout << "Cleaning Level1" << endl;
 	
 	
 }
 
 void Level1State::Resume() { }
+void Level1State::BulletCollision()
+{
+	for (int i = 0; i < (int)m_vEBullets.size(); i++)
+	{
+		m_vEBullets[i]->Update();
+		SDL_Rect b = { m_vEBullets[i]->GetDstP()->x, m_vEBullets[i]->GetDstP()->y,
+			m_vEBullets[i]->GetDstP()->w, m_vEBullets[i]->GetDstP()->h };
+
+
+		SDL_Rect e = { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 32, 32 };
+		if (SDL_HasIntersection(&b, &e))
+		{
+
+			delete m_vEBullets[i];
+			m_vEBullets[i] = nullptr;
+			m_bullNull = true;
+			break;
+		}
+
+	}
+	if (m_bullNull) CleanVector<Bullet*>(m_vEBullets, m_bullNull);
+	for (int i = 0; i < (int)m_vEBullets.size(); i++)
+	{
+		SDL_Rect b = { m_vEBullets[i]->GetDstP()->x, m_vEBullets[i]->GetDstP()->y,
+			m_vEBullets[i]->GetDstP()->w, m_vEBullets[i]->GetDstP()->h };
+		for (int j = 0; j < Engine::Instance().GetPlatform().size(); j++)
+		{
+			if (Engine::Instance().GetPlatform()[j] == nullptr) continue;
+			SDL_Rect e = { Engine::Instance().GetPlatform()[j]->GetDstP()->x, Engine::Instance().GetPlatform()[j]->GetDstP()->y, 32, 32 };
+			if (SDL_HasIntersection(&b, &e))
+			{
+				delete m_vEBullets[i];
+				m_vEBullets[i] = nullptr;
+				m_bullNull = true;
+				break;
+			}
+		}
+	}
+	if (m_bullNull) CleanVector<Bullet*>(m_vEBullets, m_bullNull);
+}
+
+void Level1State::RenderLOS()
+{
+
+	for (auto i = 0; i < fDrone.size(); ++i)
+	{
+		if ((MAMA::Distance(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2, m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2,
+			fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2, m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) <= 500))
+		{
+			auto LOSColour = ((MAMA::Distance(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2, m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2,
+				fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2, m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) <= 300)) ? glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(255.0f, 0.0f, 0.0f, 1.0f);
+			DEMA::DrawLine({ int(m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2), int(m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) },
+				{ int(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2), int(fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2) },
+				{ Uint8(LOSColour.r), Uint8(LOSColour.g), Uint8(LOSColour.b), Uint8(LOSColour.a) });
+		}
+		
+	
+	}
+}
+
 // End GameState.
 
 // Begin Level 2
@@ -360,7 +441,7 @@ void Level2State::Render()
 			Engine::Instance().GetLevel2()[row][col]->Render();
 		}
 	}
-
+	
 	m_pPlayer->Render();
 
 	//draw the hook
@@ -582,7 +663,7 @@ void TutorialState::Exit()
 	}
 
 	
-
+	
 	Engine::Instance().GetTiles().clear();
 	Engine::Instance().GetEnemy().clear();
 	Engine::Instance().GetPlatform().clear();

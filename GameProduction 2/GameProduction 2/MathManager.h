@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 #include "SDL.h"
+#include "glm.hpp"
 
 class MathManager
 {
@@ -17,7 +18,11 @@ public:
 	static double Deg2Rad(const double angle);
 	static double Rad2Deg(const double angle);
 	static SDL_Rect ConvertFRect2Rect(const SDL_FRect& r);
-
+	static double Angle180(double a);
+	static double Angle360(double a);
+	static double LerpD(double first, double second, double perc);
+	static double LerpRad(double a, double b, double factor);
+	static glm::vec2 normalize(glm::vec2 vec);
 private:
 	MathManager() {}
 };
