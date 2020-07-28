@@ -119,7 +119,7 @@ void GrapplingHook::Update()
 	double m_lineAngle = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
 		(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
 	m_line->SetAngle(m_lineAngle * 180 / 3.14);
-	std::cout << m_line->GetDstP()->y << std::endl;
+	//std::cout << m_line->GetDstP()->y << std::endl;
 	
 	
 	//m_line->SetDstP( m_Player->GetDstP()->x + 32 - (m_line->GetDstP()->w) / 2 * cos(m_lineAngle), m_Player->GetDstP()->y + 15 - sqrt(pow( (m_line->GetDstP()->w)/2, 2) * 2 - 2 * (m_line->GetDstP()->w)  * cos(m_lineAngle)));
