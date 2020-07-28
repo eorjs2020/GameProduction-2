@@ -49,7 +49,7 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 	Button* m_quit, * m_mainMenu, * m_resume, * m_pause;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
-	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryX[10] = {12, 12, 12, 12, 12, 12, 12, 12, 12, 12}, m_batteryY[10] = { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49 };
+	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryX[10] = {12, 12, 12, 39, 39, 34, 50, 50, 42, 68}, m_batteryY[10] = { 2, 64, 65, 73, 74, 98, 2, 3, 34, 98 };
 	LTimer timer;
 	bool m_batteryExist = true;
 	bool m_bullNull;
