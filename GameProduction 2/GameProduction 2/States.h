@@ -74,6 +74,9 @@ class Level2State : public State
 private:
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
+	std::vector<FireDrone*> fDrone;
+	std::vector<Bullet*> m_vEBullets;
+	bool m_bullNull;
 public:
 	Level2State();
 	void Update();
@@ -81,6 +84,8 @@ public:
 	void Enter();
 	void Exit();
 	void Resume();
+	void BulletCollision();
+	void RenderLOS();
 };
 class TutorialState : public State
 {
@@ -100,9 +105,8 @@ private:
 	bool existHook = false, hookColl = false, m_stageEnd = false; 
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
-	bool m_bullNull;
-	std::vector<FireDrone*> fDrone;
-	std::vector<Bullet*> m_vEBullets;
+
+
 public:
 	TutorialState();
 	void Update();

@@ -68,7 +68,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterFall.png", "playerfall");
 	TEMA::RegisterTexture("Img/GH.png", "hook");
 	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
-	STMA::ChangeState(new TitleState);
+	//STMA::ChangeState(new TitleState);
+	STMA::ChangeState(new Level2State);
 	SOMA::AllocateChannels(16);
 	
 	m_running = true; // Everything is okay, start the engine.
