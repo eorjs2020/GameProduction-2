@@ -21,17 +21,19 @@ public:
 	void SetMaxVel(double a);
 	void SetAccelX(double a);
 	void SetAccelY(double a);
+	void AddAccelY(double a);
 	int getEnergy() { return m_energy; }
 	void setEnergy(int a);
 	void SetVel(double a, double b);
 	void Stop();
 private:
 	int speedDowncount;
-	enum state { idle, running, jump } m_state;
+	enum state { idle, running, jump, boost, invis, fall } m_state;
 	bool m_dir;
 	bool m_grounded;
 	invisibility* m_invis;
 	SpeedBoost* m_speedBoost;
+	doubleJump* m_doubleJump;
 	double m_accelX,
 		m_accelY,
 		m_velX,

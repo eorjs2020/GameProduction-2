@@ -30,8 +30,8 @@ void Level1State::Enter()
 	
 	m_pPlayer = new Player({ 0,0,19,26 }, { 60.0f,200.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
-	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
+	m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer);
 
 	///////////////////////////////////////////
 	///   enemy spawn and mvmt boundaries   ///
@@ -554,6 +554,7 @@ void TutorialState::Enter()
 
 void TutorialState::Update()
 {
+
 	if (m_MainMenu->Update() == 1)
 		return;
 			

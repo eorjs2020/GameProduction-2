@@ -21,6 +21,7 @@ public:
 	void Update() {}
 	void Update(double* a, double* b, double* c, float* x, float* y);
 	void Render();
+	bool getspeedBoost() { return m_speedBoost; }
 private:
 	AnimatedSprite* effect, *iconA;
 	bool m_speedBoost = false;
@@ -33,7 +34,25 @@ public:
 	void Update() {}
 	void Update(double* c);
 	void Render();
+	bool getinvis() { return m_invis; }
+
 private:
+	bool m_invis = false;
 	int m_invisTimer = 0;
-	AnimatedSprite* effect, * iconB;
+	AnimatedSprite * iconB;
+};
+class doubleJump : public SkillManager {
+public:
+	doubleJump();
+	void Update() {}
+	void Update(double* c);
+	void Render();
+	bool getdoubleJump() { return m_doubleJump; }
+	int getTotalJumps() { return m_totalJumps;  }
+	void setTotalJumps(int a) { m_totalJumps = a; }
+	void addTotalJumps(int a) { m_totalJumps += a; }
+private:
+	bool m_doubleJump = false, m_doubleJumpCoolDown = false;
+	int m_doubleJumpTimer = 0, m_totalJumps = 0;;
+	AnimatedSprite* iconC;
 };

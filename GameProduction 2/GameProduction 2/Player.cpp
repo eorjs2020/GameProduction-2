@@ -11,7 +11,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_grounded = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
 	m_maxVelX = 5.0;
-	m_maxVelY = JUMPFORCE;
+	m_maxVelY = 60;
 	m_grav = GRAV;
 	m_drag = 0.88;
 	m_a = &m_accelX;
@@ -20,12 +20,13 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_energy = 0; 
 	m_en = &m_energy;
 	m_invis = new invisibility();
-	m_speedBoost= new SpeedBoost();
+	m_speedBoost = new SpeedBoost();
+	m_doubleJump = new doubleJump();
 }
 
 void Player::Update(int stage)
 {
-	
+	m_doubleJump->Update(m_en);
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{		
 		m_accelX -= 1;				
@@ -34,15 +35,23 @@ void Player::Update(int stage)
 	{
 		m_accelX += 1;
 	}
-	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && IsGrounded())
+	if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_doubleJump->getTotalJumps() < 2 && (IsGrounded() || m_doubleJump->getdoubleJump() == true))
 	{
-		SetAccelY(-JUMPFORCE); // Sets the jump force.
+		SetAccelY(0);
+		AddAccelY(-20);
+		if(m_doubleJump->getTotalJumps() == 1)
+			AddAccelY(-15);
+		SetGrav(2);
+		m_doubleJump->addTotalJumps(1);
 		SetGrounded(false);
+		
 	}
+	
 	m_dX = &this->GetDstP()->x;
 	m_dY = &this->GetDstP()->y;
 	m_speedBoost->Update(m_a, m_aMaxY, m_en, m_dX, m_dY);
 	m_invis->Update(m_en);
+	
 
 	//std::cout << Engine::Instance().getinvis();
 
@@ -119,20 +128,28 @@ void Player::Update(int stage)
 	}
 	UpdateAxis(m_bgScrollX, m_bgScrollY);
 	Collision();
+	//std::cout << GetVelY() << std::endl;
 	switch (m_state)
 	{
 	case idle:
+		if (GetVelY() < 0)
+		{
+			SetState(jump);
+		}
+		if (GetVelY() > 0)
+		{
+			SetState(fall);
+		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_A) || EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
 			SetState(running);
 		}
-		if (EVMA::KeyHeld(SDL_SCANCODE_SPACE))
-		{
-			SetState(jump);
-		}
-
 		break;
 	case running:
+		if(m_speedBoost->getspeedBoost() == true)
+			SetState(boost);
+		if (m_invis->getinvis() == true)
+			SetState(invis);
 		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
 		{
 			SetState(idle);
@@ -149,14 +166,63 @@ void Player::Update(int stage)
 		}
 		break;
 	case jump:
-		if (IsGrounded())
+		if (GetVelY() == 0)
 		{
 			SetState(idle);
 			break;
 		}
+		if (GetVelY() > 0)
+		{
+			SetState(fall);
+			break;
+		}
 
 		break;
+	case fall:
+		if (GetVelY() == 0)
+		{
+			SetState(idle);
+			break;
+		}
+		if (GetVelY() < 0)
+		{
+			SetState(jump);
+			break;
+		}
 
+		break;
+	case boost:
+		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
+		{
+			SetState(idle);
+			break; // Skip movement parsing below.
+		}
+		if (EVMA::KeyHeld(SDL_SCANCODE_A))
+		{
+			m_dir = 1;
+		}
+		else if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		{
+			m_dir = 0;
+
+		}
+		break;
+	case invis:
+		if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
+		{
+			SetState(idle);
+			break; // Skip movement parsing below.
+		}
+		if (EVMA::KeyHeld(SDL_SCANCODE_A))
+		{
+			m_dir = 1;
+		}
+		else if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		{
+			m_dir = 0;
+
+		}
+		break;
 	}
 	
 	Animate();
@@ -167,6 +233,7 @@ void Player::Render()
 	SDL_RenderCopyExF(m_pRend, m_pText, GetSrcP(), GetDstP(), m_angle, 0, static_cast<SDL_RendererFlip>(m_dir));
 	m_speedBoost->Render();
 	m_invis->Render();
+	m_doubleJump->Render();
 }
 
 void Player::SetState(int s)
@@ -179,7 +246,7 @@ void Player::SetState(int s)
 		m_sprite = m_spriteMin = 0;
 		m_spriteMax = 4;
 	}
-	else if(m_state == running)// Only other is running for now...
+	else if (m_state == running)// Only other is running for now...
 	{
 		m_pText = TEMA::GetTexture("playerWalk");
 		m_sprite = m_spriteMin = 0;
@@ -190,7 +257,27 @@ void Player::SetState(int s)
 		m_pText = TEMA::GetTexture("playerJump");
 		m_sprite = 0;
 		m_spriteMin = 0;
-		m_spriteMax = 11;
+		m_spriteMax = 3;
+	}
+	else if (m_state == fall)
+	{
+		m_pText = TEMA::GetTexture("playerfall");
+		m_sprite = 0;
+		m_spriteMin = 0;
+		m_spriteMax = 3;
+	}
+	else if (m_state == boost)
+	{
+		m_pText = TEMA::GetTexture("playerboost");
+		m_sprite = m_spriteMin = 0;
+		m_spriteMax = 5;
+
+	}
+	else if (m_state == invis)
+	{
+		m_pText = TEMA::GetTexture("playerinvis");
+		m_sprite = m_spriteMin = 0;
+		m_spriteMax = 5;
 	}
 }
 
@@ -204,6 +291,8 @@ void Player::Collision()
 			if (GetDstP()->y + GetDstP()->h - (float)GetVelY() <= Engine::Instance().GetPlatform()[i]->GetDstP()->y)
 			{ // Colliding top side of platform.
 				SetGrounded(true);
+				m_doubleJump->setTotalJumps(0);
+				SetGrav(4);
 				StopY();
 				SetY(Engine::Instance().GetPlatform()[i]->GetDstP()->y - GetDstP()->h);
 			}
@@ -280,6 +369,8 @@ void Player::StopY() { m_velY = 0.0; }
 void Player::SetAccelX(double a) { m_accelX = a; }
 void Player::SetAccelY(double a) { m_accelY = a; }
 
+
+
 bool Player::IsGrounded() { return m_grounded; }
 void Player::SetGrounded(bool g) { m_grounded = g; }
 double Player::GetVelX() { return m_velX; }
@@ -291,7 +382,10 @@ void Player::AddAccelX(double a)
 {
 	m_accelX += a;
 }
-
+void Player::AddAccelY(double a)
+{
+	m_accelY += a;
+}
 void Player::SetMaxVel(double a)
 {
 	m_maxVelX = a;
