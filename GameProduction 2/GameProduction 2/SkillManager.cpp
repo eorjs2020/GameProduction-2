@@ -89,3 +89,37 @@ void invisibility::Render()
 	if (iconB != nullptr)
 		iconB->Render();
 }
+
+doubleJump::doubleJump()
+{
+	iconC = new AnimatedSprite({ 0,141,22,22 }, { 446.0f,724.0f,22.0f,22.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("skill"), 0, 1, 1, 1);
+}
+
+void doubleJump::Update(double* c)
+{
+	double* m_energy = c;
+	if (EVMA::KeyPressed(SDL_SCANCODE_3) && *m_energy > 0 && m_doubleJumpCoolDown == false)
+	{
+		*m_energy -= 5;
+		m_doubleJump = true;
+	}
+	if (m_doubleJump == true)
+	{
+		iconC->Animate();
+		++m_doubleJumpTimer;
+	}
+	if (m_doubleJumpTimer >= 200)
+	{
+		m_doubleJumpTimer = 0;
+		iconC->SetSrcP(0, 119);
+		m_doubleJump = false;
+	}
+	
+}
+
+void doubleJump::Render()
+{
+	if (iconC != nullptr)
+		iconC->Render();
+}
