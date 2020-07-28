@@ -132,7 +132,9 @@ void GrapplingHook::Update()
 
 	//std::cout << (m_lineAngle * 180 / 3.14) << std::endl;
 	m_line->setSize(sqrt(pow(abs(this->m_dst.x - m_Player->GetDstP()->x), 2) + pow(abs(this->m_dst.y - m_Player->GetDstP()->y), 2)), 3);
-
+	
+	if (m_line->GetDstP()->w > 600)
+		this->SetExist(false);
 
 	
 	//std::cout << m_line->GetDstP()->y << std::endl;
