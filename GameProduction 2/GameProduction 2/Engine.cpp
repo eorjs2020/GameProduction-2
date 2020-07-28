@@ -61,6 +61,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/battery.png", "battery");
 	TEMA::RegisterTexture("Img/Assets.png", "Key");
 	TEMA::RegisterTexture("Img/skills.png", "skill");
+	TEMA::RegisterTexture("Img/DroneFireIdle.png", "firedrone");
+	TEMA::RegisterTexture("Img/DroneBullet.png", "dronebullet");
 	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
 	STMA::ChangeState(new TitleState);
 	SOMA::AllocateChannels(16);

@@ -148,6 +148,7 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 			p->SetMaxVel(5);
 			m_playerslow = false;
 		}
+
 	Animate();
 }
 
