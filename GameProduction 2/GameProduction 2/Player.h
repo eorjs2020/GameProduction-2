@@ -26,6 +26,7 @@ public:
 	void setEnergy(int a);
 	void SetVel(double a, double b);
 	void Stop();
+	bool getDir() { return m_dir;  }
 private:
 	int speedDowncount;
 	enum state { idle, running, jump, boost, invis, fall } m_state;
