@@ -35,6 +35,7 @@ private:
 	invisibility* m_invis;
 	SpeedBoost* m_speedBoost;
 	doubleJump* m_doubleJump;
+	Barrier* m_barrier;
 	double m_accelX,
 		m_accelY,
 		m_velX,

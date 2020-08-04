@@ -22,11 +22,13 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_invis = new invisibility();
 	m_speedBoost = new SpeedBoost();
 	m_doubleJump = new doubleJump();
+	m_barrier = new Barrier();
 }
 
 void Player::Update(int stage)
 {
 	m_doubleJump->Update(m_en);
+	m_barrier->Update(m_en, m_dX, m_dY);
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{		
 		m_accelX -= 1;				
@@ -234,6 +236,7 @@ void Player::Render()
 	m_speedBoost->Render();
 	m_invis->Render();
 	m_doubleJump->Render();
+	m_barrier->Render();
 }
 
 void Player::SetState(int s)
