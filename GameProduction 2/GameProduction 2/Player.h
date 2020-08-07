@@ -27,6 +27,7 @@ public:
 	void SetVel(double a, double b);
 	void Stop();
 	bool getDir() { return m_dir;  }
+	bool getBar() { return m_pbarSkill; }
 private:
 	int speedDowncount;
 	enum state { idle, running, jump, boost, invis, fall } m_state;
@@ -45,7 +46,7 @@ private:
 		m_drag,
 		m_grav,
 		m_energy;
-	bool m_bgScrollX = false, m_bgScrollY = false;
+	bool m_bgScrollX = false, m_bgScrollY = false, m_pbarSkill = false;
 	double* m_a, * m_aMaxY, * m_en;
 	float *m_dX, * m_dY;
 private:

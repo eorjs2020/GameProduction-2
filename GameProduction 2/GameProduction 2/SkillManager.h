@@ -60,7 +60,7 @@ class Barrier : public SkillManager {
 public:
 	Barrier();
 	void Update() {}
-	void Update(double* c, float* x, float* y);
+	void Update(double* c, float* x, float* y, bool *dir, double * velx );
 	void Render();
 	bool getbar() { return m_bar; }
 

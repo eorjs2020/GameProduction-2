@@ -27,8 +27,10 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 
 void Player::Update(int stage)
 {
+	
 	m_doubleJump->Update(m_en);
-	m_barrier->Update(m_en, m_dX, m_dY);
+	
+	m_pbarSkill = m_barrier->getbar();
 	if (EVMA::KeyHeld(SDL_SCANCODE_A))
 	{		
 		m_accelX -= 1;				
@@ -228,6 +230,9 @@ void Player::Update(int stage)
 	}
 	
 	Animate();
+	bool *f = &m_dir;
+	double* h = &m_velX;
+	m_barrier->Update(m_en, m_dX, m_dY, f, h);
 }
 
 void Player::Render()
