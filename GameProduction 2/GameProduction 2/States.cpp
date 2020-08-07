@@ -196,7 +196,16 @@ void Level1State::Update()
 			}
 		}
 	}
-	
+	if (bulletslow)
+	{
+		m_pPlayer->SetMaxVel(2);
+		++bulletTimer;
+		if (bulletTimer == 50)
+		{
+			m_pPlayer->SetMaxVel(5);
+			bulletslow = true;
+		}
+	}
 	if (m_stageEnd)
 		STMA::ChangeState(new Level2State);
 
@@ -310,6 +319,7 @@ void Level1State::BulletCollision()
 			delete m_vEBullets[i];
 			m_vEBullets[i] = nullptr;
 			m_bullNull = true;
+			bulletslow = true;
 			break;
 		}
 
