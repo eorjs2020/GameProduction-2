@@ -51,6 +51,8 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryX[10] = {12, 12, 12, 39, 39, 34, 50, 50, 42, 68}, m_batteryY[10] = { 2, 64, 65, 73, 74, 98, 2, 3, 34, 97 };
 	LTimer timer;
+	int bulletTimer = 0;
+	bool bulletslow = false;
 	bool m_batteryExist = true;
 	bool m_bullNull;
 	std::vector<FireDrone*> fDrone;
