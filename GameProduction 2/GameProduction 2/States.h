@@ -55,6 +55,7 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 	bool m_bullNull;
 	std::vector<FireDrone*> fDrone;
 	std::vector<Bullet*> m_vEBullets;
+	double m_destinationX, m_destinationY;
 	
 public:
 	Level1State();

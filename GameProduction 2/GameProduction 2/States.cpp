@@ -30,8 +30,7 @@ void Level1State::Enter()
 	
 	m_pPlayer = new Player({ 0,0,19,26 }, { 60.0f,200.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
-	m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer);
+	m_hook = nullptr;
 
 	///////////////////////////////////////////
 	///   enemy spawn and mvmt boundaries   ///
@@ -182,9 +181,20 @@ void Level1State::Update()
 		{
 			m_vEBullets[i]->Update();
 		}
-		m_hook->Collision();
-		m_hook->Update();
-        
+		if (EVMA::MousePressed(1)) {
+			m_destinationX = EVMA::GetMousePos().x;
+			m_destinationY = EVMA::GetMousePos().y;
+			m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
+				Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, m_destinationX, m_destinationY);
+			
+		}
+		if (m_hook != nullptr) {
+			m_hook->Update();
+			m_hook->Collision();
+			if (m_hook->GetExist() == false) {
+				m_hook = nullptr;
+			}
+		}
 	}
 	for (int i = 0; i < 10; i++) {
 		if(m_battery[i] != nullptr){
@@ -251,7 +261,7 @@ void Level1State::Render()
 		Engine::Instance().GetEnemy()[i]->Render();
 	}
 	//draw the hook
-	if (m_hook->GetExist() == true)
+	if (m_hook != nullptr)
 		m_hook->Render();
 	// If GameState != current state.
 	if (dynamic_cast<Level1State*>(STMA::GetStates().back()))
@@ -369,7 +379,7 @@ void Level2State::Enter()
 	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,50.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer);
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, 0 ,0 );
 	m_bullNull = false;
 	ifstream inFile("map/TileDataLevel2.txt");
 	if (inFile.is_open())
@@ -626,7 +636,7 @@ void TutorialState::Enter()
 	m_pPlayer = new Player({ 0,0,19,26 }, { 150.0f,500.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = new GrapplingHook({ 10,-2,10,10 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 30, 30 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer);
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("fireball"), 0.00, m_pPlayer, 0 ,0);
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
 	m_interface = new Sprite({ 6,455,224,44 }, { 400.0f,724.0f,224.0f,44.0f },

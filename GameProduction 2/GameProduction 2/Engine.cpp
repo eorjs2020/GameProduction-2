@@ -67,6 +67,8 @@ bool Engine::Init(const char* title, int xpos, int ypos, int width, int height, 
 	TEMA::RegisterTexture("Img/CharacterWalkInvisible2.png", "playerinvis");
 	TEMA::RegisterTexture("Img/CharacterFall.png", "playerfall");
 	TEMA::RegisterTexture("Img/GH.png", "hook");
+	TEMA::RegisterTexture("Img/Barrier.png", "barrier");
+	
 	FOMA::RegisterFont("Img/LTYPE.TTF", "font1", 20);
 	STMA::ChangeState(new TitleState);
 	//STMA::ChangeState(new Level2State);

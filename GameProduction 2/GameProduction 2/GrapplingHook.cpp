@@ -8,7 +8,7 @@
 #include "DebugManager.h"
 #include "TextureManager.h"
 
-GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a) 
+GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a, double mousePosX, double mousePosY)
 	:Sprite(s, d, r, t)
 {
 	dx = dy = 0.0f;
@@ -24,6 +24,8 @@ GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Textu
 	m_Player = a; 
 	m_dst.x = m_Player->GetDstP()->x;
 	m_dst.y = m_Player->GetDstP()->y;
+	endpointX = mousePosX;
+	endpointY = mousePosY;
 	m_destinationX = m_Player->GetDstP()->x;
 	m_destinationY = m_Player->GetDstP()->y;
 	shoot = false;
@@ -32,11 +34,18 @@ GrapplingHook::GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Textu
 	point.x = 0;
 	point.y = 0;
 	m_line->SetPoint(&point);
+	m_Exist = true;
+	shoot = true;
+	m_dst.x = m_Player->GetDstP()->x;
+	m_dst.y = m_Player->GetDstP()->y;
+	anglecheck = true;
 }
 
 
 void GrapplingHook::Update()
 {
+	//std::cout << endpointX << std::endl << endpointY << std::endl;
+	
 	// Do X axis first.
 	m_velX += m_accelX;
 	m_velX *= (m_grounded ? m_drag : 1);
@@ -54,67 +63,65 @@ void GrapplingHook::Update()
 	}
 	if (m_Player->BGScorllX())
 	{
-
 		m_dst.x -= m_Player->GetVelX();
 	}
 
-	if (EVMA::MouseReleased(1))
-	{
-		m_destinationX = EVMA::GetMousePos().x;
-		m_destinationY = EVMA::GetMousePos().y;
-		m_dst.x = m_Player->GetDstP()->x;
-		m_dst.y = m_Player->GetDstP()->y;
-		m_Exist = true;
-		shoot = true;
+	/*if (EVMA::MouseReleased(1))
+	{*/
+		/*m_destinationX = EVMA::GetMousePos().x;
+		m_destinationY = EVMA::GetMousePos().y;*/
+		
+		
 
+	//}
+
+	//if (shoot)
+	//{
+	//	//std::cout << "a" << std::endl;
+	//	if (MAMA::Distance(m_dst.x + m_dst.w / 2, endpointX, m_dst.y + m_dst.h / 2, endpointY) == 0)
+	//	{
+	//		dx = dy = 0.0;
+	//		shoot = false;
+	//	}
+
+	//	else
+	//	{
+	if (anglecheck == true ) {
+		double a = MAMA::AngleBetweenPoints((endpointY)-(m_dst.y + m_dst.h / 2),
+			(endpointX)-(m_dst.x + m_dst.w / 2));
+		MAMA::SetDeltas(a, dx, dy, 10.0, 10.0);
+		anglecheck = false;
 	}
-
-	if (shoot)
-	{
-		//std::cout << "a" << std::endl;
-		if (MAMA::Distance(m_dst.x + m_dst.w / 2, m_destinationX, m_dst.y + m_dst.h / 2, m_destinationY) <= 5)
-		{
-			dx = dy = 0.0;
-			shoot = false;
-		}
-
-		else
-		{
-			double a = MAMA::AngleBetweenPoints((m_destinationY)-(m_dst.y + m_dst.h / 2),
-				(m_destinationX)-(m_dst.x + m_dst.w / 2));
-			MAMA::SetDeltas(a, dx, dy, 10.0, 10.0);
-			m_velX = (int)round(dx);
-			m_velY = (int)round(dy);
-		}
+	if (shoot) {
+		m_velX = (int)round(dx);
+		m_velY = (int)round(dy);
 	}
-	if (EVMA::MouseHeld(3) && m_Exist)
+	//	}
+	//}
+	if (EVMA::MouseHeld(1) && shoot == false)
 	{
 		m_Player->SetGrav(0.0f);
-
-
-		if (MAMA::Distance(m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2, m_dst.x + m_dst.w / 2, m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2, m_dst.y + m_dst.h / 2) <= 5)
-		{
-			m_dst.x = m_Player->GetDstP()->x;
-			m_dst.x = m_Player->GetDstP()->y;
-			dx = dy = 0.0;
-			m_Player->Stop();
-			m_Exist = false;
-		}
-
-		else
-		{
-			double a = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
-				(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
-			MAMA::SetDeltas(a, dx, dy, 4.0, 4.0);
-			m_Player->SetVel((int)round(dx), (int)round(dy));
-		}
-
+		double a = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
+			(m_dst.x + m_dst.w / 2) - (m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2));
+		MAMA::SetDeltas(a, dx, dy, 4.0, 4.0);
+		m_Player->SetVel((int)round(dx), (int)round(dy));
+		
 	}
+	if (MAMA::Distance(m_Player->GetDstP()->x + m_Player->GetDstP()->w / 2, m_dst.x + m_dst.w / 2, m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2, m_dst.y + m_dst.h / 2) <= 0 && shoot == false)
+	{
+		m_dst.x = m_Player->GetDstP()->x;
+		m_dst.y = m_Player->GetDstP()->y;
+		dx = dy = 0.0;
+		m_Player->Stop();
+		m_Exist = false;
+	}
+		
 
-	else if (EVMA::MouseReleased(3))
+	if (EVMA::MouseReleased(1) && m_Exist)
 	{
 		dx = dy = 0;
 		m_Player->SetGrav(4.0f);
+		this->SetExist(false);
 	}
 	double m_lineAngle;
 	 m_lineAngle = MAMA::AngleBetweenPoints((m_dst.y + m_dst.h / 2) - (m_Player->GetDstP()->y + m_Player->GetDstP()->h / 2),
@@ -135,6 +142,8 @@ void GrapplingHook::Update()
 	
 	if (m_line->GetDstP()->w > 600)
 		this->SetExist(false);
+	/*if (shoot == false && m_dst.x == endpointX && m_dst.y == endpointY)
+		this->SetExist(false);*/
 
 	
 	//std::cout << m_line->GetDstP()->y << std::endl;

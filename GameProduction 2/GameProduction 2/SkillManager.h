@@ -56,3 +56,16 @@ private:
 	int m_doubleJumpTimer = 0, m_totalJumps = 0;;
 	AnimatedSprite* iconC;
 };
+class Barrier : public SkillManager {
+public:
+	Barrier();
+	void Update() {}
+	void Update(double* c, float* x, float* y);
+	void Render();
+	bool getbar() { return m_bar; }
+
+private:
+	bool m_bar = false;
+	int m_pBarTimer = 0;
+	AnimatedSprite* iconD, * m_barrierAnimation;
+};

@@ -123,3 +123,46 @@ void doubleJump::Render()
 	if (iconC != nullptr)
 		iconC->Render();
 }
+
+Barrier::Barrier()
+{
+	this->m_bar = false;
+	this->m_pBarTimer = 0;
+	iconD = new AnimatedSprite({ 0,163,22,22 }, { 469.0f,724.0f,22.0f,22.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("skill"), 0, 1, 1, 1);
+	
+}
+
+void Barrier::Update(double* c, float* x, float* y)
+{
+	double* m_energy = c;
+	if (EVMA::KeyPressed(SDL_SCANCODE_4) && *m_energy > 0 && m_bar == false)
+	{
+		*m_energy -= 5;
+		m_bar = true;
+		m_barrierAnimation = new AnimatedSprite({ 0,0,28,26 }, { *x + 16, *y + 16,28.0f,26.0f },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("barrier"), 0, 0, 5, 6);
+	}
+	if (m_bar == true)
+	{
+		m_barrierAnimation->SetDstP(*x + 16, *y + 16);
+		++m_pBarTimer; 
+		m_barrierAnimation->Animate();
+		iconD->Animate();
+	}
+	if (m_pBarTimer >= 200)
+	{
+		m_pBarTimer = 0;
+		iconD->SetSrcP(0, 163);
+		m_bar = false;
+		m_barrierAnimation = nullptr;
+	}
+}
+
+void Barrier::Render()
+{
+	if (iconD != nullptr)
+		iconD->Render();
+	if (m_barrierAnimation != nullptr)
+		m_barrierAnimation->Render();
+}

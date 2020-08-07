@@ -8,7 +8,7 @@
 class GrapplingHook : public Sprite
 {
 public:
-	GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a);
+	GrapplingHook(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, double dir, Player * a, double mousePosX, double mousePosY);
 	void Update();
 	void Render();
 	void Stop();
@@ -34,10 +34,12 @@ private:
 		m_drag,
 		m_grav, 
 		m_destinationX,
-		m_destinationY;
+		m_destinationY,
+		endpointX, 
+		endpointY;
 	double dx, dy, angle;
 	Player* m_Player;
-	bool shoot;
+	bool shoot, anglecheck;
 	Sprite* m_line;
 	SDL_FPoint point;
 };
