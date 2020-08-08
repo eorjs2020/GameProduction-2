@@ -80,6 +80,7 @@ private:
 	std::vector<FireDrone*> fDrone;
 	std::vector<Bullet*> m_vEBullets;
 	bool m_bullNull;
+	double m_destinationX, m_destinationY;
 public:
 	Level2State();
 	void Update();
@@ -108,7 +109,7 @@ private:
 	bool existHook = false, hookColl = false, m_stageEnd = false; 
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
-
+	double m_destinationX, m_destinationY;
 
 public:
 	TutorialState();
