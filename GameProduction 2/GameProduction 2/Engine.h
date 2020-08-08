@@ -28,6 +28,7 @@ private: // Private properties.
 	std::array<std::array<Tile*, COLS>, ROWS> m_level;
 	std::array<std::array<Tile*, COLS2>, ROWS2> m_level2;
 	std::vector<Tile*> m_platforms;
+	std::vector<Tile*> m_hazard;
 	std::vector<Tile*> m_platforms2;
 	std::vector<Enemy*> m_enemies;
 	bool m_pPause, m_invis = false;
@@ -52,6 +53,7 @@ public: // Public methods.
 	std::array<std::array<Tile*, COLS2>, ROWS2>& GetLevel2() { return m_level2; }
 	std::map<char, Tile*>& GetTiles() { return m_tiles; }
 	std::vector<Tile*>& GetPlatform() { return m_platforms; }
+	std::vector<Tile*>& GetHazard() { return m_hazard; }
 	std::vector<Enemy*>& GetEnemy() { return m_enemies; }
 	bool& Pause();
 	std::vector<Tile*>& GetPlatform2() { return m_platforms2; }

@@ -23,6 +23,7 @@ Player::Player(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sst
 	m_speedBoost = new SpeedBoost();
 	m_doubleJump = new doubleJump();
 	m_barrier = new Barrier();
+	slowHazardCheck = false;
 }
 
 void Player::Update(int stage)
@@ -233,6 +234,7 @@ void Player::Update(int stage)
 	bool *f = &m_dir;
 	double* h = &m_velX;
 	m_barrier->Update(m_en, m_dX, m_dY, f, h);
+	slowHazard();
 }
 
 void Player::Render()
@@ -293,7 +295,7 @@ void Player::Collision()
 {
 	for (unsigned i = 0; i < Engine::Instance().GetPlatform().size(); i++) // For each platform.
 	{
-		
+		//Platform collision
 		if (COMA::AABBCheck(*GetDstP(), *Engine::Instance().GetPlatform()[i]->GetDstP()))
 		{			
 			if (GetDstP()->y + GetDstP()->h - (float)GetVelY() <= Engine::Instance().GetPlatform()[i]->GetDstP()->y)
@@ -320,6 +322,16 @@ void Player::Collision()
 				StopX();
 				SetX(Engine::Instance().GetPlatform()[i]->GetDstP()->x + Engine::Instance().GetPlatform()[i]->GetDstP()->w);
 			}
+		}
+	}
+
+	for (unsigned i = 0; i < Engine::Instance().GetHazard().size(); i++) // For each platform.
+	{
+		//Hazard collision 
+		if (COMA::AABBCheck(*GetDstP(), *Engine::Instance().GetHazard()[i]->GetDstP()))
+		{
+			if (slowHazardCheck == false)
+				slowHazardCheck = true;
 		}
 	}
 }
@@ -371,6 +383,20 @@ void Player::Stop() // If you want a dead stop both axes.
 {
 	StopX();
 	StopY();
+}
+void Player::slowHazard()
+{
+	if (slowHazardCheck == true)
+	{
+		this->SetMaxVel(1);
+		++slowHazardtimer;
+		if (slowHazardtimer >= 50)
+		{
+			this->SetMaxVel(5);
+			slowHazardCheck = false;
+			slowHazardtimer = 0;
+		}
+	}
 }
 void Player::StopX() { m_velX = 0.0; }
 void Player::StopY() { m_velY = 0.0; }

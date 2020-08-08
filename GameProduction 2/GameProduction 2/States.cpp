@@ -104,6 +104,8 @@ void Level1State::Enter()
 				Engine::Instance().GetLevel()[row][col]->GetDstP()->y = (float)(32 * row);
 				if (Engine::Instance().GetLevel()[row][col]->IsObstacle())
 					Engine::Instance().GetPlatform().push_back(Engine::Instance().GetLevel()[row][col]);
+				if (Engine::Instance().GetLevel()[row][col]->IsHazard())
+					Engine::Instance().GetHazard().push_back(Engine::Instance().GetLevel()[row][col]);
 			}
 		}
 	}
@@ -122,6 +124,7 @@ void Level1State::Enter()
 	SOMA::Load("Aud/hook_grappling2.wav", "grab", SOUND_SFX);
 	SOMA::Load("Aud/hook_retraction3.wav", "retract", SOUND_SFX);
 	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
+	m_pNumBulletHit = 0; 
 	//SOMA::PlayMusic("BGM");
 	
 }
@@ -181,13 +184,14 @@ void Level1State::Update()
 		{
 			m_vEBullets[i]->Update();
 		}
+		//hook creation 
 		if (EVMA::MousePressed(1)) {
 			m_destinationX = EVMA::GetMousePos().x;
 			m_destinationY = EVMA::GetMousePos().y;
 			m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
 				Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, m_destinationX, m_destinationY);
-			
 		}
+		//hook update and collision 
 		if (m_hook != nullptr) {
 			m_hook->Update();
 			m_hook->Collision();
@@ -195,7 +199,11 @@ void Level1State::Update()
 				m_hook = nullptr;
 			}
 		}
+
+
+
 	}
+	//Battery postion, collision and energy set
 	for (int i = 0; i < 10; i++) {
 		if(m_battery[i] != nullptr){
 			m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
@@ -206,6 +214,7 @@ void Level1State::Update()
 			}
 		}
 	}
+	//Bullet slow and reset to normal speed
 	if (bulletslow)
 	{
 		m_pPlayer->SetMaxVel(2);
@@ -217,30 +226,60 @@ void Level1State::Update()
 			bulletTimer = 0;
 		}
 	}
+	//Score calculation and State change
 	if (m_stageEnd){
-		Engine::Instance().setScore(m_pPlayer->getEnergy());
-		//change timer add
-		Engine::Instance().setScore(timer.getmin() * 1000);
-		Engine::Instance().setScore(timer.getsec() * 1000);
+		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 1000);
+		int a;
+		if (timer.getmin() == 3)
+		{
+			a = 1000;
+		}
+		else if(timer.getmin() == 2 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 2000;
+		}
+		else if (timer.getmin() == 2 && timer.getsec() < 30)
+		{
+			a = 2000;
+		}
+		else if (timer.getmin() == 1 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 3000;
+		}
+		else if (timer.getmin() == 1 && timer.getsec() < 30)
+		{
+			a = 3000;
+		}
+		else if (timer.getmin() == 0 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 5000;
+		}
+		else if (timer.getmin() == 0 && timer.getsec() < 30)
+		{
+			a = 10000;
+		}
+		else {
+			a = 0;
+		}
+		Engine::Instance().setScore(-(m_pNumBulletHit * 10));
+		Engine::Instance().setScore(a);
 		STMA::ChangeState(new ScoreState);
 	}
 }
 
+//Empty ??? 
 void Level1State::CheckCollisionHook()
 {
 
 }
 
-
-
 void Level1State::Render()
 {
-	
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
+	//Render Background
 	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
-	// Draw the player.
-
+	//Render tiles 
 	for (int row = 0; row < ROWS; row++)
 	{
 		for (int col = 0; col < COLS; col++)
@@ -248,45 +287,54 @@ void Level1State::Render()
 			Engine::Instance().GetLevel()[row][col]->Render();
 		}
 	}
+	//Render Bullets
 	for (auto i = 0; i < m_vEBullets.size(); ++i)
 	{
 		m_vEBullets[i]->Render();
 	}
-	if (Engine::Instance().Pause() == false)
-	{
-		m_pause->Render();
-	}
+	//Render Drone Enemies
 	for (auto i = 0; i < fDrone.size(); ++i)
 	{
 		fDrone[i]->Render();
 	}
-	m_pPlayer->Render();
-	RenderLOS();
-	//m_interface->Render();
-	m_timer->Render();
-	m_energy->Render();
-	m_goal->Render();
-	for (int i = 0; i < 10; i++) {
-		if (m_battery[i] != nullptr)
-			m_battery[i]->Render();
-	}
+	//Render Patrol Enemies  
 	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size();++i)
 	{
 		Engine::Instance().GetEnemy()[i]->Render();
 	}
-	//draw the hook
+	//Render LOS
+	RenderLOS();
+	//m_interface->Render();
+	m_goal->Render();
+	m_energy->Render();
+	m_pPlayer->Render();
+	//Render Battery 
+	for (int i = 0; i < 10; i++) {
+		if (m_battery[i] != nullptr)
+			m_battery[i]->Render();
+	}
+	//Render hook
 	if (m_hook != nullptr)
+	{
 		m_hook->Render();
+	}
+	//Render timer
+	m_timer->Render();
 	// If GameState != current state.
 	if (dynamic_cast<Level1State*>(STMA::GetStates().back()))
 		State::Render();
+	//Render Pause button
+	if (Engine::Instance().Pause() == false)
+	{
+		m_pause->Render();
+	}
+	//Render Pause state buttons
 	if (Engine::Instance().Pause() == true)
 	{
 		m_quit->Render();
 		m_mainMenu->Render();
 		m_resume->Render();
 	}
-	
 }
 
 void Level1State::Exit()
@@ -316,8 +364,9 @@ void Level1State::Exit()
 	
 	
 }
-
+//Empty ???
 void Level1State::Resume() { }
+
 void Level1State::BulletCollision()
 {
 	for (int i = 0; i < (int)m_vEBullets.size(); i++)
@@ -334,8 +383,11 @@ void Level1State::BulletCollision()
 			delete m_vEBullets[i];
 			m_vEBullets[i] = nullptr;
 			m_bullNull = true;
-			if(!m_pPlayer->getBar())
+			if (!m_pPlayer->getBar())
+			{
+				++m_pNumBulletHit;
 				bulletslow = true;
+			}
 			break;
 		}
 

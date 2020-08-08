@@ -28,8 +28,9 @@ public:
 	void Stop();
 	bool getDir() { return m_dir;  }
 	bool getBar() { return m_pbarSkill; }
+	void slowHazard();
 private:
-	int speedDowncount;
+	int speedDowncount, slowHazardtimer;
 	enum state { idle, running, jump, boost, invis, fall } m_state;
 	bool m_dir;
 	bool m_grounded;
@@ -46,7 +47,7 @@ private:
 		m_drag,
 		m_grav,
 		m_energy;
-	bool m_bgScrollX = false, m_bgScrollY = false, m_pbarSkill = false;
+	bool m_bgScrollX = false, m_bgScrollY = false, m_pbarSkill = false, slowHazardCheck;
 	double* m_a, * m_aMaxY, * m_en;
 	float *m_dX, * m_dY;
 private:
