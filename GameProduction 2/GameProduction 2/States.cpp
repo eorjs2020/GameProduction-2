@@ -213,7 +213,7 @@ void Level1State::Update()
 		if (bulletTimer == 50)
 		{
 			m_pPlayer->SetMaxVel(5);
-			bulletslow = true;
+			bulletslow = false;
 		}
 	}
 	if (m_stageEnd)
