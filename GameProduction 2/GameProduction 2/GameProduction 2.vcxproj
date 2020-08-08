@@ -187,6 +187,7 @@
     <Image Include="Img\DroneBullet.png" />
     <Image Include="Img\DroneFireIdle.png" />
     <Image Include="Img\DroneIdle.png" />
+    <Image Include="Img\flashlight.png" />
     <Image Include="Img\Kit.png" />
     <Image Include="Img\tilemap1.png" />
     <Image Include="Img\tutorialButton.png" />

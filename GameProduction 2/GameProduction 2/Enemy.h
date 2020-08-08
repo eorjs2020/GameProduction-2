@@ -24,6 +24,7 @@ private:
 	void SetX(float y);
 	void SetY(float y);
 	void AI(SDL_Rect* a);
+	void Collision();
 private:
 	
 	int chasingTimer, searchingDelay, m_slowCooldown = 0;
@@ -38,10 +39,12 @@ private:
 		m_drag,
 		m_grav,
 		dx, dy, boundary;
+	bool sideCol = false, updownCol = false;
 	bool searchingDir = false, m_invis = false;
 	bool m_bgScrollX = false, m_bgScrollY = false, m_moving = false, m_playerslow = false;
 public:
 	SDL_FRect m_pSBox;
+	SDL_Rect m_pBoxSrc;
 	glm::vec2 m_ePos;
 	void setInvis(bool a);
 };
