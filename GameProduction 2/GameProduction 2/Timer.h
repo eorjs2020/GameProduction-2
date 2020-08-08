@@ -9,6 +9,8 @@ class LTimer
 {
 public:
     std::string getrunnningtime(LTimer a);
+    int getsec() { return m_seconds; }
+    int getmin() { return m_minutes; }
     //Initializes variables
     LTimer();
 

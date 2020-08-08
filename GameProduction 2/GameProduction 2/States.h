@@ -49,9 +49,9 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 	Button* m_quit, * m_mainMenu, * m_resume, * m_pause;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
-	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryX[10] = {12, 12, 12, 39, 39, 34, 50, 50, 42, 68}, m_batteryY[10] = { 2, 64, 65, 73, 74, 98, 2, 3, 34, 97 };
+	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryX[10] = {12, 12, 12, 39, 39, 34, 49, 49, 42, 68}, m_batteryY[10] = { 2, 64, 65, 73, 74, 98, 2, 3, 34, 97 };
 	LTimer timer;
-	int bulletTimer = 0;
+	int bulletTimer = 0, m_pNumBulletHit;
 	bool bulletslow = false;
 	bool m_batteryExist = true;
 	bool m_bullNull;
@@ -80,6 +80,7 @@ private:
 	std::vector<FireDrone*> fDrone;
 	std::vector<Bullet*> m_vEBullets;
 	bool m_bullNull;
+	double m_destinationX, m_destinationY;
 public:
 	Level2State();
 	void Update();
@@ -108,7 +109,7 @@ private:
 	bool existHook = false, hookColl = false, m_stageEnd = false; 
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
-
+	double m_destinationX, m_destinationY;
 
 public:
 	TutorialState();
@@ -146,6 +147,20 @@ public:
 	void Exit();
 private:
 	Button* m_playBtn;
+};
+class ScoreState : public State
+{
+public:
+	ScoreState();
+	void Update();
+	void Render();
+	void Enter();
+	void Exit();
+private:
+	Button* m_nextLevelBtn;
+	Label* m_score;
+	int totalScore, timeScore, energyScore, updatingtimer;
+	string tS = "00000";
 };
 
 #endif

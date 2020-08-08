@@ -133,9 +133,11 @@ Barrier::Barrier()
 	
 }
 
-void Barrier::Update(double* c, float* x, float* y)
+void Barrier::Update(double* c, float* x, float* y, bool *dir, double *velx)
 {
 	double* m_energy = c;
+	bool* dirs = dir;
+	double* velxs = velx;
 	if (EVMA::KeyPressed(SDL_SCANCODE_4) && *m_energy > 0 && m_bar == false)
 	{
 		*m_energy -= 5;
@@ -145,8 +147,14 @@ void Barrier::Update(double* c, float* x, float* y)
 	}
 	if (m_bar == true)
 	{
-		m_barrierAnimation->SetDstP(*x + 16, *y + 16);
-		++m_pBarTimer; 
+		if (EVMA::KeyHeld(SDL_SCANCODE_A)) {
+			m_barrierAnimation->SetDstP(*x, *y + 16);
+			std::cout << *velxs << std::endl;
+		}
+		else {
+			m_barrierAnimation->SetDstP(*x + 16, *y + 16);
+		}
+		++m_pBarTimer;
 		m_barrierAnimation->Animate();
 		iconD->Animate();
 	}

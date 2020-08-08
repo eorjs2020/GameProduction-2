@@ -62,4 +62,11 @@ private:
 public:
 	MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
 };
+class LevelTwoButton :public Button
+{
+private:
+	void Execute();
+public:
+	LevelTwoButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
+};
 #endif
