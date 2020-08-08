@@ -28,7 +28,7 @@ void Level1State::Enter()
 	std::cout << "Entering Level1State..." << std::endl;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	
-	m_pPlayer = new Player({ 0,0,19,26 }, { 60.0f,200.0f,46.0f,64.0f },
+	m_pPlayer = new Player({ 0,0,19,26 }, { 60.0f,90.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = nullptr;
 
@@ -90,7 +90,7 @@ void Level1State::Enter()
 	
 	inFile.close();
 
-	inFile.open("map/Game_map.txt");
+	inFile.open("map/LevelOneRedesign.txt");
 	if (inFile.is_open())
 	{ // Build the level from Tile prototypes.
 		char key;

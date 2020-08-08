@@ -163,6 +163,7 @@
     <Text Include="map\tutorial.txt">
       <Filter>리소스 파일</Filter>
     </Text>
+    <Text Include="map\LevelOneRedesign.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Img\tilemap1.png">
