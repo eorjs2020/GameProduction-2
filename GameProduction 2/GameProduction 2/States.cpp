@@ -172,8 +172,8 @@ void Level1State::Update()
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
 		m_timer->SetText(m_updateTimer);
 		m_energyNum = std::to_string(m_pPlayer->getEnergy());
-		
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
+		
 		
 		m_energy->SetText(m_updateEnergy);
 		BulletCollision();
@@ -217,9 +217,13 @@ void Level1State::Update()
 			bulletTimer = 0;
 		}
 	}
-	if (m_stageEnd)
-		STMA::ChangeState(new Level2State);
-
+	if (m_stageEnd){
+		Engine::Instance().setScore(m_pPlayer->getEnergy());
+		//change timer add
+		Engine::Instance().setScore(timer.getmin() * 1000);
+		Engine::Instance().setScore(timer.getsec() * 1000);
+		STMA::ChangeState(new ScoreState);
+	}
 }
 
 void Level1State::CheckCollisionHook()
@@ -922,3 +926,44 @@ void EndState::Exit()
 }
 // End TitleState.
 
+ScoreState::ScoreState() {}
+
+void ScoreState::Update()
+{
+	
+	++updatingtimer;
+	if ((updatingtimer % 2) == 0)
+	{
+		if (timeScore > totalScore)
+		{
+			totalScore += 100;
+			tS = std::to_string(totalScore);
+			m_score->SetText(tS);
+		}
+	}
+	
+	if (m_nextLevelBtn->Update())
+		return;
+
+}
+
+void ScoreState::Render()
+{
+	SDL_RenderCopy(Engine::Instance().GetRenderer(), TEMA::GetTexture("title"), nullptr, nullptr);
+	m_nextLevelBtn->Render();
+	m_score->Render();
+}
+
+void ScoreState::Enter()
+{
+	m_nextLevelBtn = new LevelTwoButton({ 0,0,490,140 }, { 380.0f,280.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("resume"));
+	timeScore = Engine::Instance().getScore();
+	updatingtimer = 0;
+	totalScore = 0;
+	m_score = new Label("font1", WIDTH / 2 - 100, HEIGHT / 2, tS, { 255,255,255,255 });;
+}
+
+void ScoreState::Exit()
+{
+}

@@ -110,3 +110,12 @@ void MainMenuButton::Execute()
 MainMenuButton::MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button (src, dst, r, t)
 {
 }
+
+void LevelTwoButton::Execute()
+{
+	STMA::ChangeState(new Level2State);
+}
+
+LevelTwoButton::LevelTwoButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button(src, dst, r, t)
+{
+}

@@ -147,5 +147,19 @@ public:
 private:
 	Button* m_playBtn;
 };
+class ScoreState : public State
+{
+public:
+	ScoreState();
+	void Update();
+	void Render();
+	void Enter();
+	void Exit();
+private:
+	Button* m_nextLevelBtn;
+	Label* m_score;
+	int totalScore, timeScore, energyScore, updatingtimer;
+	string tS = "00000";
+};
 
 #endif
