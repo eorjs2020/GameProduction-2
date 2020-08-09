@@ -42,7 +42,7 @@ private:
 	Sprite* m_goal;
 	Sprite * m_interface, * m_battery[38];
 	Label* m_timer, * m_energy;
-std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEnergy = "Energy: 0", 
+	std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEnergy = "Energy: 0", 
 		m_updateEnergy, m_energyNum;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
@@ -98,20 +98,26 @@ public:
 class TutorialState : public State
 {
 private:
-	Sprite* explainKey;
+	Sprite* explainKey, * m_battery[4];
 	Sprite* m_goal;
 	Sprite* m_interface;
-	Button* m_MainMenu;
+	Button* m_quit, * m_mainMenu, * m_resume, * m_Pause;
 	Label* m_timer, * m_energy;
-	Label* tuto1, *tuto2, *tuto3, *tuto4, *tuto5, *tuto6;
-	Label* pressEnterL;
+	Label* tuto1, *tuto2, * tuto2b, *tuto3, *tuto4, * tuto4b, *tuto5, * tuto5b, *tuto6, 
+		* tuto6b, *tuto5c, *tuto7, * tuto7b, *tuto8, *tuto8b;
+	Label* m_input;
 	Player* m_pPlayer;
 	GrapplingHook* m_hook;
+	LTimer timer;
+	std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEnergy = "Energy: 0",
+		m_updateEnergy, m_energyNum;
 	bool explainPause = true;
 	int pressEnter = 0;
 	bool explain = true;
 	bool existHook = false, hookColl = false, m_stageEnd = false; 
-	int m_pSFXVolume, m_pMusicVolume;
+	int m_pSFXVolume, m_pMusicVolume,
+		m_batteryX[4] = { 13, 13, 13, 13},
+		m_batteryY[4] = { 25, 25, 26, 26};
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
 	double m_destinationX, m_destinationY;
 

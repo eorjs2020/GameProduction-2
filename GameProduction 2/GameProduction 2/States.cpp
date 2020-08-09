@@ -32,7 +32,7 @@ void Level1State::Enter()
 	m_hook = nullptr;
 	m_bullNull = false;
 	m_defualtTimer = "Timer: 0";
-	
+	Engine::Instance().Pause() = false;
 	
 	//loading data from txt for level layout
 	//tile type data 
@@ -744,19 +744,28 @@ void TutorialState::Enter()
 	m_pPlayer = new Player({ 0,0,19,26 }, { 150.0f,500.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = nullptr;
-	
+	Engine::Instance().Pause() = false;
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
 
-	m_timer = new Label("font1", 900, 10, "Timer: ", { 255,255,255,255 });
-	m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
-	pressEnterL = new Label("font1", WIDTH / 2, HEIGHT / 2 +20, "Press Enter", { 255,255,255,255 });
-	tuto1 = new Label("font1", WIDTH / 2 , HEIGHT / 2 , "WASD - Movement controll", { 255,255,255,255 });
-	tuto2 = new Label("font1", WIDTH / 2 , HEIGHT / 2 , "Mouse right Click - Grappling Hook", { 255,255,255,255 });
-	tuto3 = new Label("font1", WIDTH / 2 , HEIGHT / 2 , "Spacebar - Jump", { 255,255,255,255 });
-	tuto4 = new Label("font1", WIDTH / 2 , HEIGHT / 2 , "Grean Batter - Fill energy", { 255,255,255,255 });
-	tuto5 = new Label("font1", WIDTH / 2 , HEIGHT / 2 , "Energy - cost will be use for skill", { 255,255,255,255 });
-	tuto6 = new Label("font1", WIDTH / 2 , HEIGHT / 2 , "Key - Goal of the stage", { 255,255,255,255 });
+	m_timer = new Label("font1", 850, 10, m_defualtTimer, { 255,255,255,255 });
+	m_energy = new Label("font1", 410, 680, m_defualtEnergy, { 255,255,255,255 });
+	m_input = new Label("font1", WIDTH / 2 - 250, 120, "Press enter", { 255,255,255,255 });
+	tuto1 = new Label("font1", WIDTH / 2 -250, 150 , "Player can be controlled with WASD", { 255,255,255,255 });
+	tuto2 = new Label("font1", WIDTH / 2 - 250, 150,  "Grappling Hook can be controlled with", { 255, 255, 255, 255 });
+	tuto2b = new Label("font1", WIDTH / 2 - 250, 180, "right mouse click to aim and held to move player", { 255,255,255,255 });
+	tuto3 = new Label("font1", WIDTH / 2 - 250, 150, "Spacebar - Jump", { 255,255,255,255 });
+	tuto4 = new Label("font1", WIDTH / 2 - 250, 150, "Collect green batteries to gain energy", { 255,255,255,255 });
+	tuto4b = new Label("font1", WIDTH / 2 - 250, 180, "to use skills and gain a better score", { 255,255,255,255 });
+	tuto5 = new Label("font1", WIDTH / 2 - 250, 150, "There are four skills", { 255,255,255,255 });
+	tuto5b = new Label("font1", WIDTH / 2 - 250, 180, "speed boost, invisibility, double jump and barrier", { 255,255,255,255 });
+	tuto5c = new Label("font1", WIDTH / 2 - 250, 210, "which can be activated with buttons 1,2,3 and 4 ", { 255,255,255,255 });
+	tuto6 = new Label("font1", WIDTH / 2 - 250, 150, "Find the key in the stage as", { 255,255,255,255 });
+	tuto6b = new Label("font1", WIDTH / 2 - 250, 180, "fast as possible to complete the stage", { 255,255,255,255 });
+	tuto7 = new Label("font1", WIDTH / 2 - 250 , 150, "Game can be paused with", { 255,255,255,255 });
+	tuto7b = new Label("font1", WIDTH / 2 - 250, 180, "the button on the top left", { 255,255,255,255 });
+	tuto8 = new Label("font1", WIDTH / 2 - 250, 150, "Be careful of enemies and hazards", { 255,255,255,255 });
+	tuto8b = new Label("font1", WIDTH / 2 - 250, 180, "becasue they will slow you down", { 255,255,255,255 });
 	explainKey = new Sprite({ 226,37,12,7 }, { WIDTH/2 -16, HEIGHT/2 - 16, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	//loading data from txt for level layout
@@ -794,10 +803,20 @@ void TutorialState::Enter()
 		}
 	}
 	inFile.close();
-	m_MainMenu = new MainMenuButton({ 0,0,490,140 }, { 0.0f,0.0f,240.0f,70.0f },
+	m_Pause = new PauseButton({ 0,0,490,140 }, { 0.0f,0.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("pause"));
+	m_quit = new QuitButton({ 0,0,490,140 }, { 380.0f,280.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	m_mainMenu = new MainMenuButton({ 0,0,490,140 }, { 380.0f,210.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("mainmenu"));
+	m_resume = new ResumeButton({ 0,0,490,140 }, { 380.0f,420.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("resume"));
 	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel()[20][81]->GetDstP()->x,Engine::Instance().GetLevel()[20][81]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
+	for (int i = 0; i < 4; i++) {
+		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
+	}
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
@@ -812,53 +831,82 @@ void TutorialState::Enter()
 void TutorialState::Update()
 {
 
-	if (m_MainMenu->Update() == 1)
+	if (m_Pause->Update() == 1)
 		return;
 			
 	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_goal->GetDstP()))
 		m_stageEnd = true;
-	
+	if (Engine::Instance().Pause() == true)
+	{
+		if (m_mainMenu->Update() == 1)
+			return;
+		if (m_quit->Update() == 1)
+			return;
+		m_resume->Update();
+	}
+
 	if (EVMA::KeyReleased(SDL_SCANCODE_RETURN) && explainPause)
 	{
 		++pressEnter;
-		if (pressEnter == 7)
+		if (pressEnter == 9) {
 			explainPause = false;
+			//start timer
+			timer.start();
+		}
 	}
-	if (!explainPause)
+	//updates when not paused
+	if (Engine::Instance().Pause() == false)
 	{
-		m_pMusicVolume = m_pMusicSetVol;
-		m_pSFXVolume = m_pSFXSetVol;
-		SOMA::SetSoundVolume(m_pSFXVolume);
-		SOMA::SetMusicVolume(m_pMusicVolume);
-		m_pPlayer->Update();
-		m_goal->GetDstP()->x = Engine::Instance().GetLevel()[20][81]->GetDstP()->x;
-		m_goal->GetDstP()->y = Engine::Instance().GetLevel()[20][81]->GetDstP()->y;
-		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		if (!explainPause)
 		{
-			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
-				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
-		}
-		m_pPlayer->Collision();
-		m_timer = new Label("font1", 900, 10, "Timer: ", { 255,255,255,255 });
-		m_energy = new Label("font1", 410, 680, "Energy: ", { 255,255,255,255 });
-		if (m_stageEnd)
-			STMA::ChangeState(new TitleState);
-		//hook creation 
-		if (EVMA::MousePressed(1)) {
-			m_destinationX = EVMA::GetMousePos().x;
-			m_destinationY = EVMA::GetMousePos().y;
-			m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
-				Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, m_destinationX, m_destinationY);
-		}
-		//hook update and collision 
-		if (m_hook != nullptr) {
-			m_hook->Update();
-			m_hook->Collision();
-			if (m_hook->GetExist() == false) {
-				m_hook = nullptr;
+			m_pMusicVolume = m_pMusicSetVol;
+			m_pSFXVolume = m_pSFXSetVol;
+			SOMA::SetSoundVolume(m_pSFXVolume);
+			SOMA::SetMusicVolume(m_pMusicVolume);
+			m_pPlayer->Update();
+			m_goal->GetDstP()->x = Engine::Instance().GetLevel()[20][81]->GetDstP()->x;
+			m_goal->GetDstP()->y = Engine::Instance().GetLevel()[20][81]->GetDstP()->y;
+			for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+			{
+				Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+					m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+			}
+			m_pPlayer->Collision();
+			m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
+			m_timer->SetText(m_updateTimer);
+			m_energyNum = std::to_string(m_pPlayer->getEnergy());
+			m_updateEnergy = m_defualtEnergy + m_energyNum;
+			m_energy->SetText(m_updateEnergy);
+	
+			for (int i = 0; i < 4; i++) {
+				if (m_battery[i] != nullptr) {
+					m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
+					m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
+					if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery[i]->GetDstP())) {
+						m_pPlayer->setEnergy(10);
+						m_battery[i] = nullptr;
+					}
+				}
+			}
+			//hook creation 
+			if (EVMA::MousePressed(1)) {
+				m_destinationX = EVMA::GetMousePos().x;
+				m_destinationY = EVMA::GetMousePos().y;
+				m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
+					Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, m_destinationX, m_destinationY);
+			}
+			//hook update and collision 
+			if (m_hook != nullptr) {
+				m_hook->Update();
+				m_hook->Collision();
+				if (m_hook->GetExist() == false) {
+					m_hook = nullptr;
+				}
 			}
 		}
 	}
+	if (m_stageEnd)
+		STMA::ChangeState(new TitleState);
 }
 
 //Empty ?? 
@@ -879,22 +927,44 @@ void TutorialState::Render()
 	m_timer->Render();
 	m_energy->Render();
 	m_goal->Render();
+	for (int i = 0; i < 4; i++) {
+		if (m_battery[i] != nullptr)
+			m_battery[i]->Render();
+	}
 	if (explainPause)
-		pressEnterL->Render();
+		m_input->Render();
 	if (pressEnter == 1)
 		tuto1->Render();
 	if (pressEnter == 2)
+	{
 		tuto2->Render();
+		tuto2b->Render();
+	}
 	if (pressEnter == 3)
 		tuto3->Render();
 	if (pressEnter == 4)
+	{
 		tuto4->Render();
-	if (pressEnter == 5)
+		tuto4b->Render();
+	}
+	if (pressEnter == 5) {
 		tuto5->Render();
+		tuto5b->Render();
+		tuto5c->Render();
+	}
 	if (pressEnter == 6)
 	{
 		explainKey->Render();
 		tuto6->Render();
+		tuto6b->Render();
+	}
+	if (pressEnter == 7) {
+		tuto7->Render();
+		tuto7b->Render();
+	}
+	if (pressEnter == 8) {
+		tuto8->Render();
+		tuto8b->Render();
 	}
 	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
 	{
@@ -905,10 +975,16 @@ void TutorialState::Render()
 	{
 		m_hook->Render();
 	}
-	m_MainMenu->Render();
+	m_Pause->Render();
 	// If GameState != current state.
 	if (dynamic_cast<Level1State*>(STMA::GetStates().back()))
 		State::Render();
+	if (Engine::Instance().Pause() == true)
+	{
+		m_quit->Render();
+		m_mainMenu->Render();
+		m_resume->Render();
+	}
 }
 
 void TutorialState::Exit()

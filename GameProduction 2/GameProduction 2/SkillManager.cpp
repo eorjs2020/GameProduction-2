@@ -8,7 +8,7 @@ SpeedBoost::SpeedBoost()
 {
 	m_speedBoost = false;
 	m_speedBoostTimer = 0;
-	iconA = new AnimatedSprite({ 0,97,22,22 }, { 400.0f,724.0f,22.0f,22.0f },
+	iconA = new AnimatedSprite({ 0,97,22,22 }, { 400.0f,716.0f,44.0f,44.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("skill"), 0, 1, 1, 1);
 }
 
@@ -56,7 +56,7 @@ void SpeedBoost::Render()
 
 invisibility::invisibility()
 {
-	iconB = new AnimatedSprite({ 0,119,22,22 }, { 423.0f,724.0f,22.0f,22.0f },
+	iconB = new AnimatedSprite({ 0,119,22,22 }, { 446.0f,716.0f,44.0f,44.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("skill"), 0, 1, 1, 1);
 }
 
@@ -92,7 +92,7 @@ void invisibility::Render()
 
 doubleJump::doubleJump()
 {
-	iconC = new AnimatedSprite({ 0,141,22,22 }, { 446.0f,724.0f,22.0f,22.0f },
+	iconC = new AnimatedSprite({ 0,141,22,22 }, { 491.0f,716.0f,44.0f,44.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("skill"), 0, 1, 1, 1);
 }
 
@@ -128,7 +128,7 @@ Barrier::Barrier()
 {
 	this->m_bar = false;
 	this->m_pBarTimer = 0;
-	iconD = new AnimatedSprite({ 0,163,22,22 }, { 469.0f,724.0f,22.0f,22.0f },
+	iconD = new AnimatedSprite({ 0,163,22,22 }, { 536.0f,716.0f,44.0f,44.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("skill"), 0, 1, 1, 1);
 	
 }
