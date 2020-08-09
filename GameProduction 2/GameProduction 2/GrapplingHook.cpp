@@ -240,23 +240,27 @@ void GrapplingHook::Collision(int stage)
 					if (this->GetDstP()->y + Engine::Instance().GetLevel2()[i][j]->GetDstP()->h - (float)this->GetVelY() <= (float)Engine::Instance().GetLevel2()[i][j]->GetDstP()->y)
 					{ // Colliding top side of platform.
 						this->Stop();
-						this->SetY(Engine::Instance().GetLevel2()[i][j]->GetDstP()->y - this->GetDstP()->h);
+						dx = dy = 0.0;
+						shoot = false;
 
 					}
 					else if (this->GetDstP()->y - (float)this->GetVelY() >= Engine::Instance().GetLevel2()[i][j]->GetDstP()->y + Engine::Instance().GetLevel2()[i][j]->GetDstP()->h)
 					{ // Colliding bottom side of platform.
 						this->Stop();
-						this->SetY(Engine::Instance().GetLevel2()[i][j]->GetDstP()->y + Engine::Instance().GetLevel2()[i][j]->GetDstP()->h);
+						dx = dy = 0.0;
+						shoot = false;
 					}
 					else if (this->GetDstP()->x + this->GetDstP()->w - this->GetVelX() <= Engine::Instance().GetLevel2()[i][j]->GetDstP()->x)
 					{ // Collision from left.
-						this->Stop(); // Stop the player from moving horizontally.
-						this->SetX(Engine::Instance().GetLevel2()[i][j]->GetDstP()->x - this->GetDstP()->w);
+						this->Stop();
+						dx = dy = 0.0;
+						shoot = false;
 					}
 					else if (this->GetDstP()->x - (float)this->GetVelX() >= Engine::Instance().GetLevel2()[i][j]->GetDstP()->x + Engine::Instance().GetLevel2()[i][j]->GetDstP()->w)
 					{ // Colliding right side of platform.
 						this->Stop();
-						this->SetX(Engine::Instance().GetLevel2()[i][j]->GetDstP()->x + Engine::Instance().GetLevel2()[i][j]->GetDstP()->w);
+						dx = dy = 0.0;
+						shoot = false;
 					}
 				}
 

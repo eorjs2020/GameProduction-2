@@ -31,7 +31,7 @@ void Level1State::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = nullptr;
 	m_bullNull = false;
-	
+	m_defualtTimer = "Timer: 0";
 	
 	
 	//loading data from txt for level layout
@@ -72,7 +72,7 @@ void Level1State::Enter()
 	}
 	inFile.close();
 	//load battery strite pos and data
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < m_batteryArraySize; i++) {
 		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
 	}
@@ -228,7 +228,7 @@ void Level1State::Update()
 		}
 	}
 	//Battery postion, collision and energy set
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < m_batteryArraySize; i++) {
 		if(m_battery[i] != nullptr){
 			m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
 		m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
@@ -257,31 +257,31 @@ void Level1State::Update()
 		int a;
 		if (timer.getmin() == 3)
 		{
-			a = 1000;
+			a = 2000;
 		}
 		else if(timer.getmin() == 2 && timer.getsec() <= 59 && timer.getsec() >= 30)
 		{
-			a = 2000;
+			a = 3000;
 		}
 		else if (timer.getmin() == 2 && timer.getsec() < 30)
 		{
-			a = 2000;
+			a = 5000;
 		}
 		else if (timer.getmin() == 1 && timer.getsec() <= 59 && timer.getsec() >= 30)
 		{
-			a = 3000;
+			a = 8000;
 		}
 		else if (timer.getmin() == 1 && timer.getsec() < 30)
 		{
-			a = 3000;
+			a = 10000;
 		}
 		else if (timer.getmin() == 0 && timer.getsec() <= 59 && timer.getsec() >= 30)
 		{
-			a = 5000;
+			a = 50000;
 		}
 		else if (timer.getmin() == 0 && timer.getsec() < 30)
 		{
-			a = 10000;
+			a = 100000;
 		}
 		else {
 			a = 0;
@@ -334,7 +334,7 @@ void Level1State::Render()
 	m_energy->Render();
 	m_pPlayer->Render();
 	//Render Battery 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < m_batteryArraySize; i++) {
 		if (m_battery[i] != nullptr)
 			m_battery[i]->Render();
 	}
@@ -584,8 +584,6 @@ void Level2State::Update()
 			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
 	}
 	m_pPlayer->Update(2);
-	m_hook->Collision(2);
-	m_hook->Update();
 	m_pPlayer->Collision();
 	for (auto i = 0; i < fDrone.size(); ++i)
 	{
@@ -608,7 +606,7 @@ void Level2State::Update()
 	//hook update and collision 
 	if (m_hook != nullptr) {
 		m_hook->Update();
-		m_hook->Collision();
+		m_hook->Collision(2);
 		if (m_hook->GetExist() == false) {
 			m_hook = nullptr;
 		}
@@ -646,8 +644,10 @@ void Level2State::Render()
 		fDrone[i]->Render();
 	}
 	//draw the hook
-	if (m_hook->GetExist() == true)
+	if (m_hook != nullptr)
+	{
 		m_hook->Render();
+	}
 	// If GameState != current state.
 	if (dynamic_cast<Level2State*>(STMA::GetStates().back()))
 		State::Render();
@@ -717,7 +717,7 @@ bool Level2State::LOS(int n)
 {
 
 	int temp = 0;
-	for (int i = 0; i < Engine::Instance().GetPlatform().size(); i++)
+	for (int i = 0; i < Engine::Instance().GetPlatform2().size(); i++)
 	{
 
 		if (!COMA::LOSCheck(m_pPlayer, fDrone[n]->GetDstP(), Engine::Instance().GetPlatform2()[i]))
