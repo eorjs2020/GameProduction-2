@@ -85,6 +85,20 @@ private:
 	std::vector<Bullet*> m_vEBullets;
 	bool m_bullNull;
 	double m_destinationX, m_destinationY;
+	Sprite* m_battery[4];
+	Sprite* m_goal;
+	Button* m_quit, * m_mainMenu, * m_resume, * m_Pause;
+	Label* m_timer, * m_energy;
+	LTimer timer;
+	std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEnergy = "Energy: 0",
+		m_updateEnergy, m_energyNum;
+	bool existHook = false, hookColl = false, m_stageEnd = false;
+	int m_pSFXVolume, m_pMusicVolume,
+		m_batteryX[4] = { 13, 13, 13, 13 },
+		m_batteryY[4] = { 25, 25, 26, 26 };
+	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
+	int bulletTimer = 0, m_pNumBulletHit;
+	bool bulletslow = false;
 public:
 	Level2State();
 	void Update();

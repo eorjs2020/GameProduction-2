@@ -289,6 +289,7 @@ void Level1State::Update()
 		}
 		Engine::Instance().setScore(-(m_pNumBulletHit * 10));
 		Engine::Instance().setScore(a);
+		Engine::Instance().setScoreState(0);
 		STMA::ChangeState(new ScoreState);
 	}
 }
@@ -471,7 +472,7 @@ void Level2State::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = nullptr;
 	m_bullNull = false;
-	
+	Engine::Instance().Pause() = false;
 	//loading data from txt for level layout
 	//tile type data
 	ifstream inFile("map/TileDataLevel2.txt");
@@ -565,7 +566,26 @@ void Level2State::Enter()
 		{ Engine::Instance().GetLevel2()[30][365]->GetDstP()->x,Engine::Instance().GetLevel2()[30][365]->GetDstP()->y,22.0f,38.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
 
-
+	m_Pause = new PauseButton({ 0,0,490,140 }, { 0.0f,0.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("pause"));
+	m_quit = new QuitButton({ 0,0,490,140 }, { 380.0f,280.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("quit"));
+	m_mainMenu = new MainMenuButton({ 0,0,490,140 }, { 380.0f,210.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("mainmenu"));
+	m_resume = new ResumeButton({ 0,0,490,140 }, { 380.0f,420.0f,240.0f,70.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("resume"));
+	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel2()[3][413]->GetDstP()->x,Engine::Instance().GetLevel2()[3][413]->GetDstP()->y, 32, 32 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
+	for (int i = 0; i < 4; i++) {
+		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
+	}
+	m_timer = new Label("font1", 850, 10, m_defualtTimer, { 255,255,255,255 });
+	m_energy = new Label("font1", 410, 680, m_defualtEnergy, { 255,255,255,255 });
+	//start timer
+	timer.start();
+	//set variables  
+	m_pNumBulletHit = 0;
 	SOMA::Load("Aud/power.wav", "beep", SOUND_SFX);
 	SOMA::Load("Aud/background_music2.wav", "BGM", SOUND_MUSIC);
 	SOMA::Load("Aud/jump.wav", "jump", SOUND_SFX);
@@ -579,41 +599,123 @@ void Level2State::Enter()
 
 void Level2State::Update()
 {
-	for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+	if (m_Pause->Update() == 1)
+		return;
+
+	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_goal->GetDstP()))
+		m_stageEnd = true;
+	if (Engine::Instance().Pause() == true)
 	{
-		Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
-			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+		if (m_mainMenu->Update() == 1)
+			return;
+		if (m_quit->Update() == 1)
+			return;
+		m_resume->Update();
 	}
-	m_pPlayer->Update(2);
-	m_pPlayer->Collision();
-	for (auto i = 0; i < fDrone.size(); ++i)
+	if (Engine::Instance().Pause() == false)
 	{
-		fDrone[i]->Update(m_pPlayer->GetVelX(),
-			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer, LOS(i));
-	}
-	for (auto i = 0; i < m_vEBullets.size(); ++i)
-	{
-		m_vEBullets[i]->Update();
-	}
-	BulletCollision();
-	
-	//hook creation 
-	if (EVMA::MousePressed(1)) {
-		m_destinationX = EVMA::GetMousePos().x;
-		m_destinationY = EVMA::GetMousePos().y;
-		m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
-			Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, m_destinationX, m_destinationY);
-	}
-	//hook update and collision 
-	if (m_hook != nullptr) {
-		m_hook->Update();
-		m_hook->Collision(2);
-		if (m_hook->GetExist() == false) {
-			m_hook = nullptr;
+		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		{
+			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+		}
+		m_pPlayer->Update(2);
+		m_pPlayer->Collision();
+		for (auto i = 0; i < fDrone.size(); ++i)
+		{
+			fDrone[i]->Update(m_pPlayer->GetVelX(),
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer, LOS(i));
+		}
+		for (auto i = 0; i < m_vEBullets.size(); ++i)
+		{
+			m_vEBullets[i]->Update();
+		}
+		BulletCollision();
+		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
+		m_timer->SetText(m_updateTimer);
+		m_energyNum = std::to_string(m_pPlayer->getEnergy());
+		m_updateEnergy = m_defualtEnergy + m_energyNum;
+		m_energy->SetText(m_updateEnergy);
+
+		for (int i = 0; i < 4; i++) {
+			if (m_battery[i] != nullptr) {
+				m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
+				m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
+				if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_battery[i]->GetDstP())) {
+					m_pPlayer->setEnergy(10);
+					m_battery[i] = nullptr;
+				}
+			}
+		}
+		//hook creation 
+		if (EVMA::MousePressed(1)) {
+			m_destinationX = EVMA::GetMousePos().x;
+			m_destinationY = EVMA::GetMousePos().y;
+			m_hook = new GrapplingHook({ 0,0,50,20 }, { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 25, 10 },
+				Engine::Instance().GetRenderer(), TEMA::GetTexture("hook"), 0.00, m_pPlayer, m_destinationX, m_destinationY);
+		}
+		//hook update and collision 
+		if (m_hook != nullptr) {
+			m_hook->Update();
+			m_hook->Collision(2);
+			if (m_hook->GetExist() == false) {
+				m_hook = nullptr;
+			}
 		}
 	}
 
-
+	//Bullet slow and reset to normal speed
+	if (bulletslow)
+	{
+		m_pPlayer->SetMaxVel(2);
+		++bulletTimer;
+		if (bulletTimer >= 50)
+		{
+			m_pPlayer->SetMaxVel(5);
+			bulletslow = false;
+			bulletTimer = 0;
+		}
+	}
+	//Score calculation and State change
+	if (m_stageEnd) {
+		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 1000);
+		int a;
+		if (timer.getmin() == 3)
+		{
+			a = 2000;
+		}
+		else if (timer.getmin() == 2 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 3000;
+		}
+		else if (timer.getmin() == 2 && timer.getsec() < 30)
+		{
+			a = 5000;
+		}
+		else if (timer.getmin() == 1 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 8000;
+		}
+		else if (timer.getmin() == 1 && timer.getsec() < 30)
+		{
+			a = 10000;
+		}
+		else if (timer.getmin() == 0 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 50000;
+		}
+		else if (timer.getmin() == 0 && timer.getsec() < 30)
+		{
+			a = 100000;
+		}
+		else {
+			a = 0;
+		}
+		Engine::Instance().setScore(-(m_pNumBulletHit * 10));
+		Engine::Instance().setScore(a);
+		Engine::Instance().setScoreState(2);
+		STMA::ChangeState(new ScoreState);
+	}
 }
 
 void Level2State::Render()
@@ -649,9 +751,22 @@ void Level2State::Render()
 	{
 		m_hook->Render();
 	}
+	m_timer->Render();
+	m_energy->Render();
+	m_goal->Render();
+	for (int i = 0; i < 4; i++) {
+		if (m_battery[i] != nullptr)
+			m_battery[i]->Render();
+	}
 	// If GameState != current state.
 	if (dynamic_cast<Level2State*>(STMA::GetStates().back()))
 		State::Render();
+	if (Engine::Instance().Pause() == true)
+	{
+		m_quit->Render();
+		m_mainMenu->Render();
+		m_resume->Render();
+	}
 }
 
 void Level2State::Exit()

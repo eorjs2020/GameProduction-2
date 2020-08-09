@@ -32,7 +32,7 @@ private: // Private properties.
 	std::vector<Tile*> m_platforms2;
 	std::vector<Enemy*> m_enemies;
 	bool m_pPause, m_invis = false;
-	int m_score;
+	int m_score, m_scorestate;
 
 private: // Private methods.
 	Engine();
@@ -61,5 +61,7 @@ public: // Public methods.
 	void setinvis(bool a) { m_invis = a; }
 	void setScore(int a) { m_score += a; }
 	int getScore() { return m_score; }
+	void setScoreState(int a) { m_scorestate += a; }
+	int getScoreState() { return m_scorestate; }
 };
 #endif
