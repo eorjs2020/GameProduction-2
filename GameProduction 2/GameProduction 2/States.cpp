@@ -468,8 +468,7 @@ void Level2State::Enter()
 	std::cout << "Entering Level2State..." << std::endl;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
-	m_pPlayer = new Player({ 0,0,19,26 }, { 50.0f,50.0f,46.0f,64.0f },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
+	
 	m_hook = nullptr;
 	m_bullNull = false;
 	Engine::Instance().Pause() = false;
@@ -508,7 +507,8 @@ void Level2State::Enter()
 		}
 	}
 	inFile.close();
-
+	m_pPlayer = new Player({ 0,0,19,26 }, { Engine::Instance().GetLevel2()[46][6]->GetDstP()->x,Engine::Instance().GetLevel2()[46][6]->GetDstP()->y,46.0f,64.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	//   enemy spawn and mvmt boundaries  
 	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, 
 		{ Engine::Instance().GetLevel2()[46][32]->GetDstP()->x,Engine::Instance().GetLevel2()[46][32]->GetDstP()->y,22,38 },
@@ -574,7 +574,7 @@ void Level2State::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("mainmenu"));
 	m_resume = new ResumeButton({ 0,0,490,140 }, { 380.0f,420.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("resume"));
-	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel2()[3][413]->GetDstP()->x,Engine::Instance().GetLevel2()[3][413]->GetDstP()->y, 32, 32 },
+	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel2()[3][14]->GetDstP()->x,Engine::Instance().GetLevel2()[3][14]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	for (int i = 0; i < 4; i++) {
 		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
@@ -631,6 +631,8 @@ void Level2State::Update()
 			m_vEBullets[i]->Update();
 		}
 		BulletCollision();
+		m_goal->GetDstP()->x = Engine::Instance().GetLevel2()[3][410]->GetDstP()->x;
+		m_goal->GetDstP()->y = Engine::Instance().GetLevel2()[3][410]->GetDstP()->y;
 		m_updateTimer = m_defualtTimer + timer.getrunnningtime(timer);
 		m_timer->SetText(m_updateTimer);
 		m_energyNum = std::to_string(m_pPlayer->getEnergy());
