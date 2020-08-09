@@ -2,7 +2,7 @@
 #ifndef _STATES_H_
 #define _STATES_H_
 #define NUMPLATFORMS 5
-#define ROWS 73
+#define ddROWS 73
 #define COLS 171
 #define ROWS2 51
 #define COLS2 419
@@ -68,7 +68,7 @@ public:
 	void Exit();
 	void Resume();
 	void BulletCollision();
-	void RenderLOS();
+	bool LOS(int n);
 	
 
 };
@@ -89,7 +89,7 @@ public:
 	void Exit();
 	void Resume();
 	void BulletCollision();
-	void RenderLOS();
+	bool LOS(int n);
 };
 class TutorialState : public State
 {

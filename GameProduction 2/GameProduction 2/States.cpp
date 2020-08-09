@@ -30,26 +30,9 @@ void Level1State::Enter()
 	m_pPlayer = new Player({ 0,0,19,26 }, { 60.0f,90.0f,46.0f,64.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("playerIdle"), 0, 0, 4, 4);
 	m_hook = nullptr;
-	//enemy spawn and mvmt boundaries  
-	fDrone.push_back( new FireDrone({ 0,0,11,19 }, { 100.0f,200.0f,22.0f,38.0f },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
-
 	m_bullNull = false;
-
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 300,300,22,38 }, 
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 1000,300,22,38 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 500,1000,22,38 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 900,1000,22,38 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 400));
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 200,2500,22,38 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 400));
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 200,2000,22,38 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 250));
-	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, { 950,2200,22,38 },
-		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
+	
+	
 	
 	//loading data from txt for level layout
 	//tile type data 
@@ -105,6 +88,54 @@ void Level1State::Enter()
 	FOMA::RegisterFont("Img/LTYPE.TTF", "Font_1", 30);
 	//SOMA::PlayMusic("BGM");
 	//UI
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[9][17]->GetDstP()->x,Engine::Instance().GetLevel()[9][17]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, 
+		{ Engine::Instance().GetLevel()[25][80]->GetDstP()->x,Engine::Instance().GetLevel()[25][80]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 200));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 }, 
+		{ Engine::Instance().GetLevel()[32][52]->GetDstP()->x,Engine::Instance().GetLevel()[32][52]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[37][36]->GetDstP()->x,Engine::Instance().GetLevel()[37][36]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[70][31]->GetDstP()->x,Engine::Instance().GetLevel()[70][31]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[63][94]->GetDstP()->x,Engine::Instance().GetLevel()[63][94]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[37][87]->GetDstP()->x,Engine::Instance().GetLevel()[37][87]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[25][113]->GetDstP()->x,Engine::Instance().GetLevel()[25][113]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	Engine::Instance().GetEnemy().push_back(new Enemy({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[50][110]->GetDstP()->x,Engine::Instance().GetLevel()[50][110]->GetDstP()->y,22,38 },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("droneIdle"), 0, 0, 5, 5, 300));
+	fDrone.push_back(new FireDrone({ 0,0,11,19 }, 
+		{ Engine::Instance().GetLevel()[20][66]->GetDstP()->x,Engine::Instance().GetLevel()[20][66]->GetDstP()->y,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
+	fDrone.push_back(new FireDrone({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[63][41]->GetDstP()->x,Engine::Instance().GetLevel()[63][41]->GetDstP()->y,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
+	fDrone.push_back(new FireDrone({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[45][88]->GetDstP()->x,Engine::Instance().GetLevel()[45][88]->GetDstP()->y,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
+	fDrone.push_back(new FireDrone({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[16][148]->GetDstP()->x,Engine::Instance().GetLevel()[16][148]->GetDstP()->y,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
+	fDrone.push_back(new FireDrone({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[50][75]->GetDstP()->x,Engine::Instance().GetLevel()[50][75]->GetDstP()->y,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
+	fDrone.push_back(new FireDrone({ 0,0,11,19 },
+		{ Engine::Instance().GetLevel()[65][130]->GetDstP()->x,Engine::Instance().GetLevel()[65][130]->GetDstP()->y,22.0f,38.0f },
+		Engine::Instance().GetRenderer(), TEMA::GetTexture("firedrone"), 0, 0, 5, 5, &m_vEBullets));
+
+
+
 	m_pause = new PauseButton({ 0,0,490,140 }, { 2.0f,2.0f,240.0f,70.0f },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("pause"));
 	m_quit = new QuitButton({ 0,0,490,140 }, { 380.0f,280.0f,240.0f,70.0f },
@@ -144,11 +175,7 @@ void Level1State::Update()
 	if (Engine::Instance().Pause() == false)
 	{
 
-		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
-		{
-			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
-				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
-		}
+		
 		
 		m_pMusicVolume = m_pMusicSetVol;
 		m_pSFXVolume = m_pSFXSetVol;
@@ -158,12 +185,16 @@ void Level1State::Update()
 		m_pPlayer->Update();
 		m_goal->GetDstP()->x = Engine::Instance().GetLevel()[71][165]->GetDstP()->x;
 		m_goal->GetDstP()->y = Engine::Instance().GetLevel()[71][165]->GetDstP()->y;
-		
+		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		{
+			Engine::Instance().GetEnemy()[i]->Update(m_pPlayer->GetVelX(),
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+		}
 		
 		for (auto i = 0; i < fDrone.size(); ++i)
 		{
 			fDrone[i]->Update(m_pPlayer->GetVelX(),
-				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+				m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer, LOS(i));
 		}
 		m_pPlayer->Collision();
 		
@@ -219,6 +250,7 @@ void Level1State::Update()
 			bulletTimer = 0;
 		}
 	}
+	
 	//Score calculation and State change
 	if (m_stageEnd){
 		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 1000);
@@ -268,6 +300,7 @@ void Level1State::CheckCollisionHook()
 
 void Level1State::Render()
 {
+	
 	//SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 64, 128, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 	//Render Background
@@ -295,8 +328,8 @@ void Level1State::Render()
 	{
 		Engine::Instance().GetEnemy()[i]->Render();
 	}
-	//Render LOS
-	RenderLOS();
+	
+	
 	m_goal->Render();
 	m_energy->Render();
 	m_pPlayer->Render();
@@ -368,7 +401,7 @@ void Level1State::BulletCollision()
 			m_vEBullets[i]->GetDstP()->w, m_vEBullets[i]->GetDstP()->h };
 
 
-		SDL_Rect e = { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, 32, 32 };
+		SDL_Rect e = { m_pPlayer->GetDstP()->x, m_pPlayer->GetDstP()->y, m_pPlayer->GetDstP()->w, m_pPlayer->GetDstP()->h };
 		if (SDL_HasIntersection(&b, &e))
 		{
 
@@ -405,23 +438,21 @@ void Level1State::BulletCollision()
 	if (m_bullNull) CleanVector<Bullet*>(m_vEBullets, m_bullNull);
 }
 
-void Level1State::RenderLOS()
+bool Level1State::LOS(int n)
 {
 
-	for (auto i = 0; i < fDrone.size(); ++i)
+	int temp = 0;
+	for (int i = 0; i < Engine::Instance().GetPlatform().size(); i++)
 	{
-		if ((MAMA::Distance(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2, m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2,
-			fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2, m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) <= 500))
-		{
-			auto LOSColour = ((MAMA::Distance(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2, m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2,
-				fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2, m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) <= 300)) ? glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(255.0f, 0.0f, 0.0f, 1.0f);
-			DEMA::DrawLine({ int(m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2), int(m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) },
-				{ int(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2), int(fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2) },
-				{ Uint8(LOSColour.r), Uint8(LOSColour.g), Uint8(LOSColour.b), Uint8(LOSColour.a) });
-		}
 		
+		if (!COMA::LOSCheck(m_pPlayer, fDrone[n]->GetDstP(), Engine::Instance().GetPlatform()[i]))
+			return false;
 	
+		
 	}
+	
+
+	return true;
 }
 
 // End level 1
@@ -559,7 +590,7 @@ void Level2State::Update()
 	for (auto i = 0; i < fDrone.size(); ++i)
 	{
 		fDrone[i]->Update(m_pPlayer->GetVelX(),
-			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer);
+			m_pPlayer->GetVelY(), m_pPlayer->BGScorllX(), m_pPlayer->BGScrollY(), m_pPlayer, LOS(i));
 	}
 	for (auto i = 0; i < m_vEBullets.size(); ++i)
 	{
@@ -604,7 +635,7 @@ void Level2State::Render()
 		Engine::Instance().GetEnemy()[i]->Render();
 	}
 	m_pPlayer->Render();
-	RenderLOS();
+	
 	for (auto i = 0; i < m_vEBullets.size(); ++i)
 	{
 		m_vEBullets[i]->Render();
@@ -682,24 +713,23 @@ void Level2State::BulletCollision()
 	}
 	if (m_bullNull) CleanVector<Bullet*>(m_vEBullets, m_bullNull);
 }
-
-void Level2State::RenderLOS()
+bool Level2State::LOS(int n)
 {
-	for (auto i = 0; i < fDrone.size(); ++i)
+
+	int temp = 0;
+	for (int i = 0; i < Engine::Instance().GetPlatform().size(); i++)
 	{
-		if ((MAMA::Distance(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2, m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2,
-			fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2, m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) <= 500))
-		{
-			auto LOSColour = ((MAMA::Distance(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2, m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2,
-				fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2, m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) <= 300)) ? glm::vec4(0.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(255.0f, 0.0f, 0.0f, 1.0f);
-			DEMA::DrawLine({ int(m_pPlayer->GetDstP()->x + m_pPlayer->GetDstP()->w / 2), int(m_pPlayer->GetDstP()->y + m_pPlayer->GetDstP()->h / 2) },
-				{ int(fDrone[i]->GetDstP()->x + fDrone[i]->GetDstP()->w / 2), int(fDrone[i]->GetDstP()->y + fDrone[i]->GetDstP()->h / 2) },
-				{ Uint8(LOSColour.r), Uint8(LOSColour.g), Uint8(LOSColour.b), Uint8(LOSColour.a) });
-		}
+
+		if (!COMA::LOSCheck(m_pPlayer, fDrone[n]->GetDstP(), Engine::Instance().GetPlatform2()[i]))
+			return false;
 
 
 	}
+
+
+	return true;
 }
+
 //End Level2State
 
 //Start of Tutorial State

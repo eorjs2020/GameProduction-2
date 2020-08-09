@@ -13,12 +13,13 @@ Enemy::Enemy(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstar
 	m_grounded = false;
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
 	m_maxVelX = 5.0;
+	m_maxVelY = 60;
 	m_drag = 0.88;
 	m_ePos.x = m_dst.x;
 	m_ePos.y = m_dst.y;
 	chasingTimer = 0;
 	searchingDelay = 0;
-	m_pSBox = { m_dst.x + m_dst.w, m_dst.y + 15, 160.0f, 80.0f };
+	m_pSBox = { m_dst.x + m_dst.w, m_dst.y + 16, 128.0f, 48.0f };
 	m_pBoxSrc = { 0, 63, 300, 200 };
 }
 
@@ -47,22 +48,7 @@ void Enemy::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 		m_pSBox.y = m_dst.y + 15;
 	}
 
-	if (x)
-	{
-		m_ePos.x -= AccelX;
-		m_dst.x -= AccelX;
-		m_pSBox.x -= AccelX;
-	}
-	if (y)
-	{
-		m_ePos.y -= AccelY;
-		m_dst.y -= AccelY;
-		m_pSBox.y -= AccelX;
-	}
-	/*if (EVMA::KeyHeld(SDL_SCANCODE_2))
-		m_State = seeking;
-	else if (EVMA::KeyHeld(SDL_SCANCODE_3))
-		m_State = idle;*/
+	
 	switch (m_State)
 	{
 	case idle:

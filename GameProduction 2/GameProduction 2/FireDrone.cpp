@@ -21,7 +21,7 @@ FireDrone::FireDrone(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, i
 
 }
 
-void FireDrone::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
+void FireDrone::Update(float AccelX, float AccelY, bool x, bool y, Player* p, bool los)
 {
 	
 	m_velX += m_accelX;
@@ -65,14 +65,14 @@ void FireDrone::Update(float AccelX, float AccelY, bool x, bool y, Player* p)
 	{
 		
 		
-		if (MAMA::Distance(GetDstP()->x + GetDstP()->w / 2, p->GetDstP()->x + p->GetDstP()->w / 2, GetDstP()->y + GetDstP()->h / 2, p->GetDstP()->y + p->GetDstP()->h / 2) <= 500)
+		if (MAMA::Distance(GetDstP()->x + GetDstP()->w / 2, p->GetDstP()->x + p->GetDstP()->w / 2, GetDstP()->y + GetDstP()->h / 2, p->GetDstP()->y + p->GetDstP()->h / 2) <= 300
+			&& los)
 		{
-			glm::vec2 temp = { p->GetDstP()->x, p->GetDstP()->y };
+			glm::vec2 temp = { p->GetDstP()->x + p->GetDstP()->w / 2, p->GetDstP()->y + p->GetDstP()->h/ 2 - 12};
 			if (m_bulletTimer++ == m_timerMax + 50)
 			{
-				std::cout << "fire" << std::endl;
 				m_bulletTimer = 0;
-				m_pBulletVec->push_back(new Bullet({ 0, 0, 160, 160 }, { GetDstP()->x + GetDstP()->w / 2, GetDstP()->y + GetDstP()->h / 2, 42, 42 },
+				m_pBulletVec->push_back(new Bullet({ 0, 0, 160, 160 }, { GetDstP()->x + GetDstP()->w / 2 - 12, GetDstP()->y + GetDstP()->h / 2 - 12,  24, 24 },
 					m_pRend, TEMA::GetTexture("dronebullet"), 6, temp));
 				
 				
@@ -121,11 +121,12 @@ void FireDrone::LOSCheck(Player* p)
 	int temp = 0;
 	for (auto i = 0; i < Engine::Instance().GetPlatform().size(); ++i)
 	{
-		if (COMA::LOSCheck(p, this, Engine::Instance().GetPlatform()[i]))
-			++temp;
+		if (COMA::LOSCheck(p, GetDstP(), Engine::Instance().GetPlatform()[i]))
+			HasLineofSight = true;
 	}
-	if (temp == 0)
-		HasLineofSight = true;
+	
+		
+	
 }
 
 void FireDrone::BulletCollision(Player* p)

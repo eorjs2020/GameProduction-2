@@ -131,7 +131,7 @@ void Player::Update(int stage)
 			}
 		}
 	}
-	UpdateAxis(m_bgScrollX, m_bgScrollY);
+	
 	Collision();
 	//std::cout << GetVelY() << std::endl;
 	switch (m_state)
@@ -235,6 +235,7 @@ void Player::Update(int stage)
 	double* h = &m_velX;
 	m_barrier->Update(m_en, m_dX, m_dY, f, h);
 	slowHazard();
+	UpdateAxis(m_bgScrollX, m_bgScrollY);
 }
 
 void Player::Render()
@@ -290,6 +291,7 @@ void Player::SetState(int s)
 		m_spriteMax = 5;
 	}
 }
+
 
 void Player::Collision()
 {
@@ -348,7 +350,27 @@ void Player::HandleCamera(float scroll, bool x, int stage)
 				else
 					Engine::Instance().GetLevel()[row][col]->GetDstP()->y -= (int)scroll;
 			}
+
 		}
+
+		for (auto i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		{
+			if (x)
+			{
+				Engine::Instance().GetEnemy()[i]->GetDstP()->x -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_ePos.x -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_pSBox.x -= (int)scroll;
+			}
+			else
+			{
+				Engine::Instance().GetEnemy()[i]->GetDstP()->y -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_ePos.y -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_pSBox.y -= (int)scroll;
+			}
+
+		}
+		
+
 	}
 	else if (stage == 2)
 	{
@@ -357,10 +379,26 @@ void Player::HandleCamera(float scroll, bool x, int stage)
 			for (int col = 0; col < COLS2; col++)
 			{
 				if (x)
-					Engine::Instance().GetLevel2()[row][col]->GetDstP()->x -= scroll;
+					Engine::Instance().GetLevel2()[row][col]->GetDstP()->x -= (int)scroll;
 				else
-					Engine::Instance().GetLevel2()[row][col]->GetDstP()->y -= scroll;
+					Engine::Instance().GetLevel2()[row][col]->GetDstP()->y -= (int)scroll;
 			}
+		}
+		for (auto i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
+		{
+			if (x)
+			{
+				Engine::Instance().GetEnemy()[i]->GetDstP()->x -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_ePos.x -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_pSBox.x -= (int)scroll;
+			}
+			else
+			{
+				Engine::Instance().GetEnemy()[i]->GetDstP()->y -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_ePos.y -= (int)scroll;
+				Engine::Instance().GetEnemy()[i]->m_pSBox.y -= (int)scroll;
+			}
+
 		}
 	}
 }

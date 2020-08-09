@@ -10,7 +10,7 @@ class FireDrone : public AnimatedSprite
 {
 public:
 	FireDrone(SDL_Rect s, SDL_FRect d, SDL_Renderer* r, SDL_Texture* t, int sstart, int smin, int smax, int nf, std::vector<Bullet*>* bVec);
-	void Update(float AccelX, float AccelY, bool x, bool bgscroll, Player* p);
+	void Update(float AccelX, float AccelY, bool x, bool bgscroll, Player* p, bool los);
 	void Render();
 	double GetVelX();
 	double GetVelY();

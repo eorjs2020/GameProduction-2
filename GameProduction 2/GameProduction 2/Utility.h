@@ -7,7 +7,6 @@ using namespace std;
 template <class T>
 void CleanVector(vector<T>& v, bool& b)
 {
-	cout << "Cleaning vector!" << endl;
 	if (!v.empty())
 	{
 

@@ -18,7 +18,7 @@ public:
 	static bool PlayerCollision(const SDL_Rect player, const int dX, const int dY);
 	static bool lineLineCheck(const glm::vec2 line1_start, const glm::vec2 line1_end, const glm::vec2 line2_start, const glm::vec2 line2_end);
 	static bool lineRectCheck(const glm::vec2 line1_start, const glm::vec2 line1_end, const glm::vec2 rec_start, const float rect_width, const float rect_height);
-	static bool LOSCheck(Sprite* from, Sprite* to, Tile* rect);
+	static bool LOSCheck(Sprite* from, SDL_FRect* to, Tile* rect);
 	
 
 private:
