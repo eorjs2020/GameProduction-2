@@ -40,7 +40,7 @@ class Level1State : public State
 {
 private:
 	Sprite* m_goal;
-	Sprite * m_interface, * m_battery[10];
+	Sprite * m_interface, * m_battery[38];
 	Label* m_timer, * m_energy;
 std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEnergy = "Energy: 0", 
 		m_updateEnergy, m_energyNum;
@@ -49,7 +49,7 @@ std::string m_TimerNum, m_defualtTimer = "Timer: 0", m_updateTimer, m_defualtEne
 	Button* m_quit, * m_mainMenu, * m_resume, * m_pause;
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
-	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryArraySize = 38 ,
+	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryArraySize = 38,
 		m_batteryX[38] = {2, 4, 6, 21, 21, 21, 17, 12, 16, 24, 24, 24, 24, 25, 25, 25, 25, 24, 29,
 			42, 42, 42, 42, 42, 42, 49, 46, 60, 33, 33, 33, 33, 43, 43, 44, 44, 68, 46}, 
 		m_batteryY[38] = {21, 71, 132, 96, 97, 98, 116, 62, 98, 10, 11, 12, 13, 10, 11, 12, 13, 53, 35,

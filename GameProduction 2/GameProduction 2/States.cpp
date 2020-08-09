@@ -71,11 +71,7 @@ void Level1State::Enter()
 		}
 	}
 	inFile.close();
-	//load battery strite pos and data
-	for (int i = 0; i < m_batteryArraySize; i++) {
-		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
-			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
-	}
+	
 	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel()[72][166]->GetDstP()->x,Engine::Instance().GetLevel()[72][166]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
 	//sound and font
@@ -150,6 +146,11 @@ void Level1State::Enter()
 	timer.start();
 	//set variables  
 	m_pNumBulletHit = 0; 
+	//load battery strite pos and data
+	for (int i = 0; i < 38; i++) {
+		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
+			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
+	}
 }
 
 void Level1State::Update()
@@ -228,7 +229,7 @@ void Level1State::Update()
 		}
 	}
 	//Battery postion, collision and energy set
-	for (int i = 0; i < m_batteryArraySize; i++) {
+	for (int i = 0; i < 38; i++) {
 		if(m_battery[i] != nullptr){
 			m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
 		m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
@@ -334,7 +335,7 @@ void Level1State::Render()
 	m_energy->Render();
 	m_pPlayer->Render();
 	//Render Battery 
-	for (int i = 0; i < m_batteryArraySize; i++) {
+	for (int i = 0; i < 38; i++) {
 		if (m_battery[i] != nullptr)
 			m_battery[i]->Render();
 	}
