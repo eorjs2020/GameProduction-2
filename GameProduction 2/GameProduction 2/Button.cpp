@@ -110,3 +110,8 @@ void MainMenuButton::Execute()
 MainMenuButton::MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t) :Button (src, dst, r, t)
 {
 }
+void ReplayButton::Execute()
+{
+	SOMA::PlaySound("beep");
+	STMA::ChangeState(new Level1State);
+}
