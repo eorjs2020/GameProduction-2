@@ -50,8 +50,8 @@ private:
 	bool existHook = false, hookColl = false, m_stageEnd = false; //check if evnet happened to render object, check if object is colliding for player to move
 	int m_pSFXVolume, m_pMusicVolume;
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16, m_batteryArraySize = 38,
-		m_batteryX[38] = {2, 4, 6, 21, 21, 21, 17, 12, 16, 24, 24, 24, 24, 25, 25, 25, 25, 24, 29,
-			42, 42, 42, 42, 42, 42, 49, 46, 60, 33, 33, 33, 33, 43, 43, 44, 44, 68, 46}, 
+		m_batteryX[38] = {2, 4, 6, 21, 21, 21, 17, 12, 16, 24, 24, 24, 24, 23, 23, 23, 23, 24, 29,
+			42, 42, 42, 42, 42, 42, 49, 46, 60, 33, 33, 33, 33, 43, 43, 42, 42, 68, 46}, 
 		m_batteryY[38] = {21, 71, 132, 96, 97, 98, 116, 62, 98, 10, 11, 12, 13, 10, 11, 12, 13, 53, 35,
 			37, 38, 39, 40, 41, 42, 3,  28, 90, 77, 78, 79, 80, 146, 147,146, 147, 140, 110};
 	LTimer timer;
@@ -85,7 +85,7 @@ private:
 	std::vector<Bullet*> m_vEBullets;
 	bool m_bullNull;
 	double m_destinationX, m_destinationY;
-	Sprite* m_battery[4];
+	Sprite* m_battery[28];
 	Sprite* m_goal;
 	Button* m_quit, * m_mainMenu, * m_resume, * m_Pause;
 	Label* m_timer, * m_energy;
@@ -94,8 +94,10 @@ private:
 		m_updateEnergy, m_energyNum;
 	bool existHook = false, hookColl = false, m_stageEnd = false;
 	int m_pSFXVolume, m_pMusicVolume,
-		m_batteryX[4] = { 13, 13, 13, 13 },
-		m_batteryY[4] = { 25, 25, 26, 26 };
+		m_batteryX[28] = { 48, 48, 43, 43, 42, 37, 28, 20, 20, 20, 17, 20, 
+			23, 19, 19, 28, 28, 21, 10, 8, 22, 22, 22, 22, 22, 22, 22, 22},
+		m_batteryY[28] = { 4, 5, 49, 50, 89, 92, 128, 101, 102, 103, 126, 164, 
+			223, 257, 257, 304, 336, 343, 342, 382, 339, 339, 339, 339, 339, 339, 339, 339 };
 	int m_pSFXSetVol = 30, m_pMusicSetVol = 16;
 	int bulletTimer = 0, m_pNumBulletHit;
 	bool bulletslow = false;

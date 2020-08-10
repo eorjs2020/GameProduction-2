@@ -255,7 +255,7 @@ void Level1State::Update()
 	
 	//Score calculation and State change
 	if (m_stageEnd){
-		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 1000);
+		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 500);
 		int a;
 		if (timer.getmin() == 3)
 		{
@@ -335,7 +335,7 @@ void Level1State::Render()
 	
 	m_goal->Render();
 	m_energy->Render();
-	m_pPlayer->Render();
+	
 	//Render Battery 
 	for (int i = 0; i < 38; i++) {
 		if (m_battery[i] != nullptr)
@@ -346,6 +346,7 @@ void Level1State::Render()
 	{
 		m_hook->Render();
 	}
+	m_pPlayer->Render();
 	//Render timer
 	m_timer->Render();
 	// If GameState != current state.
@@ -386,6 +387,7 @@ void Level1State::Exit()
 	Engine::Instance().GetTiles().clear();
 	Engine::Instance().GetEnemy().clear();
 	Engine::Instance().GetPlatform().clear();
+	Engine::Instance().GetHazard().clear();
 	fDrone.clear();
 	m_vEBullets.clear();
 	std::cout << "Cleaning Level1" << endl;
@@ -566,7 +568,7 @@ void Level2State::Enter()
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("resume"));
 	m_goal = new Sprite({ 226,37,12,7 }, { Engine::Instance().GetLevel2()[3][14]->GetDstP()->x,Engine::Instance().GetLevel2()[3][14]->GetDstP()->y, 32, 32 },
 		Engine::Instance().GetRenderer(), TEMA::GetTexture("Key"));
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 28; i++) {
 		m_battery[i] = new Sprite({ 0,0,32,32 }, { Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x,Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y, 32, 32 },
 			Engine::Instance().GetRenderer(), TEMA::GetTexture("battery"));
 	}
@@ -630,7 +632,7 @@ void Level2State::Update()
 		m_updateEnergy = m_defualtEnergy + m_energyNum;
 		m_energy->SetText(m_updateEnergy);
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 28; i++) {
 			if (m_battery[i] != nullptr) {
 				m_battery[i]->GetDstP()->x = Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->x;
 				m_battery[i]->GetDstP()->y = Engine::Instance().GetLevel2()[m_batteryX[i]][m_batteryY[i]]->GetDstP()->y;
@@ -671,35 +673,51 @@ void Level2State::Update()
 	}
 	//Score calculation and State change
 	if (m_stageEnd) {
-		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 1000);
+		Engine::Instance().setScore((m_pPlayer->getEnergy() / 5) * 500);
 		int a;
-		if (timer.getmin() == 3)
+		if (timer.getmin() == 5)
 		{
 			a = 2000;
 		}
-		else if (timer.getmin() == 2 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		else if (timer.getmin() == 4 && timer.getsec() <= 59 && timer.getsec() >= 30)
 		{
 			a = 3000;
 		}
-		else if (timer.getmin() == 2 && timer.getsec() < 30)
+		else if (timer.getmin() == 4 && timer.getsec() < 30)
 		{
 			a = 5000;
 		}
-		else if (timer.getmin() == 1 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		else if (timer.getmin() == 3 && timer.getsec() <= 59 && timer.getsec() >= 30)
 		{
 			a = 8000;
 		}
-		else if (timer.getmin() == 1 && timer.getsec() < 30)
+		else if (timer.getmin() == 3 && timer.getsec() < 30)
 		{
 			a = 10000;
 		}
-		else if (timer.getmin() == 0 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		else if (timer.getmin() == 2 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 20000;
+		}
+		else if (timer.getmin() == 2 && timer.getsec() < 30)
 		{
 			a = 50000;
 		}
-		else if (timer.getmin() == 0 && timer.getsec() < 30)
+		else if (timer.getmin() == 1 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 80000;
+		}
+		else if (timer.getmin() == 1 && timer.getsec() < 30)
 		{
 			a = 100000;
+		}
+		else if (timer.getmin() == 0 && timer.getsec() <= 59 && timer.getsec() >= 30)
+		{
+			a = 500000;
+		}
+		else if (timer.getmin() == 0 && timer.getsec() < 30)
+		{
+			a = 1000000;
 		}
 		else {
 			a = 0;
@@ -728,7 +746,7 @@ void Level2State::Render()
 	{
 		Engine::Instance().GetEnemy()[i]->Render();
 	}
-	m_pPlayer->Render();
+	
 	
 	for (auto i = 0; i < m_vEBullets.size(); ++i)
 	{
@@ -747,10 +765,11 @@ void Level2State::Render()
 	m_timer->Render();
 	m_energy->Render();
 	m_goal->Render();
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 28; i++) {
 		if (m_battery[i] != nullptr)
 			m_battery[i]->Render();
 	}
+	m_pPlayer->Render();
 	// If GameState != current state.
 	if (dynamic_cast<Level2State*>(STMA::GetStates().back()))
 		State::Render();
@@ -776,8 +795,11 @@ void Level2State::Exit()
 	}
 
 	Engine::Instance().GetTiles().clear();
-	
-	Engine::Instance().GetPlatform().clear();
+	Engine::Instance().GetEnemy().clear();
+	fDrone.clear();
+	m_vEBullets.clear();
+	Engine::Instance().GetPlatform2().clear();
+	Engine::Instance().GetHazard().clear();
 }
 
 void Level2State::Resume(){}
@@ -798,6 +820,7 @@ void Level2State::BulletCollision()
 			delete m_vEBullets[i];
 			m_vEBullets[i] = nullptr;
 			m_bullNull = true;
+			bulletslow = true;
 			break;
 		}
 

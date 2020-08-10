@@ -38,6 +38,7 @@ double MathManager::Rad2Deg(const double angle)
 
 SDL_Rect MathManager::ConvertFRect2Rect(const SDL_FRect& r)
 {
+
 	SDL_Rect temp = { (int)r.x, (int)r.y, (int)r.w, (int)r.h };
 	return temp;
 }
