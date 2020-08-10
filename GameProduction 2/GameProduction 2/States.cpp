@@ -334,7 +334,7 @@ void Level1State::Render()
 	
 	
 	m_goal->Render();
-	m_energy->Render();
+	
 	
 	//Render Battery 
 	for (int i = 0; i < 38; i++) {
@@ -347,6 +347,7 @@ void Level1State::Render()
 		m_hook->Render();
 	}
 	m_pPlayer->Render();
+	m_energy->Render();
 	//Render timer
 	m_timer->Render();
 	// If GameState != current state.
@@ -592,8 +593,7 @@ void Level2State::Enter()
 
 void Level2State::Update()
 {
-	if (m_Pause->Update() == 1)
-		return;
+	
 
 	if (COMA::AABBCheck(*m_pPlayer->GetDstP(), *m_goal->GetDstP()))
 		m_stageEnd = true;
@@ -605,6 +605,9 @@ void Level2State::Update()
 			return;
 		m_resume->Update();
 	}
+	else
+		if (m_Pause->Update() == 1)
+			return;
 	if (Engine::Instance().Pause() == false)
 	{
 		for (unsigned i = 0; i < Engine::Instance().GetEnemy().size(); ++i)
@@ -773,12 +776,15 @@ void Level2State::Render()
 	// If GameState != current state.
 	if (dynamic_cast<Level2State*>(STMA::GetStates().back()))
 		State::Render();
-	if (Engine::Instance().Pause() == true)
+	
+	if (Engine::Instance().Pause())
 	{
 		m_quit->Render();
 		m_mainMenu->Render();
 		m_resume->Render();
 	}
+	else
+		m_Pause->Render();
 }
 
 void Level2State::Exit()
@@ -798,7 +804,7 @@ void Level2State::Exit()
 	Engine::Instance().GetEnemy().clear();
 	fDrone.clear();
 	m_vEBullets.clear();
-	Engine::Instance().GetPlatform2().clear();
+	Engine::Instance().GetPlatform().clear();
 	Engine::Instance().GetHazard().clear();
 }
 
