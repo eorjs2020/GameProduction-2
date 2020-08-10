@@ -62,4 +62,12 @@ private:
 public:
 	MainMenuButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
 };
+class ReplayButton:public Button
+{
+private:
+	ReplayButton();
+	void Execute();
+public:
+	ReplayButton(SDL_Rect src, SDL_FRect dst, SDL_Renderer* r, SDL_Texture* t);
+};
 #endif
