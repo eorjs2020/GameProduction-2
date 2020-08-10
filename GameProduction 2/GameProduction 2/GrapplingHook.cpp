@@ -140,7 +140,7 @@ void GrapplingHook::Update()
 	//std::cout << (m_lineAngle * 180 / 3.14) << std::endl;
 	m_line->setSize(sqrt(pow(abs(this->m_dst.x - m_Player->GetDstP()->x), 2) + pow(abs(this->m_dst.y - m_Player->GetDstP()->y), 2)), 3);
 	
-	if (m_line->GetDstP()->w > 600)
+	if (m_line->GetDstP()->w > 450)
 		this->SetExist(false);
 	/*if (shoot == false && m_dst.x == endpointX && m_dst.y == endpointY)
 		this->SetExist(false);*/
@@ -240,23 +240,27 @@ void GrapplingHook::Collision(int stage)
 					if (this->GetDstP()->y + Engine::Instance().GetLevel2()[i][j]->GetDstP()->h - (float)this->GetVelY() <= (float)Engine::Instance().GetLevel2()[i][j]->GetDstP()->y)
 					{ // Colliding top side of platform.
 						this->Stop();
-						this->SetY(Engine::Instance().GetLevel2()[i][j]->GetDstP()->y - this->GetDstP()->h);
+						dx = dy = 0.0;
+						shoot = false;
 
 					}
 					else if (this->GetDstP()->y - (float)this->GetVelY() >= Engine::Instance().GetLevel2()[i][j]->GetDstP()->y + Engine::Instance().GetLevel2()[i][j]->GetDstP()->h)
 					{ // Colliding bottom side of platform.
 						this->Stop();
-						this->SetY(Engine::Instance().GetLevel2()[i][j]->GetDstP()->y + Engine::Instance().GetLevel2()[i][j]->GetDstP()->h);
+						dx = dy = 0.0;
+						shoot = false;
 					}
 					else if (this->GetDstP()->x + this->GetDstP()->w - this->GetVelX() <= Engine::Instance().GetLevel2()[i][j]->GetDstP()->x)
 					{ // Collision from left.
-						this->Stop(); // Stop the player from moving horizontally.
-						this->SetX(Engine::Instance().GetLevel2()[i][j]->GetDstP()->x - this->GetDstP()->w);
+						this->Stop();
+						dx = dy = 0.0;
+						shoot = false;
 					}
 					else if (this->GetDstP()->x - (float)this->GetVelX() >= Engine::Instance().GetLevel2()[i][j]->GetDstP()->x + Engine::Instance().GetLevel2()[i][j]->GetDstP()->w)
 					{ // Colliding right side of platform.
 						this->Stop();
-						this->SetX(Engine::Instance().GetLevel2()[i][j]->GetDstP()->x + Engine::Instance().GetLevel2()[i][j]->GetDstP()->w);
+						dx = dy = 0.0;
+						shoot = false;
 					}
 				}
 
