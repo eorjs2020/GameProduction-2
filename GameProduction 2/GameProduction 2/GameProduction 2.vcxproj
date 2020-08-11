@@ -84,6 +84,29 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\SDL\SDL2_image\lib\x86;$(SolutionDir)\SDL\SDL2\lib\x86;$(SolutionDir)\SDL\SDL2_mixer\lib\x86;$(SolutionDir)\SDL\SDL2_ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)\SDL\SDL2\lib\x86\SDL2.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\SDL2_image.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\libpng16-16.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\zlib1.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\SDL2_mixer.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libFLAC-8.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libmodplug-1.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libmpg123-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libogg-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libopus-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libopusfile-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libvorbis-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libvorbisfile-3.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_ttf\lib\x86\SDL2_ttf.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_ttf\lib\x86\libfreetype-6.dll" "$(OutDir)"
+
+xcopy '$(SolutionDir)\glm" "$(OutDir)glm" /s/e/i/y
+xcopy "$(ProjectDir)Aud" "$(OutDir)Aud" /s/e/i/y
+xcopy "$(ProjectDir)map" "$(OutDir)map" /s/e/i/y
+xcopy "$(ProjectDir)Img" "$(OutDir)Img" /s/e/i/y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -104,12 +127,59 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\SDL\SDL2\include;$(SolutionDir)\SDL\SDL2_image\include;$(SolutionDir)\SDL\SDL2_mixer\include;$(SolutionDir)\SDL\SDL2_ttf\include;$(SolutionDir)\glm</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\SDL\SDL2_image\lib\x86;$(SolutionDir)\SDL\SDL2\lib\x86;$(SolutionDir)\SDL\SDL2_mixer\lib\x86;$(SolutionDir)\SDL\SDL2_ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)\SDL\SDL2\lib\x86\SDL2.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\SDL2_image.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\libpng16-16.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\zlib1.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\SDL2_mixer.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libFLAC-8.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libmodplug-1.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libmpg123-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libogg-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libopus-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libopusfile-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libvorbis-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libvorbisfile-3.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_ttf\lib\x86\SDL2_ttf.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_ttf\lib\x86\libfreetype-6.dll" "$(OutDir)"
+
+xcopy '$(SolutionDir)\glm" "$(OutDir)glm" /s/e/i/y
+xcopy "$(ProjectDir)Aud" "$(OutDir)Aud" /s/e/i/y
+xcopy "$(ProjectDir)map" "$(OutDir)map" /s/e/i/y
+xcopy "$(ProjectDir)Img" "$(OutDir)Img" /s/e/i/y</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>copy "$(SolutionDir)\SDL\SDL2\lib\x86\SDL2.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\SDL2_image.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\libpng16-16.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_image\lib\x86\zlib1.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\SDL2_mixer.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libFLAC-8.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libmodplug-1.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libmpg123-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libogg-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libopus-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libopusfile-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libvorbis-0.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_mixer\lib\x86\libvorbisfile-3.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_ttf\lib\x86\SDL2_ttf.dll" "$(OutDir)"
+copy "$(SolutionDir)\SDL\SDL2_ttf\lib\x86\libfreetype-6.dll" "$(OutDir)"
+
+xcopy '$(SolutionDir)\glm" "$(OutDir)glm" /s/e/i/y
+xcopy "$(ProjectDir)Aud" "$(OutDir)Aud" /s/e/i/y
+xcopy "$(ProjectDir)map" "$(OutDir)map" /s/e/i/y
+xcopy "$(ProjectDir)Img" "$(OutDir)Img" /s/e/i/y</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
